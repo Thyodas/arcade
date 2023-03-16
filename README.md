@@ -1,23 +1,3 @@
-<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
-<a name="readme-top"></a>
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Thanks again! Now go create something AMAZING! :D
--->
-
-
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -74,6 +54,7 @@ This project use:
 * SDL2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Simple_DirectMedia_Layer%2C_Logo.svg/800px-Simple_DirectMedia_Layer%2C_Logo.svg.png" width="65" height="30" />](https://discourse.libsdl.org/)
 
 
+
 <!-- GETTING STARTED -->
 ## Getting Started
 
@@ -95,6 +76,7 @@ _How to run the arcade project and play fun video games_
    ```
 
 
+
 <!-- USAGE EXAMPLES -->
 ## Exemple
 
@@ -103,10 +85,12 @@ This project is still under development
 _For more information, please refer to the [Documentation](https://example.com)_
 
 
+
 <!-- LICENSE -->
 ## License
 
 This project belongs to its authors, copying it will be sanctioned by Marvin
+
 
 
 <!-- CONTACT -->
