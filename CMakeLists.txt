@@ -32,6 +32,7 @@ set(CMAKE_CXX_FLAGS "-Wall -Wextra -std=c++20 -fno-gnu-unique -g")
 include_directories(include)
 
 add_library(arcade_ncurses SHARED ${NCURSES_SRCS})
+target_link_libraries(arcade_ncurses ncurses)
 set_target_properties(arcade_ncurses PROPERTIES PREFIX "" SUFFIX ".so")
 set_target_properties(arcade_ncurses PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 add_library(arcade_sfml SHARED ${SFML_SRCS})
