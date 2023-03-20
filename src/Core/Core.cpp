@@ -7,6 +7,7 @@
 
 #include "Core.hpp"
 #include "Loader.hpp"
+#include <vector>
 
 Error::Error(std::string error)
 : _error(std::move(error))
@@ -81,10 +82,27 @@ void Core::setGameModule(const std::string pathToLib)
 
 void Core::mainLoop(const std::string displayLib)
 {
+    int index = 0;
+    std::vector<std::string> graphicLibs = {"lib/arcade_sfml.so",
+                                        "lib/arcade_ncurses.so"};
     setGameModule(std::string("lib/arcade_menu.so"));
     setDisplayModule(displayLib);
     _game->init();
     while (1) {
+        if (_display->isButtonPressed(IDisplayModule::F1)) {
+            index--;
+            index = (index < 0) ? 0 : index;
+            _display->close();
+            setDisplayModule(graphicLibs[index]);
+            continue;
+        }
+        if (_display->isButtonPressed(IDisplayModule::F2)) {
+            index++;
+            index = (index >= graphicLibs.size()) ? 0 : index;
+            _display->close();
+            setDisplayModule(graphicLibs[index]);
+            continue;
+        }
         _display->clearWindow(IDisplayModule::BLACK);
         _display->handleEvents();
         _game->update(_display);
