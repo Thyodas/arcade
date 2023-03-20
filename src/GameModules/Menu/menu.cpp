@@ -17,6 +17,7 @@ void Menu::init() {
     rect->setPos(IDisplayModule::Vector2i{400, 300});
     rect->setSize(IDisplayModule::Vector2i{100, 100});
     rect->setColor(IDisplayModule::RED);
+    rect->setCharacter('*');
 }
 
 void Menu::update(std::unique_ptr<IDisplayModule> &display)
