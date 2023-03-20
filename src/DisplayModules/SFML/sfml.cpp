@@ -25,8 +25,26 @@ SFMLRenderer::SFMLRenderer() : _window(sf::VideoMode(1920, 1080), "Window tg")
     _buttonsMap[F6] = sf::Keyboard::F6;
     _buttonsMap[F7] = sf::Keyboard::F7;
 
-    _mouseButtonMap[sf::Mouse::Left] = MouseButtonEvent::MouseButton::LEFT;
-    _mouseButtonMap[sf::Mouse::Right] = MouseButtonEvent::MouseButton::RIGHT;
+    _mouseMap[sf::Event::MouseButtonPressed][sf::Mouse::Left] = [](int x, int y) {
+        return MouseButtonEvent{MouseButtonEvent::MouseEventType::PRESSED,
+                                MouseButtonEvent::MouseButton::LEFT,
+                                Vector2i{x, y}};
+    };
+    _mouseMap[sf::Event::MouseButtonPressed][sf::Mouse::Right] = [](int x, int y) {
+        return MouseButtonEvent{MouseButtonEvent::MouseEventType::PRESSED,
+                                MouseButtonEvent::MouseButton::RIGHT,
+                                Vector2i{x, y}};
+    };
+    _mouseMap[sf::Event::MouseButtonReleased][sf::Mouse::Left] = [](int x, int y) {
+        return MouseButtonEvent{MouseButtonEvent::MouseEventType::RELEASED,
+                                MouseButtonEvent::MouseButton::LEFT,
+                                Vector2i{x, y}};
+    };
+    _mouseMap[sf::Event::MouseButtonReleased][sf::Mouse::Left] = [](int x, int y) {
+        return MouseButtonEvent{MouseButtonEvent::MouseEventType::RELEASED,
+                                MouseButtonEvent::MouseButton::LEFT,
+                                Vector2i{x, y}};
+    };
 
     _mapDecorator[RECTANGLE] = [this](IObject *obj) { drawRect(obj); };
 }
@@ -75,7 +93,7 @@ void SFMLRenderer::close()
     _window.close();
 }
 
-void SFMLRenderer::clear(Color color)
+void SFMLRenderer::clearWindow(Color color)
 {
     _window.clear(sf::Color::Black);
 }
@@ -93,16 +111,9 @@ void SFMLRenderer::handleEvents()
                 }
             }
         }
-        if (_event.type == sf::Event::MouseButtonPressed) {
-            _mouseEvents.push_back(MouseButtonEvent{MouseButtonEvent::MouseEventType::PRESSED,
-                                    _mouseButtonMap[_event.mouseButton.button],
-                                    Vector2i{_event.mouseButton.x, _event.mouseButton.y}});
-        }
-        if (_event.type == sf::Event::MouseButtonReleased) {
-            _mouseEvents.push_back(MouseButtonEvent{MouseButtonEvent::MouseEventType::RELEASED,
-                                    _mouseButtonMap[_event.mouseButton.button],
-                                    Vector2i{_event.mouseButton.x, _event.mouseButton.y}});
-        }
+        if (_mouseMap.find(_event.type) != _mouseMap.end())
+            if (_mouseMap[_event.type].find(_event.mouseButton.button) != _mouseMap[_event.type].end())
+                _mouseEvents.push_back(_mouseMap[_event.type][_event.mouseButton.button](_event.mouseButton.x, _event.mouseButton.y));
     }
 }
 

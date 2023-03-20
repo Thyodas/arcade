@@ -15,7 +15,6 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
-#include <map>
 #include <functional>
 #include <vector>
 #include <unordered_map>
@@ -33,13 +32,12 @@ class SFMLRenderer : public IDisplayModule {
 
         void drawObj(IObject *obj) override;
         void render() override;
-        void clear(Color color) override;
+        void clearWindow(Color color) override;
         void handleEvents() override;
     private:
         std::unordered_map<Button, sf::Keyboard::Key> _buttonsMap;
-        //std::unordered_map<sf::Event::EventType, IDisplayModule::MouseButtonEvent::MouseEventType> _mouseTypeMap;
-        std::unordered_map<sf::Mouse::Button, IDisplayModule::MouseButtonEvent::MouseButton> _mouseButtonMap;
-        std::map<Type, std::function<void(IObject *)>> _mapDecorator;
+        std::unordered_map<sf::Event::EventType, std::unordered_map<sf::Mouse::Button, std::function<MouseButtonEvent(int x, int y)>>> _mouseMap;
+        std::unordered_map<Type, std::function<void(IObject *)>> _mapDecorator;
         void drawRect(IObject *rect);
 
         sf::RenderWindow _window;
