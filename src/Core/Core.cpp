@@ -85,7 +85,7 @@ void Core::mainLoop(const std::string displayLib)
     setDisplayModule(displayLib);
     _game->init();
     while (1) {
-        _display->clear(IDisplayModule::BLACK);
+        _display->clearWindow(IDisplayModule::BLACK);
         _display->handleEvents();
         _game->update(_display);
         _display->render();

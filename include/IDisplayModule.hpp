@@ -73,7 +73,7 @@ class IDisplayModule {
 
         virtual void drawObj(IObject *obj) = 0;
         virtual void render() = 0;
-        virtual void clear(Color color) = 0;
+        virtual void clearWindow(Color color) = 0;
         virtual void handleEvents() = 0;
 };
 
