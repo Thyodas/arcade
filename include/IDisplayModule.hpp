@@ -39,7 +39,7 @@ class IDisplayModule {
             UP,
             RIGHT,
             DOWN,
-            KEY_Q,
+            KEY_F,
             KEY_E,
             ESC,
             F1,
