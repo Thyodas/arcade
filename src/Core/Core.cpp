@@ -8,6 +8,10 @@
 #include "Core.hpp"
 #include "Loader.hpp"
 #include <vector>
+#include <unistd.h>
+#include <csignal>
+
+bool Core::_loop = true;
 
 Error::Error(std::string error)
 : _error(std::move(error))
@@ -62,6 +66,8 @@ void Core::setDisplayModule(const std::string pathToLib)
 {
     char *error = NULL;
     std::shared_ptr<Loader> loader = Loader::getLoader();
+    _display.reset();
+    loader->closeGraphicLib();
     void *handle = loader->setGraphicLib(pathToLib);
     std::unique_ptr<IDisplayModule> (*ptr)(void) = (std::unique_ptr<IDisplayModule> (*)(void))dlsym(handle, "entryPointDisplay");
     if ((error = dlerror()) != NULL)
@@ -73,11 +79,19 @@ void Core::setGameModule(const std::string pathToLib)
 {
     char *error = NULL;
     std::shared_ptr<Loader> loader = Loader::getLoader();
+    _game.reset();
+    loader->closeGameLib();
     void *handle = loader->setGameLib(pathToLib);
     std::unique_ptr<IGameModule> (*ptr)(void) = (std::unique_ptr<IGameModule> (*)(void))dlsym(handle, "entryPointGame");
     if ((error = dlerror()) != NULL)
         throw Error(error);
     _game = ptr();
+}
+
+void Core::sigHandler(int signum)
+{
+    if (signum == 2)
+        Core::_loop = false;
 }
 
 void Core::mainLoop(const std::string displayLib)
@@ -88,7 +102,8 @@ void Core::mainLoop(const std::string displayLib)
     setGameModule(std::string("lib/arcade_menu.so"));
     setDisplayModule(displayLib);
     _game->init();
-    while (1) {
+    std::signal(SIGINT, sigHandler);
+    while (_loop) {
         if (_display->isButtonPressed(IDisplayModule::F1)) {
             index--;
             index = (index < 0) ? 0 : index;
@@ -103,11 +118,19 @@ void Core::mainLoop(const std::string displayLib)
             setDisplayModule(graphicLibs[index]);
             continue;
         }
+        if (_display->isButtonPressed(IDisplayModule::F7))
+            _loop = false;
         _display->clearWindow(IDisplayModule::BLACK);
         _display->handleEvents();
         _game->update(_display);
         _display->render();
     }
+    _display->close();
+    _display.reset();
+    _game.reset();
+    std::shared_ptr<Loader> loader = Loader::getLoader();
+    loader->closeGameLib();
+    loader->closeGraphicLib();
 }
 
 

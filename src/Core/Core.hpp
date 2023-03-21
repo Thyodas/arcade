@@ -24,6 +24,10 @@ class Core : public ICore {
 
         void setDisplayModule(const std::string pathToLib) override;
         void setGameModule(const std::string pathToLib) override;
+
+        static void sigHandler(int signum);
+    public:
+        static bool _loop;
     private:
         std::unique_ptr<IDisplayModule> _display;
         std::unique_ptr<IGameModule> _game;
