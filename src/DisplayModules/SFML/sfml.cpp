@@ -14,7 +14,7 @@ SFMLRenderer::SFMLRenderer() : _window(sf::VideoMode(1920, 1080), "Window tg")
     _buttonsMap[UP] = sf::Keyboard::Z;
     _buttonsMap[RIGHT] = sf::Keyboard::D;
     _buttonsMap[DOWN] = sf::Keyboard::S;
-    _buttonsMap[KEY_Q] = sf::Keyboard::F;
+    _buttonsMap[KEY_F] = sf::Keyboard::F;
     _buttonsMap[KEY_E] = sf::Keyboard::E;
     _buttonsMap[ESC] = sf::Keyboard::Escape;
     _buttonsMap[F1] = sf::Keyboard::F1;
@@ -45,6 +45,15 @@ SFMLRenderer::SFMLRenderer() : _window(sf::VideoMode(1920, 1080), "Window tg")
                                 MouseButtonEvent::MouseButton::LEFT,
                                 Vector2i{x, y}};
     };
+
+    _colorsMap[BLACK] = sf::Color::Black;
+    _colorsMap[RED] =sf::Color::Red;
+    _colorsMap[GREEN] = sf::Color::Green;
+    _colorsMap[YELLOW] = sf::Color::Yellow;
+    _colorsMap[BLUE] = sf::Color::Blue;
+    _colorsMap[MAGENTA] = sf::Color::Magenta;
+    _colorsMap[CYAN] = sf::Color::Cyan;
+    _colorsMap[WHITE] = sf::Color::White;
 
     _mapDecorator[RECTANGLE] = [this](IObject *obj) { drawRect(obj); };
 }
@@ -84,7 +93,7 @@ void SFMLRenderer::drawRect(IObject *obj)
     Rectangle *rect = static_cast<Rectangle *>(obj);
     sf::RectangleShape rectToDraw(sf::Vector2f(rect->getSize().x, rect->getSize().y));
     rectToDraw.setPosition(sf::Vector2f(rect->getPos().x, rect->getPos().y));
-    rectToDraw.setFillColor(sf::Color::Red);
+    rectToDraw.setFillColor(_colorsMap[rect->getColor()]);
     _window.draw(rectToDraw);
 }
 
@@ -95,7 +104,7 @@ void SFMLRenderer::close()
 
 void SFMLRenderer::clearWindow(Color color)
 {
-    _window.clear(sf::Color::Black);
+    _window.clear(_colorsMap[color]);
 }
 
 void SFMLRenderer::handleEvents()

@@ -36,6 +36,7 @@ class SFMLRenderer : public IDisplayModule {
         void handleEvents() override;
     private:
         std::unordered_map<Button, sf::Keyboard::Key> _buttonsMap;
+        std::unordered_map<Color, sf::Color> _colorsMap;
         std::unordered_map<sf::Event::EventType, std::unordered_map<sf::Mouse::Button, std::function<MouseButtonEvent(int x, int y)>>> _mouseMap;
         std::unordered_map<Type, std::function<void(IObject *)>> _mapDecorator;
         void drawRect(IObject *rect);
