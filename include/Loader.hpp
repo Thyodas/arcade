@@ -24,6 +24,13 @@ class Loader {
             _gameLib = nullptr;
         };
         Loader(Loader &other) = delete;
+        ~Loader() {
+            if (_graphicLib)
+                dlclose(_graphicLib);
+            if (_gameLib)
+                dlclose(_gameLib);
+        }
+
         void operator=(const Loader &) = delete;
 
         static std::shared_ptr<Loader> getLoader() {
@@ -32,14 +39,21 @@ class Loader {
             return _loader;
         }
 
-        void closeGraphicLib() { dlclose(_graphicLib); _graphicLib = nullptr; }
-        void closeGameLib() {dlclose(_gameLib); _gameLib = nullptr; };
+        void closeGraphicLib() {
+            if (_graphicLib)
+                dlclose(_graphicLib);
+            _graphicLib = nullptr;
+        }
+        void closeGameLib() {
+            if (_gameLib)
+                dlclose(_gameLib);
+            _gameLib = nullptr;
+        };
+
         void *setGraphicLib(const std::string path) {
             void *handle = dlopen(path.c_str(), RTLD_LAZY);
             if (!handle)
                 throw Error(dlerror());
-            if (_graphicLib)
-                dlclose(_graphicLib);
             _graphicLib = handle;
             return _graphicLib;
         };
@@ -47,8 +61,6 @@ class Loader {
             void *handle = dlopen(path.c_str(), RTLD_LAZY);
             if (!handle)
                 throw Error(dlerror());
-            if (_gameLib)
-                dlclose(_gameLib);
             _gameLib = handle;
             return _gameLib;
         };
