@@ -15,5 +15,5 @@ class Menu : public IGameModule {
         void init() override;
         void update(std::unique_ptr<IDisplayModule> &display) override;
     private:
-        Rectangle *rect;
+        std::shared_ptr<Rectangle> rect;
 };

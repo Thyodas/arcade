@@ -55,7 +55,7 @@ SFMLRenderer::SFMLRenderer() : _window(sf::VideoMode(1920, 1080), "Window tg")
     _colorsMap[CYAN] = sf::Color::Cyan;
     _colorsMap[WHITE] = sf::Color::White;
 
-    _mapDecorator[RECTANGLE] = [this](IObject *obj) { drawRect(obj); };
+    _mapDecorator[RECTANGLE] = [this](std::shared_ptr<IObject> obj) { drawRect(obj); };
 }
 
 SFMLRenderer::~SFMLRenderer()
@@ -88,9 +88,9 @@ IDisplayModule::MouseButtonEvent SFMLRenderer::getMouseButtonEvent()
     return _mouseEvents.front();
 }
 
-void SFMLRenderer::drawRect(IObject *obj)
+void SFMLRenderer::drawRect(std::shared_ptr<IObject> obj)
 {
-    Rectangle *rect = static_cast<Rectangle *>(obj);
+    Rectangle *rect = static_cast<Rectangle *>(obj.get());
     sf::RectangleShape rectToDraw(sf::Vector2f(rect->getSize().x, rect->getSize().y));
     rectToDraw.setPosition(sf::Vector2f(rect->getPos().x, rect->getPos().y));
     rectToDraw.setFillColor(_colorsMap[rect->getColor()]);
@@ -130,7 +130,7 @@ void SFMLRenderer::handleEvents()
     }
 }
 
-void SFMLRenderer::drawObj(IObject *obj)
+void SFMLRenderer::drawObj(std::shared_ptr<IObject> obj)
 {
     auto ptr = _mapDecorator[obj->getType()];
     ptr(obj);

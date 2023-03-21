@@ -30,7 +30,7 @@ class SFMLRenderer : public IDisplayModule {
 
         void close() override;
 
-        void drawObj(IObject *obj) override;
+        void drawObj(std::shared_ptr<IObject> obj) override;
         void render() override;
         void clearWindow(Color color) override;
         void handleEvents() override;
@@ -38,8 +38,8 @@ class SFMLRenderer : public IDisplayModule {
         std::unordered_map<Button, sf::Keyboard::Key> _buttonsMap;
         std::unordered_map<Color, sf::Color> _colorsMap;
         std::unordered_map<sf::Event::EventType, std::unordered_map<sf::Mouse::Button, std::function<MouseButtonEvent(int x, int y)>>> _mouseMap;
-        std::unordered_map<Type, std::function<void(IObject *)>> _mapDecorator;
-        void drawRect(IObject *rect);
+        std::unordered_map<Type, std::function<void(std::shared_ptr<IObject> obj)>> _mapDecorator;
+        void drawRect(std::shared_ptr<IObject> obj);
 
         sf::RenderWindow _window;
         sf::Event _event;

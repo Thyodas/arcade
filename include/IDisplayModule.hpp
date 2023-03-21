@@ -71,7 +71,7 @@ class IDisplayModule {
 
         virtual void close() = 0;
 
-        virtual void drawObj(IObject *obj) = 0;
+        virtual void drawObj(std::shared_ptr<IObject> obj) = 0;
         virtual void render() = 0;
         virtual void clearWindow(Color color) = 0;
         virtual void handleEvents() = 0;

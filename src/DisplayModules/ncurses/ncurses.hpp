@@ -27,13 +27,13 @@ class NcursesRenderer : public IDisplayModule {
 
         void close() override;
 
-        void drawObj(IObject *obj) override;
-        void drawRect(IObject *obj);
+        void drawObj(std::shared_ptr<IObject> obj) override;
         void render() override;
         void clearWindow(Color color) override;
         void handleEvents() override;
     private:
         Vector2i convertPixelPosToCellPos(Vector2i pixelPos) const;
+        void drawRect(std::shared_ptr<IObject> obj);
 
         enum class PairNcurses {
             BLACK_PAIR,
@@ -54,7 +54,7 @@ class NcursesRenderer : public IDisplayModule {
         std::unordered_map<Color, short> _colorsMap;
         std::unordered_map<char, IDisplayModule::MouseButtonEvent::MouseButton> _mouseButtonMap;
         std::unordered_map<long, std::function<MouseButtonEvent(int x, int y)>> _mouseMap;
-        std::map<Type, std::function<void(IObject *)>> _mapDecorator;
+        std::map<Type, std::function<void(std::shared_ptr<IObject> obj)>> _mapDecorator;
 
         std::vector<Button> _buttonsPressed;
         std::vector<MouseButtonEvent> _mouseEvents;

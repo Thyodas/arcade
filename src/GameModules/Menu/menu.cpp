@@ -13,7 +13,7 @@ Menu::Menu() {}
 Menu::~Menu() {}
 
 void Menu::init() {
-    rect = new Rectangle;
+    rect = std::make_shared<Rectangle>();
     rect->setPos(IDisplayModule::Vector2i{400, 300});
     rect->setSize(IDisplayModule::Vector2i{100, 100});
     rect->setColor(IDisplayModule::YELLOW);

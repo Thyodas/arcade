@@ -71,7 +71,7 @@ NcursesRenderer::NcursesRenderer()
     _colorsMap[CYAN] = COLOR_CYAN;
     _colorsMap[WHITE] = COLOR_WHITE;
 
-    _mapDecorator[RECTANGLE] = [this](IObject *obj) { drawRect(obj); };
+    _mapDecorator[RECTANGLE] = [this](std::shared_ptr<IObject> obj) { drawRect(obj); };
 }
 
 NcursesRenderer::~NcursesRenderer()
@@ -110,9 +110,9 @@ IDisplayModule::Vector2i NcursesRenderer::convertPixelPosToCellPos(Vector2i pixe
     return {(int)(pixelPos.x / 12.1), (int)(pixelPos.y / 25.7)};
 }
 
-void NcursesRenderer::drawRect(IObject *obj)
+void NcursesRenderer::drawRect(std::shared_ptr<IObject> obj)
 {
-    Rectangle *rect = static_cast<Rectangle *>(obj);
+    Rectangle *rect = static_cast<Rectangle *>(obj.get());
     Vector2i cellPos = convertPixelPosToCellPos(rect->getPos());
     Vector2i cellSize = convertPixelPosToCellPos(rect->getSize());
     int x = cellPos.x;
@@ -158,7 +158,7 @@ void NcursesRenderer::handleEvents()
     }
 }
 
-void NcursesRenderer::drawObj(IObject *obj)
+void NcursesRenderer::drawObj(std::shared_ptr<IObject> obj)
 {
     auto ptr = _mapDecorator[obj->getType()];
     ptr(obj);
