@@ -9,7 +9,7 @@
 
 int main(int argc, char **argv)
 {
-    std::unique_ptr<Core> core(new Core());
+    std::unique_ptr<Core> core = std::make_unique<Core>();
     try {
         if (argc != 2)
             throw Error("Wrong number of arguments.");
