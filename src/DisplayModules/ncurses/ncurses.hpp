@@ -34,12 +34,24 @@ class NcursesRenderer : public IDisplayModule {
         void handleEvents() override;
     private:
         Vector2i convertPixelPosToCellPos(Vector2i pixelPos) const;
+
+        enum class PairNcurses {
+            BLACK_PAIR,
+            RED_PAIR,
+            GREEN_PAIR,
+            YELLOW_PAIR,
+            BLUE_PAIR,
+            MAGENTA_PAIR,
+            CYAN_PAIR,
+            WHITE_PAIR
+        };
     private:
         Vector2i _sizeTerminal;
         Vector2i _sizeTerminalPixel;
         WINDOW *_window;
 
         std::unordered_map<Button, int> _buttonsMap;
+        std::unordered_map<Color, short> _colorsMap;
         std::unordered_map<char, IDisplayModule::MouseButtonEvent::MouseButton> _mouseButtonMap;
         std::unordered_map<long, std::function<MouseButtonEvent(int x, int y)>> _mouseMap;
         std::map<Type, std::function<void(IObject *)>> _mapDecorator;

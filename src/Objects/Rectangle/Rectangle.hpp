@@ -30,6 +30,8 @@ class Rectangle : public ARectangle {
         //Terminal graphical lib
         void setCharacter(char c) {_character = c;};
         char getCharacter() const override { return _character;};
+        void setCharacterColor(IDisplayModule::Color color) override {_characterColor = color;};
+        IDisplayModule::Color getCharacterColor() const override { return _characterColor;};
 
         //Other internal logic
         int getBorderThickness() const {return _borderThickness;};

@@ -24,12 +24,13 @@ NcursesRenderer::NcursesRenderer()
     noecho();
     cbreak();
     mousemask(ALL_MOUSE_EVENTS, NULL);
+    start_color();
 
     _buttonsMap[LEFT] = 'q';
     _buttonsMap[UP] = 'z';
     _buttonsMap[RIGHT] = 'd';
     _buttonsMap[DOWN] = 's';
-    _buttonsMap[KEY_Q] = 'f';
+    _buttonsMap[KEY_F] = 'f';
     _buttonsMap[KEY_E] = 'e';
     _buttonsMap[ESC] = 27;
     _buttonsMap[F1] = 80;
@@ -60,6 +61,15 @@ NcursesRenderer::NcursesRenderer()
                                 MouseButtonEvent::MouseButton::LEFT,
                                 Vector2i{x, y}};
     };
+
+    _colorsMap[BLACK] = COLOR_BLACK;
+    _colorsMap[RED] = COLOR_RED;
+    _colorsMap[GREEN] = COLOR_GREEN;
+    _colorsMap[YELLOW] = COLOR_YELLOW;
+    _colorsMap[BLUE] = COLOR_BLUE;
+    _colorsMap[MAGENTA] = COLOR_MAGENTA;
+    _colorsMap[CYAN] = COLOR_CYAN;
+    _colorsMap[WHITE] = COLOR_WHITE;
 
     _mapDecorator[RECTANGLE] = [this](IObject *obj) { drawRect(obj); };
 }
@@ -108,9 +118,12 @@ void NcursesRenderer::drawRect(IObject *obj)
     int x = cellPos.x;
     int y = cellPos.y;
     char c = rect->getCharacter();
+    init_pair(1, _colorsMap[rect->getCharacterColor()], _colorsMap[rect->getColor()]);
+    attron(COLOR_PAIR(1));
     for (int i = x; i < x + cellSize.x && i < _sizeTerminal.x; ++i)
         for (int j = y; j < y + cellSize.y && j < _sizeTerminal.y; ++j)
-            mvprintw(j, i, "%c", c);
+            mvaddch(j, i, c);
+    attroff(COLOR_PAIR(1));
 }
 
 void NcursesRenderer::close()

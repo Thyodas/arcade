@@ -11,9 +11,6 @@
 
 enum Type {
     RECTANGLE,
-    PLAYER,
-    TEXT,
-    CIRCLE,
 };
 
 class IObject {
@@ -28,6 +25,8 @@ class IObject {
         virtual std::string getTexture() const = 0;
         virtual void setCharacter(char c) = 0;
         virtual char getCharacter() const = 0;
+        virtual void setCharacterColor(IDisplayModule::Color color) = 0;
+        virtual IDisplayModule::Color getCharacterColor() const = 0;
         virtual void setColor(IDisplayModule::Color color) = 0;
         virtual IDisplayModule::Color getColor() const = 0;
 };
@@ -41,6 +40,7 @@ class ARectangle : public IObject {
         std::string _pathToTexture;
         int _borderThickness;
         IDisplayModule::Color _color;
+        IDisplayModule::Color _characterColor;
         char _character;
 };
 
