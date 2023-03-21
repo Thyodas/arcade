@@ -103,6 +103,10 @@ void SFMLRenderer::handleEvents()
     _buttonsPressed.clear();
     _mouseEvents.clear();
     while (_window.pollEvent(_event)) {
+        if (_event.type == sf::Event::Closed) {
+            _buttonsPressed.push_back(IDisplayModule::Button::F7);
+            continue;
+        }
         if (_event.type == sf::Event::KeyPressed) {
             for (auto it = _buttonsMap.begin(); it != _buttonsMap.end(); ++it) {
                 if ((*it).second == _event.key.code) {
