@@ -23,8 +23,6 @@ NcursesRenderer::NcursesRenderer()
     nodelay(_window, TRUE);
     noecho();
     cbreak();
-    //timeout(0);
-    //nocbreak();
     mousemask(ALL_MOUSE_EVENTS, NULL);
 
     _buttonsMap[LEFT] = 'q';
@@ -34,7 +32,7 @@ NcursesRenderer::NcursesRenderer()
     _buttonsMap[KEY_Q] = 'f';
     _buttonsMap[KEY_E] = 'e';
     _buttonsMap[ESC] = 27;
-    _buttonsMap[F1] = KEY_F(1);
+    _buttonsMap[F1] = 80;
     _buttonsMap[F2] = KEY_F(2);
     _buttonsMap[F3] = KEY_F(3);
     _buttonsMap[F4] = KEY_F(4);
@@ -104,8 +102,6 @@ IDisplayModule::Vector2i NcursesRenderer::convertPixelPosToCellPos(Vector2i pixe
 
 void NcursesRenderer::drawRect(IObject *obj)
 {
-    //std::cerr << "x " << _sizeTerminalPixel.x << " y " << _sizeTerminalPixel.y << std::endl;
-    //printw("x %d y %d\n", _sizeTerminalPixel.x, _sizeTerminalPixel.y);
     Rectangle *rect = static_cast<Rectangle *>(obj);
     Vector2i cellPos = convertPixelPosToCellPos(rect->getPos());
     Vector2i cellSize = convertPixelPosToCellPos(rect->getSize());
