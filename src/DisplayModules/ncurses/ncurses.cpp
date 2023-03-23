@@ -129,6 +129,7 @@ void NcursesRenderer::drawRect(std::shared_ptr<IObject> obj)
 void NcursesRenderer::close()
 {
     endwin();
+    delete this;
 }
 
 void NcursesRenderer::clearWindow(Color color)
@@ -171,9 +172,9 @@ void NcursesRenderer::render()
 
 extern "C"
 {
-    std::unique_ptr<IDisplayModule> entryPointDisplay()
+    IDisplayModule *entryPoint()
     {
-        return std::make_unique<NcursesRenderer>();
+        return new NcursesRenderer;
     }
 }
 

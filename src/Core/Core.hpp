@@ -8,6 +8,7 @@
 #include "ICore.hpp"
 #include "IDisplayModule.hpp"
 #include "IGameModule.hpp"
+#include "Loader.hpp"
 
 class Core : public ICore {
     public:
@@ -29,8 +30,10 @@ class Core : public ICore {
     public:
         static bool _loop;
     private:
-        std::unique_ptr<IDisplayModule> _display;
-        std::unique_ptr<IGameModule> _game;
+        IDisplayModule *_display;
+        IGameModule *_game;
+
+        Loader _loader;
 
         int _framerate;
         int _score;

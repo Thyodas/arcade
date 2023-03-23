@@ -5,6 +5,8 @@
 ** Loader.hpp
 */
 
+#pragma once
+
 #include <iostream>
 #include <memory>
 #include "ICore.hpp"
@@ -15,7 +17,6 @@ extern "C" {
 
 class Loader {
     protected:
-        static std::shared_ptr<Loader> _loader;
         void *_graphicLib;
         void *_gameLib;
     public:
@@ -23,20 +24,11 @@ class Loader {
             _graphicLib = nullptr;
             _gameLib = nullptr;
         };
-        Loader(Loader &other) = delete;
         ~Loader() {
             if (_graphicLib)
                 dlclose(_graphicLib);
             if (_gameLib)
                 dlclose(_gameLib);
-        }
-
-        void operator=(const Loader &) = delete;
-
-        static std::shared_ptr<Loader> getLoader() {
-            if (_loader == nullptr)
-                _loader =  std::make_shared<Loader>();
-            return _loader;
         }
 
         void closeGraphicLib() {
@@ -50,21 +42,29 @@ class Loader {
             _gameLib = nullptr;
         };
 
-        void *setGraphicLib(const std::string path) {
+        void *loadLib(const std::string path) {
+            char *error = NULL;
             void *handle = dlopen(path.c_str(), RTLD_LAZY);
-            if (!handle)
-                throw Error(dlerror());
-            _graphicLib = handle;
-            return _graphicLib;
-        };
-        void *setGameLib(const std::string path) {
-            void *handle = dlopen(path.c_str(), RTLD_LAZY);
-            if (!handle)
-                throw Error(dlerror());
-            _gameLib = handle;
-            return _gameLib;
-        };
+            if (!handle || (error = dlerror()) != NULL)
+                throw Error(error);
+            return handle;
+        }
+
+        void setDisplay(void *display) {
+            _graphicLib = display;
+        }
+
+        void setGame(void *game) {
+            _gameLib = game;
+        }
+
+        template<typename T>
+        T *getEntryPoint(void *handle) const {
+            char *error = NULL;
+            T *(*ptr)(void) = (T *(*)(void))dlsym(handle, "entryPoint");
+            if ((error = dlerror()) != NULL) {
+                throw Error(error);
+            }
+            return dynamic_cast<T *>(ptr());
+        }
 };
-
-std::shared_ptr<Loader> Loader::_loader = nullptr;
-

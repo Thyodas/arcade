@@ -12,7 +12,13 @@ Menu::Menu() {}
 
 Menu::~Menu() {}
 
-void Menu::init() {
+void Menu::stop()
+{
+    delete this;
+}
+
+void Menu::init()
+{
     rect = std::make_shared<Rectangle>();
     rect->setPos(IDisplayModule::Vector2i{400, 300});
     rect->setSize(IDisplayModule::Vector2i{100, 100});
@@ -21,7 +27,7 @@ void Menu::init() {
     rect->setCharacterColor(IDisplayModule::BLACK);
 }
 
-void Menu::update(std::unique_ptr<IDisplayModule> &display)
+void Menu::update(IDisplayModule *display)
 {
     if (display->isButtonPressed(IDisplayModule::UP)) {
         rect->setPos(IDisplayModule::Vector2i{rect->getPos().x, rect->getPos().y - 10});
@@ -44,8 +50,8 @@ void Menu::update(std::unique_ptr<IDisplayModule> &display)
 
 extern "C"
 {
-    std::unique_ptr<IGameModule> entryPointGame()
+    IGameModule *entryPoint()
     {
-        return std::make_unique<Menu>();
+        return new Menu;
     }
 }

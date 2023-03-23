@@ -9,11 +9,11 @@
 
 int main(int argc, char **argv)
 {
-    std::unique_ptr<Core> core = std::make_unique<Core>();
+    Core core;
     try {
         if (argc != 2)
             throw Error("Wrong number of arguments.");
-        core->mainLoop(std::string(argv[1]));
+        core.mainLoop(std::string(argv[1]));
         return 0;
     } catch (const Error &e) {
         std::cerr << e.what() << std::endl;

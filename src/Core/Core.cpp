@@ -64,28 +64,18 @@ std::string Core::getPlayerName() const
 
 void Core::setDisplayModule(const std::string pathToLib)
 {
-    char *error = NULL;
-    std::shared_ptr<Loader> loader = Loader::getLoader();
-    _display.reset();
-    loader->closeGraphicLib();
-    void *handle = loader->setGraphicLib(pathToLib);
-    std::unique_ptr<IDisplayModule> (*ptr)(void) = (std::unique_ptr<IDisplayModule> (*)(void))dlsym(handle, "entryPointDisplay");
-    if ((error = dlerror()) != NULL)
-        throw Error(error);
-    _display = ptr();
+    void *handle = _loader.loadLib(pathToLib);
+    _loader.closeGraphicLib();
+    _display = _loader.getEntryPoint<IDisplayModule>(handle);
+    _loader.setDisplay(handle);
 }
 
 void Core::setGameModule(const std::string pathToLib)
 {
-    char *error = NULL;
-    std::shared_ptr<Loader> loader = Loader::getLoader();
-    _game.reset();
-    loader->closeGameLib();
-    void *handle = loader->setGameLib(pathToLib);
-    std::unique_ptr<IGameModule> (*ptr)(void) = (std::unique_ptr<IGameModule> (*)(void))dlsym(handle, "entryPointGame");
-    if ((error = dlerror()) != NULL)
-        throw Error(error);
-    _game = ptr();
+    void *handle = _loader.loadLib(pathToLib);
+    _loader.closeGameLib();
+    _game = _loader.getEntryPoint<IGameModule>(handle);
+    _loader.setGame(handle);
 }
 
 void Core::sigHandler(int signum)
@@ -108,14 +98,13 @@ void Core::mainLoop(const std::string displayLib)
             index--;
             index = (index < 0) ? 0 : index;
             _display->close();
-            setDisplayModule(graphicLibs[index]);
+            setDisplayModule(graphicLibs[index % graphicLibs.size()]);
             continue;
         }
         if (_display->isButtonPressed(IDisplayModule::F2)) {
             index++;
-            index = (index >= graphicLibs.size()) ? 0 : index;
             _display->close();
-            setDisplayModule(graphicLibs[index]);
+            setDisplayModule(graphicLibs[index % graphicLibs.size()]);
             continue;
         }
         if (_display->isButtonPressed(IDisplayModule::F7))
@@ -126,11 +115,9 @@ void Core::mainLoop(const std::string displayLib)
         _display->render();
     }
     _display->close();
-    _display.reset();
-    _game.reset();
-    std::shared_ptr<Loader> loader = Loader::getLoader();
-    loader->closeGameLib();
-    loader->closeGraphicLib();
+    _game->stop();
+    _loader.closeGameLib();
+    _loader.closeGraphicLib();
 }
 
 

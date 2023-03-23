@@ -13,7 +13,8 @@ class Menu : public IGameModule {
         Menu();
         ~Menu();
         void init() override;
-        void update(std::unique_ptr<IDisplayModule> &display) override;
+        void update(IDisplayModule *display) override;
+        void stop() override;
     private:
         std::shared_ptr<Rectangle> rect;
 };

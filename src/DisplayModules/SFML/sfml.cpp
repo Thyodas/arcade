@@ -100,6 +100,7 @@ void SFMLRenderer::drawRect(std::shared_ptr<IObject> obj)
 void SFMLRenderer::close()
 {
     _window.close();
+    delete this;
 }
 
 void SFMLRenderer::clearWindow(Color color)
@@ -143,8 +144,8 @@ void SFMLRenderer::render()
 
 extern "C"
 {
-    std::unique_ptr<IDisplayModule> entryPointDisplay()
+    IDisplayModule *entryPoint()
     {
-        return std::make_unique<SFMLRenderer>();
+        return new SFMLRenderer;
     }
 }

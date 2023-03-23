@@ -12,5 +12,7 @@ class Snake : public IGameModule {
     public:
         Snake() {};
         ~Snake() {};
-        void update(std::unique_ptr<IDisplayModule> &display) override {};
+        void init() override;
+        void update(IDisplayModule *display) override;
+        void stop() override;
 };

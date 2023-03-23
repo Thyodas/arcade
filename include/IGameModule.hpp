@@ -11,6 +11,8 @@
 
 class IGameModule {
     public:
+        virtual ~IGameModule() = default;
         virtual void init() = 0;
-        virtual void update(std::unique_ptr<IDisplayModule> &display) = 0;
+        virtual void update(IDisplayModule *display) = 0;
+        virtual void stop() = 0;
 };
