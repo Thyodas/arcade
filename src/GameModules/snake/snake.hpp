@@ -8,11 +8,13 @@
 #include "IGameModule.hpp"
 #include "../../Objects/Rectangle/Rectangle.hpp"
 
-class Snake : public IGameModule {
-    public:
-        Snake() {};
-        ~Snake() {};
-        void init() override;
-        void update(IDisplayModule *display) override;
-        void stop() override;
-};
+namespace game {
+    class Snake : public IGameModule {
+        public:
+            Snake() {};
+            ~Snake() {};
+            void init() override;
+            void update(display::IDisplayModule *display) override;
+            void stop() override;
+    };
+}

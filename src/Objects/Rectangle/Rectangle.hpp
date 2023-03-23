@@ -10,37 +10,40 @@
 #include "IObject.hpp"
 #include <iostream>
 
-class Rectangle : public ARectangle {
-    public:
-        Rectangle() { _id = RECTANGLE; };
-        virtual ~Rectangle() {};
+namespace object {
+    class Rectangle : public ARectangle {
+        public:
+            Rectangle() { _id = RECTANGLE; };
+            virtual ~Rectangle() {};
 
-        //Interface implementation
-        Type getType() const override { return _id;};
+            //Interface implementation
+            Type getType() const override { return _id;};
 
-        void setPos(IDisplayModule::Vector2i pos) {_pos = pos;};
-        IDisplayModule::Vector2i getPos() const override { return _pos;};
-        void setSize(IDisplayModule::Vector2i size) {_size = size;};
-        IDisplayModule::Vector2i getSize() const override { return _size;};
-        void setColor(IDisplayModule::Color color) {_color = color;};
-        IDisplayModule::Color getColor() const {return _color;};
-        //Graphic lib (SFML, SDL2)
-        void setTexture(std::string path) {_pathToTexture = path;};
-        std::string getTexture() const override { return _pathToTexture;};
-        //Terminal graphical lib
-        void setCharacter(char c) {_character = c;};
-        char getCharacter() const override { return _character;};
-        void setCharacterColor(IDisplayModule::Color color) override {_characterColor = color;};
-        IDisplayModule::Color getCharacterColor() const override { return _characterColor;};
+            void setPos(display::Vector2i pos) {_pos = pos;};
+            display::Vector2i getPos() const override { return _pos;};
+            void setSize(display::Vector2i size) {_size = size;};
+            display::Vector2i getSize() const override { return _size;};
+            void setColor(display::Color color) {_color = color;};
+            display::Color getColor() const {return _color;};
+            //Graphic lib (SFML, SDL2)
+            void setTexture(std::string path) {_pathToTexture = path;};
+            std::string getTexture() const override { return _pathToTexture;};
+            //Terminal graphical lib
+            void setCharacter(char c) {_character = c;};
+            char getCharacter() const override { return _character;};
+            void setCharacterColor(display::Color color) override {_characterColor = color;};
+            display::Color getCharacterColor() const override { return _characterColor;};
 
-        //Other internal logic
-        int getBorderThickness() const {return _borderThickness;};
-        void setBorderThickness(int thickness) {_borderThickness = thickness;};
-        bool contains(IDisplayModule::Vector2i pos) const {
-            if (pos.x >= _pos.x && pos.x <= (_pos.x + _size.x) &&
-                pos.y >= _pos.y && pos.y <= (_pos.y + _size.y))
-                return true;
-            return false;
-        }
-};
+            //Other internal logic
+            int getBorderThickness() const {return _borderThickness;};
+            void setBorderThickness(int thickness) {_borderThickness = thickness;};
+            bool contains(display::Vector2i pos) const {
+                if (pos.x >= _pos.x && pos.x <= (_pos.x + _size.x) &&
+                    pos.y >= _pos.y && pos.y <= (_pos.y + _size.y))
+                    return true;
+                return false;
+            }
+    };
+}
+
 

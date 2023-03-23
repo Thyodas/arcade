@@ -9,13 +9,13 @@
 
 int main(int argc, char **argv)
 {
-    Core core;
+    arcade::Core core;
     try {
         if (argc != 2)
-            throw Error("Wrong number of arguments.");
+            throw arcade::Error("Wrong number of arguments.");
         core.mainLoop(std::string(argv[1]));
         return 0;
-    } catch (const Error &e) {
+    } catch (const arcade::Error &e) {
         std::cerr << e.what() << std::endl;
         return 84;
     }

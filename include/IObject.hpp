@@ -9,38 +9,40 @@
 
 #include "IDisplayModule.hpp"
 
-enum Type {
-    RECTANGLE,
-};
+namespace object {
+    enum Type {
+        RECTANGLE,
+    };
 
-class IObject {
-    public:
-        virtual Type getType() const = 0;
+    class IObject {
+        public:
+            virtual Type getType() const = 0;
 
-        virtual void setPos(IDisplayModule::Vector2i pos) = 0;
-        virtual IDisplayModule::Vector2i getPos() const = 0;
-        virtual void setSize(IDisplayModule::Vector2i size) = 0;
-        virtual IDisplayModule::Vector2i getSize() const = 0;
-        virtual void setTexture(std::string path) = 0;
-        virtual std::string getTexture() const = 0;
-        virtual void setCharacter(char c) = 0;
-        virtual char getCharacter() const = 0;
-        virtual void setCharacterColor(IDisplayModule::Color color) = 0;
-        virtual IDisplayModule::Color getCharacterColor() const = 0;
-        virtual void setColor(IDisplayModule::Color color) = 0;
-        virtual IDisplayModule::Color getColor() const = 0;
-};
+            virtual void setPos(display::Vector2i pos) = 0;
+            virtual display::Vector2i getPos() const = 0;
+            virtual void setSize(display::Vector2i size) = 0;
+            virtual display::Vector2i getSize() const = 0;
+            virtual void setTexture(std::string path) = 0;
+            virtual std::string getTexture() const = 0;
+            virtual void setCharacter(char c) = 0;
+            virtual char getCharacter() const = 0;
+            virtual void setCharacterColor(display::Color color) = 0;
+            virtual display::Color getCharacterColor() const = 0;
+            virtual void setColor(display::Color color) = 0;
+            virtual display::Color getColor() const = 0;
+    };
 
-class ARectangle : public IObject {
-    protected:
-        Type _id;
+    class ARectangle : public IObject {
+        protected:
+            Type _id;
 
-        IDisplayModule::Vector2i _pos;
-        IDisplayModule::Vector2i _size;
-        std::string _pathToTexture;
-        int _borderThickness;
-        IDisplayModule::Color _color;
-        IDisplayModule::Color _characterColor;
-        char _character;
-};
+            display::Vector2i _pos;
+            display::Vector2i _size;
+            std::string _pathToTexture;
+            int _borderThickness;
+            display::Color _color;
+            display::Color _characterColor;
+            char _character;
+    };
+}
 

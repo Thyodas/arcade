@@ -8,50 +8,54 @@
 #include "menu.hpp"
 #include <vector>
 
-Menu::Menu() {}
+namespace game {
+    Menu::Menu() {}
 
-Menu::~Menu() {}
+    Menu::~Menu() {}
 
-void Menu::stop()
-{
-    delete this;
-}
-
-void Menu::init()
-{
-    rect = std::make_shared<Rectangle>();
-    rect->setPos(IDisplayModule::Vector2i{400, 300});
-    rect->setSize(IDisplayModule::Vector2i{100, 100});
-    rect->setColor(IDisplayModule::YELLOW);
-    rect->setCharacter('v');
-    rect->setCharacterColor(IDisplayModule::BLACK);
-}
-
-void Menu::update(IDisplayModule *display)
-{
-    if (display->isButtonPressed(IDisplayModule::UP)) {
-        rect->setPos(IDisplayModule::Vector2i{rect->getPos().x, rect->getPos().y - 10});
-        rect->setCharacter('^');
+    void Menu::stop()
+    {
+        delete this;
     }
-    if (display->isButtonPressed(IDisplayModule::RIGHT)) {
-        rect->setPos(IDisplayModule::Vector2i{rect->getPos().x + 10, rect->getPos().y});
-        rect->setCharacter('>');
-    }
-    if (display->isButtonPressed(IDisplayModule::LEFT)) {
-        rect->setPos(IDisplayModule::Vector2i{rect->getPos().x - 10, rect->getPos().y});
-        rect->setCharacter('<');
-    }
-    if (display->isButtonPressed(IDisplayModule::DOWN)) {
-        rect->setPos(IDisplayModule::Vector2i{rect->getPos().x, rect->getPos().y + 10});
+
+    void Menu::init()
+    {
+        rect = std::make_shared<object::Rectangle>();
+        rect->setPos(display::Vector2i{400, 300});
+        rect->setSize(display::Vector2i{100, 100});
+        rect->setColor(display::YELLOW);
         rect->setCharacter('v');
+        rect->setCharacterColor(display::BLACK);
     }
-    display->drawObj(rect);
+
+    void Menu::update(display::IDisplayModule *display)
+    {
+        if (display->isButtonPressed(display::UP)) {
+            rect->setPos(display::Vector2i{rect->getPos().x, rect->getPos().y - 10});
+            rect->setCharacter('^');
+        }
+        if (display->isButtonPressed(display::RIGHT)) {
+            rect->setPos(display::Vector2i{rect->getPos().x + 10, rect->getPos().y});
+            rect->setCharacter('>');
+        }
+        if (display->isButtonPressed(display::LEFT)) {
+            rect->setPos(display::Vector2i{rect->getPos().x - 10, rect->getPos().y});
+            rect->setCharacter('<');
+        }
+        if (display->isButtonPressed(display::DOWN)) {
+            rect->setPos(display::Vector2i{rect->getPos().x, rect->getPos().y + 10});
+            rect->setCharacter('v');
+        }
+        display->drawObj(rect);
+    }
+
 }
+
 
 extern "C"
 {
-    IGameModule *entryPoint()
+    game::IGameModule *entryPoint()
     {
-        return new Menu;
+        return new game::Menu;
     }
 }

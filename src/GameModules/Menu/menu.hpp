@@ -8,13 +8,15 @@
 #include "IGameModule.hpp"
 #include "../../Objects/Rectangle/Rectangle.hpp"
 
-class Menu : public IGameModule {
-    public:
-        Menu();
-        ~Menu();
-        void init() override;
-        void update(IDisplayModule *display) override;
-        void stop() override;
-    private:
-        std::shared_ptr<Rectangle> rect;
-};
+namespace game {
+    class Menu : public IGameModule {
+        public:
+            Menu();
+            ~Menu();
+            void init() override;
+            void update(display::IDisplayModule *display) override;
+            void stop() override;
+        private:
+            std::shared_ptr<object::Rectangle> rect;
+    };
+}
