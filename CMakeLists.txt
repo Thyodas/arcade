@@ -27,7 +27,13 @@ set(MENU_SRCS
     src/GameModules/Menu/menu.cpp
 )
 
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -std=c++20 -fno-gnu-unique -g")
+if (APPLE)
+    set(CMAKE_CXX_FLAGS "-Wall -Wextra -std=c++20 -g")
+    include_directories(/usr/local/include)
+    link_directories(/usr/local/lib)
+else()
+    set(CMAKE_CXX_FLAGS "-Wall -Wextra -std=c++20 -fno-gnu-unique -g")
+endif()
 
 include_directories(include)
 
