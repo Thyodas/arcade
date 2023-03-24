@@ -15,6 +15,10 @@ set(SFML_SRCS
     src/DisplayModules/SFML/sfml.cpp
 )
 
+set(SDL2_SRCS
+    src/DisplayModules/SDL2/sdl2.cpp
+)
+
 set(PACMAN_SRCS
     src/GameModules/pacman/pacman.cpp
 )
@@ -45,6 +49,10 @@ add_library(arcade_sfml SHARED ${SFML_SRCS})
 target_link_libraries(arcade_sfml sfml-window sfml-graphics sfml-system)
 set_target_properties(arcade_sfml PROPERTIES PREFIX "" SUFFIX ".so")
 set_target_properties(arcade_sfml PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+add_library(arcade_sdl2 SHARED ${SDL2_SRCS})
+target_link_libraries(arcade_sdl2 sdl2)
+set_target_properties(arcade_sdl2 PROPERTIES PREFIX "" SUFFIX ".so")
+set_target_properties(arcade_sdl2 PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 add_library(arcade_pacman SHARED ${PACMAN_SRCS})
 set_target_properties(arcade_pacman PROPERTIES PREFIX "" SUFFIX ".so")
 set_target_properties(arcade_pacman PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
