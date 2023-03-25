@@ -16,16 +16,16 @@ namespace display {
             throw std::runtime_error("SDL2Renderer: " + std::string(SDL_GetError()));
 
         if ((_window = SDL_CreateWindow("Window, mehdy tg", SDL_WINDOWPOS_CENTERED,
-            SDL_WINDOWPOS_CENTERED, 1920, 1080, 0)) == NULL)
+            SDL_WINDOWPOS_CENTERED, 1920, 1080, SDL_WINDOW_ALLOW_HIGHDPI)) == nullptr)
             throw std::runtime_error("SDL2Renderer: " + std::string(SDL_GetError()));
 
-        if ((_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED)) == NULL)
+        if ((_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED)) == nullptr)
             throw std::runtime_error("SDL2Renderer: " + std::string(SDL_GetError()));
 
-        _buttonsMap[LEFT] = SDL_KeyCode::SDLK_LEFT;
-        _buttonsMap[UP] = SDL_KeyCode::SDLK_UP;
-        _buttonsMap[RIGHT] = SDL_KeyCode::SDLK_RIGHT;
-        _buttonsMap[DOWN] = SDL_KeyCode::SDLK_DOWN;
+        _buttonsMap[LEFT] = SDL_KeyCode::SDLK_q;
+        _buttonsMap[UP] = SDL_KeyCode::SDLK_z;
+        _buttonsMap[RIGHT] = SDL_KeyCode::SDLK_d;
+        _buttonsMap[DOWN] = SDL_KeyCode::SDLK_s;
         _buttonsMap[KEY_F] = SDL_KeyCode::SDLK_f;
         _buttonsMap[KEY_E] = SDL_KeyCode::SDLK_e;
         _buttonsMap[ESC] = SDL_KeyCode::SDLK_ESCAPE;
@@ -40,7 +40,7 @@ namespace display {
         _colorsMap[BLACK] = SDL_Color{0, 0, 0, 100};
         _colorsMap[RED] = SDL_Color{255, 0, 0, 100};
         _colorsMap[GREEN] = SDL_Color{0, 255, 0, 100};
-        _colorsMap[YELLOW] = SDL_Color{0, 0, 0, 100};
+        _colorsMap[YELLOW] = SDL_Color{255, 255, 0, 100};
         _colorsMap[BLUE] = SDL_Color{0, 0, 255, 100};
         _colorsMap[MAGENTA] = SDL_Color{255, 0, 255, 100};
         _colorsMap[CYAN] = SDL_Color{0, 255, 255, 100};
@@ -66,7 +66,7 @@ namespace display {
 
     void SDL2Renderer::drawRect(std::shared_ptr<object::IObject> obj)
     {
-        object::Rectangle *rect = static_cast<object::Rectangle *>(obj.get());
+        auto *rect = static_cast<object::Rectangle *>(obj.get());
         SDL_Rect rectToDraw = {
             .x = rect->getPos().x,
             .y = rect->getPos().y,
@@ -104,7 +104,7 @@ namespace display {
             }
             if (_event.type == SDL_EventType::SDL_KEYDOWN) {
                 for (auto & it : _buttonsMap) {
-                    if (it.second == _event.key.type) {
+                    if (it.second == _event.key.keysym.sym) {
                         _buttonsPressed.push_back(it.first);
                         break;
                     }
