@@ -45,20 +45,27 @@ add_library(arcade_ncurses SHARED ${NCURSES_SRCS})
 target_link_libraries(arcade_ncurses ncurses)
 set_target_properties(arcade_ncurses PROPERTIES PREFIX "" SUFFIX ".so")
 set_target_properties(arcade_ncurses PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+
 add_library(arcade_sfml SHARED ${SFML_SRCS})
 target_link_libraries(arcade_sfml sfml-window sfml-graphics sfml-system)
 set_target_properties(arcade_sfml PROPERTIES PREFIX "" SUFFIX ".so")
 set_target_properties(arcade_sfml PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+
 add_library(arcade_sdl2 SHARED ${SDL2_SRCS})
-target_link_libraries(arcade_sdl2 sdl2)
+find_package(SDL2 REQUIRED)
+include_directories(${SDL2_INCLUDE_DIRS})
+target_link_libraries(arcade_sdl2 ${SDL2_LIBRARIES})
 set_target_properties(arcade_sdl2 PROPERTIES PREFIX "" SUFFIX ".so")
 set_target_properties(arcade_sdl2 PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+
 add_library(arcade_pacman SHARED ${PACMAN_SRCS})
 set_target_properties(arcade_pacman PROPERTIES PREFIX "" SUFFIX ".so")
 set_target_properties(arcade_pacman PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+
 add_library(arcade_snake SHARED ${SNAKE_SRCS})
 set_target_properties(arcade_snake PROPERTIES PREFIX "" SUFFIX ".so")
 set_target_properties(arcade_snake PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+
 add_library(arcade_menu SHARED ${MENU_SRCS})
 set_target_properties(arcade_menu PROPERTIES PREFIX "" SUFFIX ".so")
 set_target_properties(arcade_menu PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
