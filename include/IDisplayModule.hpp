@@ -63,5 +63,3 @@ namespace display {
             virtual void handleEvents() = 0;
     };
 }
-
-

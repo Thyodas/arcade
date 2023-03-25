@@ -91,6 +91,7 @@ namespace arcade {
         std::vector<std::string> graphicLibs = {"lib/arcade_sfml.so",
                                             "lib/arcade_ncurses.so"};
         setGameModule(std::string("lib/arcade_menu.so"));
+        // setGameModule(std::string("lib/arcade_snake.so"));
         setDisplayModule(displayLib);
         _game->init();
         std::signal(SIGINT, sigHandler);
@@ -122,7 +123,3 @@ namespace arcade {
     }
 
 }
-
-
-
-

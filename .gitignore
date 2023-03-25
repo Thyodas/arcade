@@ -10,3 +10,4 @@ cmake-build-debug/
 Makefile
 cmake_install.cmake
 *.pdf
+CMakeCache.txt
