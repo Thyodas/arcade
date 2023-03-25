@@ -35,6 +35,7 @@ namespace display {
             void handleEvents() override;
         private:
             std::unordered_map<Button, SDL_KeyCode> _buttonsMap;
+            std::unordered_map<Button, bool> _buttonsPressedMap;
             std::unordered_map<Color, SDL_Color> _colorsMap;
             std::unordered_map<object::Type, std::function<void(std::shared_ptr<object::IObject> obj)>> _mapDecorator;
             void drawRect(std::shared_ptr<object::IObject> obj);

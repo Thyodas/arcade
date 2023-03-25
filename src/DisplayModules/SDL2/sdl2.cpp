@@ -37,6 +37,9 @@ namespace display {
         _buttonsMap[F6] = SDL_KeyCode::SDLK_F6;
         _buttonsMap[F7] = SDL_KeyCode::SDLK_F7;
 
+        for (const auto &item: _buttonsMap)
+            _buttonsPressedMap[item.first] = false;
+
         _colorsMap[BLACK] = SDL_Color{0, 0, 0, 100};
         _colorsMap[RED] = SDL_Color{255, 0, 0, 100};
         _colorsMap[GREEN] = SDL_Color{0, 255, 0, 100};
@@ -96,7 +99,6 @@ namespace display {
 
     void SDL2Renderer::handleEvents()
     {
-        _buttonsPressed.clear();
         while (SDL_PollEvent(&_event)) {
             if (_event.type == SDL_EventType::SDL_QUIT) {
                 _buttonsPressed.push_back(Button::F7);
@@ -105,12 +107,23 @@ namespace display {
             if (_event.type == SDL_EventType::SDL_KEYDOWN) {
                 for (auto & it : _buttonsMap) {
                     if (it.second == _event.key.keysym.sym) {
-                        _buttonsPressed.push_back(it.first);
+                        _buttonsPressedMap[it.first] = true;
+                        break;
+                    }
+                }
+            }
+            if (_event.type == SDL_EventType::SDL_KEYUP) {
+                for (auto & it : _buttonsMap) {
+                    if (it.second == _event.key.keysym.sym) {
+                        _buttonsPressedMap[it.first] = false;
                         break;
                     }
                 }
             }
         }
+        for (const auto &item: _buttonsPressedMap)
+            if (item.second)
+                _buttonsPressed.push_back(item.first);
     }
 
     void SDL2Renderer::drawObj(std::shared_ptr<object::IObject> obj)
