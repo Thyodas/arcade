@@ -27,7 +27,7 @@ namespace display {
         _buttonsMap[F7] = sf::Keyboard::F7;
 
         _colorsMap[BLACK] = sf::Color::Black;
-        _colorsMap[RED] =sf::Color::Red;
+        _colorsMap[RED] = sf::Color::Red;
         _colorsMap[GREEN] = sf::Color::Green;
         _colorsMap[YELLOW] = sf::Color::Yellow;
         _colorsMap[BLUE] = sf::Color::Blue;
@@ -81,14 +81,10 @@ namespace display {
                 _buttonsPressed.push_back(Button::F7);
                 continue;
             }
-            if (_event.type == sf::Event::KeyPressed) {
-                for (auto it = _buttonsMap.begin(); it != _buttonsMap.end(); ++it) {
-                    if ((*it).second == _event.key.code) {
-                        _buttonsPressed.push_back((*it).first);
-                        break;
-                    }
-                }
-            }
+        }
+        for (auto it = _buttonsMap.begin(); it != _buttonsMap.end(); ++it) {
+            if (sf::Keyboard::isKeyPressed((*it).second))
+                _buttonsPressed.push_back((*it).first);
         }
     }
 

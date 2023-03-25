@@ -104,12 +104,14 @@ namespace display {
     void NcursesRenderer::handleEvents()
     {
         MEVENT event;
-        int c = getch();
-        for (auto it = _buttonsMap.begin(); it != _buttonsMap.end(); ++it) {
-            if ((*it).second == c) {
-                clear();
-                _buttonsPressed.push_back((*it).first);
-                break;
+        int c;
+        while ((c = getch()) != ERR) {
+            for (auto it = _buttonsMap.begin() ; it != _buttonsMap.end() ; ++it) {
+                if ((*it).second == c) {
+                    clear();
+                    _buttonsPressed.push_back((*it).first);
+                    break;
+                }
             }
         }
     }
