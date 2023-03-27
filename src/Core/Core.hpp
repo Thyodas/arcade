@@ -14,6 +14,8 @@
 #include <iostream>
 #include <filesystem>
 #include <algorithm>
+#include <vector>
+
 namespace arcade {
     class Core : public ICore {
         public:
