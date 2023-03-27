@@ -11,8 +11,8 @@
 namespace game {
     class Menu : public IGameModule {
         public:
-            Menu();
-            ~Menu();
+            Menu() {};
+            ~Menu() {};
             void init() override;
             void update(display::IDisplayModule *display) override;
             void stop() override;

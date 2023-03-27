@@ -47,7 +47,7 @@ namespace arcade {
                 char *error = NULL;
                 void *handle = dlopen(path.c_str(), RTLD_LAZY);
                 if (!handle || (error = dlerror()) != NULL)
-                    throw Error(error);
+                    return nullptr;
                 return handle;
             }
 
@@ -60,13 +60,12 @@ namespace arcade {
             }
 
             template<typename T>
-            T *getEntryPoint(void *handle) const {
+            T getEntryPoint(void *handle, const char *entryPoint) const {
                 char *error = NULL;
-                T *(*ptr)(void) = (T *(*)(void))dlsym(handle, "entryPoint");
-                if ((error = dlerror()) != NULL) {
-                    throw Error(error);
-                }
-                return dynamic_cast<T *>(ptr());
+                T (*ptr)(void) = (T (*)(void))dlsym(handle, entryPoint);
+                if ((error = dlerror()) != NULL)
+                    return nullptr;
+                return ptr();
             }
     };
 }

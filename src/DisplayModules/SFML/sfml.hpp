@@ -22,9 +22,9 @@
 namespace display {
     class SFMLRenderer : public IDisplayModule {
         public:
-            SFMLRenderer();
-            ~SFMLRenderer();
-            void init(Vector2i windowSize) override {};
+            SFMLRenderer() {};
+            ~SFMLRenderer() {};
+            void init(Vector2i windowSize) override;
             bool isButtonPressed(Button button) override;
 
             void close() override;

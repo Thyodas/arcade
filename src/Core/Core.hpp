@@ -9,6 +9,11 @@
 #include "IDisplayModule.hpp"
 #include "IGameModule.hpp"
 #include "Loader.hpp"
+#include <list>
+#include <fstream>
+#include <iostream>
+#include <filesystem>
+#include <algorithm>
 namespace arcade {
     class Core : public ICore {
         public:
@@ -23,15 +28,22 @@ namespace arcade {
             std::string getPlayerName() const override;
             void setPlayerName(std::string name) override;
 
-            void setDisplayModule(const std::string pathToLib) override;
-            void setGameModule(const std::string pathToLib) override;
 
             static void sigHandler(int signum);
+        private:
+            void setDisplayModule(const std::string pathToLib) override;
+            void setGameModule(const std::string pathToLib) override;
+            void setListLibs(void);
+            void testLib(const std::string pathToLib);
         public:
             static bool _loop;
         private:
             display::IDisplayModule *_display;
             game::IGameModule *_game;
+            std::vector<std::string> _graphicLibs;
+            int _indexGraphicLibs;
+            std::list<std::string> _gameLibs;
+            int _indexGameLibs;
 
             Loader _loader;
 

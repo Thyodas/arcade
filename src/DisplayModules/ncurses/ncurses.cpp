@@ -11,7 +11,8 @@
 #include <unistd.h>
 
 namespace display {
-    NcursesRenderer::NcursesRenderer()
+
+    void NcursesRenderer::init(Vector2i windowSize)
     {
         _window = initscr();
 
@@ -35,7 +36,7 @@ namespace display {
         _buttonsMap[KEY_E] = 'e';
         _buttonsMap[ESC] = 27;
         _buttonsMap[F1] = 80;
-        _buttonsMap[F2] = KEY_F(2);
+        _buttonsMap[F2] = 81;
         _buttonsMap[F3] = KEY_F(3);
         _buttonsMap[F4] = KEY_F(4);
         _buttonsMap[F5] = KEY_F(5);
@@ -52,11 +53,6 @@ namespace display {
         _colorsMap[WHITE] = COLOR_WHITE;
 
         _mapDecorator[object::RECTANGLE] = [this](std::shared_ptr<object::IObject> obj) { drawRect(obj); };
-    }
-
-    NcursesRenderer::~NcursesRenderer()
-    {
-
     }
 
     bool NcursesRenderer::isButtonPressed(Button button)
@@ -132,7 +128,7 @@ namespace display {
 
 extern "C"
 {
-    display::IDisplayModule *entryPoint()
+    display::IDisplayModule *entryPointDisplay()
     {
         return new display::NcursesRenderer;
     }

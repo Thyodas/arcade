@@ -19,9 +19,9 @@
 namespace display {
     class NcursesRenderer : public IDisplayModule {
         public:
-            NcursesRenderer();
-            ~NcursesRenderer();
-            void init(Vector2i windowSize) override {};
+            NcursesRenderer() {};
+            ~NcursesRenderer() {};
+            void init(Vector2i windowSize) override;
             bool isButtonPressed(Button button) override;
 
             void close() override;

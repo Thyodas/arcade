@@ -22,9 +22,9 @@
 namespace display {
     class SDL2Renderer : public IDisplayModule {
         public:
-            SDL2Renderer();
-            ~SDL2Renderer();
-            void init(Vector2i windowSize) override {};
+            SDL2Renderer() {};
+            ~SDL2Renderer() {};
+            void init(Vector2i windowSize) override;
             bool isButtonPressed(Button button) override;
 
             void close() override;

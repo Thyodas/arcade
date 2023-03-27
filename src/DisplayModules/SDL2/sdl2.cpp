@@ -10,7 +10,8 @@
 #include <memory>
 
 namespace display {
-    SDL2Renderer::SDL2Renderer()
+
+    void SDL2Renderer::init(Vector2i windowSize)
     {
         if (SDL_Init(SDL_INIT_VIDEO) == -1)
             throw std::runtime_error("SDL2Renderer: " + std::string(SDL_GetError()));
@@ -50,11 +51,6 @@ namespace display {
         _colorsMap[WHITE] = SDL_Color{255, 255, 255, 100};
 
         _mapDecorator[object::RECTANGLE] = [this](std::shared_ptr<object::IObject> obj) { drawRect(obj); };
-    }
-
-    SDL2Renderer::~SDL2Renderer()
-    {
-
     }
 
     bool SDL2Renderer::isButtonPressed(Button button)
@@ -142,7 +138,7 @@ namespace display {
 
 extern "C"
 {
-    display::IDisplayModule *entryPoint()
+    display::IDisplayModule *entryPointDisplay()
     {
         return new display::SDL2Renderer;
     }

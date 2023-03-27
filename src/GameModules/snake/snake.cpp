@@ -81,7 +81,7 @@ namespace game {
 
 extern "C"
 {
-    game::IGameModule *entryPoint()
+    game::IGameModule *entryPointGame()
     {
         return new game::Snake;
     }

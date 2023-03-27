@@ -10,6 +10,8 @@
 #include <vector>
 #include <unistd.h>
 #include <csignal>
+#include <filesystem>
+#include <iostream>
 
 namespace arcade {
     bool Core::_loop = true;
@@ -29,6 +31,8 @@ namespace arcade {
         _framerate = 60;
         _score = 0;
         _playerName = "";
+        _indexGameLibs = 0;
+        _indexGraphicLibs = 0;
     }
 
     Core::~Core() {}
@@ -66,17 +70,55 @@ namespace arcade {
     void Core::setDisplayModule(const std::string pathToLib)
     {
         void *handle = _loader.loadLib(pathToLib);
+        if (!handle)
+            throw Error("Couldn't load display lib");
         _loader.closeGraphicLib();
-        _display = _loader.getEntryPoint<display::IDisplayModule>(handle);
+        _display = _loader.getEntryPoint<display::IDisplayModule *>(handle, "entryPointDisplay");
+        if (_display == nullptr)
+            throw Error("Couldn't get entry point");
         _loader.setDisplay(handle);
     }
 
     void Core::setGameModule(const std::string pathToLib)
     {
         void *handle = _loader.loadLib(pathToLib);
+        if (!handle)
+            throw Error("Couldn't load display lib");
         _loader.closeGameLib();
-        _game = _loader.getEntryPoint<game::IGameModule>(handle);
+        _game = _loader.getEntryPoint<game::IGameModule *>(handle, "entryPointGame");
+        if (_game == nullptr)
+            throw Error("Couldn't get entry point");
         _loader.setGame(handle);
+    }
+
+    void Core::testLib(const std::string pathToLib)
+    {
+        game::IGameModule *testGame = nullptr;
+        display::IDisplayModule *testDisplay = nullptr;
+        void *handle = _loader.loadLib(pathToLib);
+        if (!handle)
+            return;
+        if ((testGame = _loader.getEntryPoint<game::IGameModule *>(handle, "entryPointGame")) != nullptr) {
+            delete testGame;
+            dlclose(handle);
+            _gameLibs.push_back(pathToLib);
+            return;
+        }
+        if ((testDisplay = _loader.getEntryPoint<display::IDisplayModule *>(handle, "entryPointDisplay")) != nullptr) {
+            delete testDisplay;
+            dlclose(handle);
+            _graphicLibs.push_back(pathToLib);
+            return;
+        }
+    }
+
+    void Core::setListLibs()
+    {
+        for (const auto &entry : std::filesystem::directory_iterator("./lib")) {
+            std::string path_str = std::string(entry.path().c_str());
+            if (path_str.compare(0, 7, "arcade_"))
+                testLib(path_str);
+        }
     }
 
     void Core::sigHandler(int signum)
@@ -87,26 +129,26 @@ namespace arcade {
 
     void Core::mainLoop(const std::string displayLib)
     {
-        int index = 0;
-        std::vector<std::string> graphicLibs = {"lib/arcade_sfml.so",
-                                            "lib/arcade_ncurses.so"};
         setGameModule(std::string("lib/arcade_menu.so"));
-        // setGameModule(std::string("lib/arcade_snake.so"));
+        setListLibs();
         setDisplayModule(displayLib);
         _game->init();
+        _display->init(display::Vector2i{1920, 1080});
         std::signal(SIGINT, sigHandler);
         while (_loop) {
             if (_display->isButtonPressed(display::F1)) {
-                index--;
-                index = (index < 0) ? 0 : index;
+                _indexGraphicLibs--;
+                _indexGraphicLibs = (_indexGraphicLibs < 0) ? 0 : _indexGraphicLibs;
                 _display->close();
-                setDisplayModule(graphicLibs[index % graphicLibs.size()]);
+                setDisplayModule(_graphicLibs[_indexGraphicLibs % _graphicLibs.size()]);
+                _display->init(display::Vector2i{1920, 1080});
                 continue;
             }
             if (_display->isButtonPressed(display::F2)) {
-                index++;
+                _indexGraphicLibs++;
                 _display->close();
-                setDisplayModule(graphicLibs[index % graphicLibs.size()]);
+                setDisplayModule(_graphicLibs[_indexGraphicLibs % _graphicLibs.size()]);
+                _display->init(display::Vector2i{1920, 1080});
                 continue;
             }
             if (_display->isButtonPressed(display::F7))

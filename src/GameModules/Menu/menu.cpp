@@ -9,9 +9,6 @@
 #include <vector>
 
 namespace game {
-    Menu::Menu() {}
-
-    Menu::~Menu() {}
 
     void Menu::stop()
     {
@@ -54,7 +51,7 @@ namespace game {
 
 extern "C"
 {
-    game::IGameModule *entryPoint()
+    game::IGameModule *entryPointGame()
     {
         return new game::Menu;
     }

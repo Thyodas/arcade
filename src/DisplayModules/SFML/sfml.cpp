@@ -9,8 +9,11 @@
 #include <memory>
 
 namespace display {
-    SFMLRenderer::SFMLRenderer() : _window(sf::VideoMode(1920, 1080), "Window tg")
+
+    void SFMLRenderer::init(Vector2i windowSize)
     {
+        _window.create(sf::VideoMode(windowSize.x, windowSize.y), "Window");
+
         _buttonsMap[LEFT] = sf::Keyboard::Q;
         _buttonsMap[UP] = sf::Keyboard::Z;
         _buttonsMap[RIGHT] = sf::Keyboard::D;
@@ -36,11 +39,6 @@ namespace display {
         _colorsMap[WHITE] = sf::Color::White;
 
         _mapDecorator[object::RECTANGLE] = [this](std::shared_ptr<object::IObject> obj) { drawRect(obj); };
-    }
-
-    SFMLRenderer::~SFMLRenderer()
-    {
-
     }
 
     bool SFMLRenderer::isButtonPressed(Button button)
@@ -104,7 +102,7 @@ namespace display {
 
 extern "C"
 {
-    display::IDisplayModule *entryPoint()
+    display::IDisplayModule *entryPointDisplay()
     {
         return new display::SFMLRenderer;
     }
