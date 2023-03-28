@@ -27,6 +27,7 @@ namespace display {
         cbreak();
         mousemask(ALL_MOUSE_EVENTS, NULL);
         start_color();
+        curs_set(0);
 
         _buttonsMap[LEFT] = 'q';
         _buttonsMap[UP] = 'z';
@@ -65,23 +66,26 @@ namespace display {
         return false;
     }
 
-    Vector2i NcursesRenderer::convertPixelPosToCellPos(Vector2i pixelPos) const
+    Vector2i NcursesRenderer::convertPixelPosToCellPos(Vector2i pixelPos)
     {
-        return {(int)(pixelPos.x / 12.1), (int)(pixelPos.y / 25.7)};
+        getmaxyx(stdscr, _sizeTerminal.y, _sizeTerminal.x);
+        return {(int)(pixelPos.x / 12.15), (int)(pixelPos.y / 25.7)};
     }
 
     void NcursesRenderer::drawRect(std::shared_ptr<object::IObject> obj)
     {
         object::Rectangle *rect = static_cast<object::Rectangle *>(obj.get());
         Vector2i cellPos = convertPixelPosToCellPos(rect->getPos());
-        Vector2i cellSize = convertPixelPosToCellPos(rect->getSize());
+        Vector2i cellSize = convertPixelPosToCellPos(rect->getSize());;
         int x = cellPos.x;
         int y = cellPos.y;
+        int sizeX = (!cellSize.x) ? 1 : cellSize.x;
+        int sizeY = (!cellSize.y) ? 1 : cellSize.y;
         char c = rect->getCharacter();
         init_pair(1, _colorsMap[rect->getCharacterColor()], _colorsMap[rect->getColor()]);
         attron(COLOR_PAIR(1));
-        for (int i = x; i < x + cellSize.x && i < _sizeTerminal.x; ++i)
-            for (int j = y; j < y + cellSize.y && j < _sizeTerminal.y; ++j)
+        for (int i = x; i < x + sizeX && i < _sizeTerminal.x; ++i)
+            for (int j = y; j < y + sizeY && j < _sizeTerminal.y; ++j)
                 mvaddch(j, i, c);
         attroff(COLOR_PAIR(1));
     }
