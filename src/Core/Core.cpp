@@ -129,7 +129,7 @@ namespace arcade {
 
     void Core::mainLoop(const std::string displayLib)
     {
-        setGameModule(std::string("lib/arcade_menu.so"));
+        setGameModule(std::string("lib/arcade_snake.so"));
         setListLibs();
         setDisplayModule(displayLib);
         _game->init();
@@ -138,7 +138,7 @@ namespace arcade {
         while (_loop) {
             if (_display->isButtonPressed(display::F1)) {
                 _indexGraphicLibs--;
-                _indexGraphicLibs = (_indexGraphicLibs < 0) ? 0 : _indexGraphicLibs;
+                _indexGraphicLibs = (_indexGraphicLibs < 0) ? 0 : _graphicLibs.size();
                 _display->close();
                 setDisplayModule(_graphicLibs[_indexGraphicLibs % _graphicLibs.size()]);
                 _display->init(display::Vector2i{1920, 1080});
