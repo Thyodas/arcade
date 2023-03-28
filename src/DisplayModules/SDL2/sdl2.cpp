@@ -63,14 +63,21 @@ namespace display {
         return false;
     }
 
+    Vector2i SDL2Renderer::convertCellPosToPixelPos(Vector2i cellPos) const
+    {
+        return {cellPos.x * 12, cellPos.y * 26};
+    }
+
     void SDL2Renderer::drawRect(std::shared_ptr<object::IObject> obj)
     {
         auto *rect = static_cast<object::Rectangle *>(obj.get());
+        Vector2i pixelPos = convertCellPosToPixelPos(rect->getPos());
+        Vector2i pixelSize = convertCellPosToPixelPos(rect->getSize());
         SDL_Rect rectToDraw = {
-            .x = rect->getPos().x,
-            .y = rect->getPos().y,
-            .w = rect->getSize().x,
-            .h = rect->getSize().y,
+            .x = pixelPos.x,
+            .y = pixelPos.y,
+            .w = pixelSize.x,
+            .h = pixelSize.y,
         };
         SDL_Color color = _colorsMap[rect->getColor()];
         SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);

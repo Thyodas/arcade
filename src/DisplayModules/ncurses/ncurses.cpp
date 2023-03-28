@@ -66,32 +66,23 @@ namespace display {
         return false;
     }
 
-    Vector2i NcursesRenderer::convertPixelPosToCellPos(Vector2i pixelPos)
-    {
-        getmaxyx(stdscr, _sizeTerminal.y, _sizeTerminal.x);
-        return {(int)(pixelPos.x / 12.15), (int)(pixelPos.y / 25.7)};
-    }
-
     void NcursesRenderer::drawRect(std::shared_ptr<object::IObject> obj)
     {
         object::Rectangle *rect = static_cast<object::Rectangle *>(obj.get());
-        Vector2i cellPos = convertPixelPosToCellPos(rect->getPos());
-        Vector2i cellSize = convertPixelPosToCellPos(rect->getSize());;
-        int x = cellPos.x;
-        int y = cellPos.y;
-        int sizeX = (!cellSize.x) ? 1 : cellSize.x;
-        int sizeY = (!cellSize.y) ? 1 : cellSize.y;
+        int x = rect->getPos().x % _sizeTerminal.x;
+        int y = rect->getPos().y % _sizeTerminal.y;
         char c = rect->getCharacter();
         init_pair(1, _colorsMap[rect->getCharacterColor()], _colorsMap[rect->getColor()]);
         attron(COLOR_PAIR(1));
-        for (int i = x; i < x + sizeX && i < _sizeTerminal.x; ++i)
-            for (int j = y; j < y + sizeY && j < _sizeTerminal.y; ++j)
+        for (int i = x; i < x + rect->getSize().x && i < _sizeTerminal.x; ++i)
+            for (int j = y; j < y + rect->getSize().y && j < _sizeTerminal.y; ++j)
                 mvaddch(j, i, c);
         attroff(COLOR_PAIR(1));
     }
 
     void NcursesRenderer::close()
     {
+        clear();
         endwin();
         delete this;
     }
@@ -103,6 +94,7 @@ namespace display {
 
     void NcursesRenderer::handleEvents()
     {
+        getmaxyx(_window, _sizeTerminal.y, _sizeTerminal.x);
         MEVENT event;
         int c;
         while ((c = getch()) != ERR) {

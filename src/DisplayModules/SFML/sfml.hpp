@@ -34,6 +34,8 @@ namespace display {
             void clearWindow(Color color) override;
             void handleEvents() override;
         private:
+            sf::Vector2f convertCellPosToPixelPos(Vector2i pixelPos) const;
+        private:
             std::unordered_map<Button, sf::Keyboard::Key> _buttonsMap;
             std::unordered_map<Color, sf::Color> _colorsMap;
             std::unordered_map<object::Type, std::function<void(std::shared_ptr<object::IObject> obj)>> _mapDecorator;

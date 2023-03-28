@@ -51,11 +51,18 @@ namespace display {
         return false;
     }
 
+    sf::Vector2f SFMLRenderer::convertCellPosToPixelPos(Vector2i pixelPos) const
+    {
+        return {(int)(pixelPos.x * 12), (int)(pixelPos.y * 26)};
+    }
+
     void SFMLRenderer::drawRect(std::shared_ptr<object::IObject> obj)
     {
         object::Rectangle *rect = static_cast<object::Rectangle *>(obj.get());
-        sf::RectangleShape rectToDraw(sf::Vector2f(rect->getSize().x, rect->getSize().y));
-        rectToDraw.setPosition(sf::Vector2f(rect->getPos().x, rect->getPos().y));
+        sf::Vector2f pixelSize = convertCellPosToPixelPos(rect->getSize());
+        sf::RectangleShape rectToDraw(pixelSize);
+        sf::Vector2f pixelPos = convertCellPosToPixelPos(rect->getPos());
+        rectToDraw.setPosition(pixelPos);
         rectToDraw.setFillColor(_colorsMap[rect->getColor()]);
         _window.draw(rectToDraw);
     }

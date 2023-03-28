@@ -31,7 +31,6 @@ namespace display {
             void clearWindow(Color color) override;
             void handleEvents() override;
         private:
-            Vector2i convertPixelPosToCellPos(Vector2i pixelPos);
             void drawRect(std::shared_ptr<object::IObject> obj);
 
             enum class PairNcurses {

@@ -34,6 +34,8 @@ namespace display {
             void clearWindow(Color color) override;
             void handleEvents() override;
         private:
+            Vector2i convertCellPosToPixelPos(Vector2i pixelPos) const;
+        private:
             std::unordered_map<Button, SDL_KeyCode> _buttonsMap;
             std::unordered_map<Button, bool> _buttonsPressedMap;
             std::unordered_map<Color, SDL_Color> _colorsMap;

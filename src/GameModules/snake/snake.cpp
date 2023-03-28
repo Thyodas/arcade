@@ -7,7 +7,7 @@
 
 #include "snake.hpp"
 #include <vector>
-#define SIZE 10
+#define SIZE 2
 
 namespace game {
 
@@ -27,7 +27,7 @@ namespace game {
     void Snake::createHead(void)
     {
         std::shared_ptr<object::Rectangle> elem = std::make_shared<object::Rectangle>();
-        elem->setPos(display::Vector2i{400, 300});
+        elem->setPos(display::Vector2i{60, 30});
         elem->setSize(display::Vector2i{SIZE, SIZE});
         elem->setColor(display::GREEN);
         elem->setCharacter('*');
