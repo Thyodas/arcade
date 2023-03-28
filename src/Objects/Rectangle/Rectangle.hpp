@@ -21,7 +21,11 @@ namespace object {
 
             void setPos(display::Vector2i pos) {_pos = pos;};
             display::Vector2i getPos() const override { return _pos;};
-            void setSize(display::Vector2i size) {_size = size;};
+            void setSize(display::Vector2i size) {
+                size.x = (size.x < 12) ? 12 : size.x;
+                size.y = (size.y < 26) ? 26 : size.y;
+                _size = size;
+            };
             display::Vector2i getSize() const override { return _size;};
             void setColor(display::Color color) {_color = color;};
             display::Color getColor() const {return _color;};
