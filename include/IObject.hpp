@@ -43,6 +43,7 @@ namespace object {
             display::Color _color;
             display::Color _characterColor;
             char _character;
+            char _text;
     };
 }
 

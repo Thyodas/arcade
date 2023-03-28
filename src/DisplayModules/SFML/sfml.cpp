@@ -12,7 +12,7 @@ namespace display {
 
     void SFMLRenderer::init(Vector2i windowSize)
     {
-        _window.create(sf::VideoMode(windowSize.x, windowSize.y), "Window");
+        _window.create(sf::VideoMode(windowSize.x, windowSize.y), "Window SFML");
 
         _buttonsMap[LEFT] = sf::Keyboard::Q;
         _buttonsMap[UP] = sf::Keyboard::Z;
@@ -65,6 +65,19 @@ namespace display {
         rectToDraw.setPosition(pixelPos);
         rectToDraw.setFillColor(_colorsMap[rect->getColor()]);
         _window.draw(rectToDraw);
+        if (rect->getText() != 0) {
+            sf::Text text;
+            sf::Font font;
+            std::string string;
+            string.push_back(rect->getText());
+            font.loadFromFile("fonts/arial.ttf");
+            text.setFont(font);
+            text.setString(string);
+            text.setCharacterSize(pixelSize.y);
+            text.setFillColor(_colorsMap[rect->getCharacterColor()]);
+            text.setPosition(sf::Vector2f{pixelPos.x, pixelPos.y + (pixelSize.y / 2) - (text.getCharacterSize() / 2)});
+            _window.draw(text);
+        }
     }
 
     void SFMLRenderer::close()

@@ -13,7 +13,10 @@
 namespace object {
     class Rectangle : public ARectangle {
         public:
-            Rectangle() { _id = RECTANGLE; };
+            Rectangle() {
+                _id = RECTANGLE;
+                _text = 0;
+            };
             virtual ~Rectangle() {};
 
             //Interface implementation
@@ -43,6 +46,8 @@ namespace object {
                     return true;
                 return false;
             }
+            char getText(void) const {return _text;};
+            void setText(char text) {_text = text;};
     };
 }
 

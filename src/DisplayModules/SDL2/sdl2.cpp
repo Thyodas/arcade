@@ -16,7 +16,7 @@ namespace display {
         if (SDL_Init(SDL_INIT_VIDEO) == -1)
             throw std::runtime_error("SDL2Renderer: " + std::string(SDL_GetError()));
 
-        if ((_window = SDL_CreateWindow("Window, mehdy tg", SDL_WINDOWPOS_CENTERED,
+        if ((_window = SDL_CreateWindow("Window SDL2", SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED, 1920, 1080, SDL_WINDOW_ALLOW_HIGHDPI)) == nullptr)
             throw std::runtime_error("SDL2Renderer: " + std::string(SDL_GetError()));
 

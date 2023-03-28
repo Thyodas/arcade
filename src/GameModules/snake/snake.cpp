@@ -7,7 +7,7 @@
 
 #include "snake.hpp"
 #include <vector>
-#define SIZE 2
+#define SIZE 1
 
 namespace game {
 
@@ -31,6 +31,8 @@ namespace game {
         elem->setSize(display::Vector2i{SIZE, SIZE});
         elem->setColor(display::GREEN);
         elem->setCharacter('*');
+        elem->setText('*');
+        elem->setCharacterColor(display::RED);
         snake.push_back(elem);
     }
 
@@ -56,6 +58,8 @@ namespace game {
                                             snake.at(snake.size() - 1)->getSize().y});
         elem->setColor(display::GREEN);
         elem->setCharacter('*');
+        elem->setText('*');
+        elem->setCharacterColor(display::RED);
         snake.push_back(elem);
     }
 
