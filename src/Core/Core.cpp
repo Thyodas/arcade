@@ -106,7 +106,7 @@ namespace arcade {
         }
         if ((testDisplay = _loader.getEntryPoint<display::IDisplayModule *>(handle, "entryPointDisplay")) != nullptr) {
             delete testDisplay;
-            dlclose(handle);
+            // dlclose(handle);
             _graphicLibs.push_back(pathToLib);
             return;
         }

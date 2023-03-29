@@ -26,10 +26,17 @@ namespace game {
             void update(display::IDisplayModule *display) override;
             void stop(void) override;
             void addElem(void);
+            void initApple(void);
             void createHead(void);
+            void checkApple(void);
+            void resetGame(void);
+            void checkWall(void);
+            void move(display::IDisplayModule *display);
+            void createWall(display::Vector2i size);
         private:
             std::deque<std::shared_ptr<object::Rectangle>> snake;
-            std::deque<std::shared_ptr<object::Rectangle>> apple;
+            std::shared_ptr<object::Rectangle> apple;
+            std::deque<std::shared_ptr<object::Rectangle>> walls;
             DIRECTION direction;
     };
 }
