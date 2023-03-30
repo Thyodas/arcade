@@ -20,7 +20,10 @@ namespace game {
 
     class Snake : public IGameModule {
         public:
-            Snake() {};
+            Snake() {
+                direction = game::DIRECTION::RIGHT;
+                score = 0;
+            };
             ~Snake() {};
             void init(void) override;
             void update(display::IDisplayModule *display) override;
@@ -31,12 +34,14 @@ namespace game {
             void checkApple(void);
             void resetGame(void);
             void checkWall(void);
+            void checkBody(void);
             void move(display::IDisplayModule *display);
             void createWall(display::Vector2i size);
         private:
             std::deque<std::shared_ptr<object::Rectangle>> snake;
             std::shared_ptr<object::Rectangle> apple;
             std::deque<std::shared_ptr<object::Rectangle>> walls;
+            int score;
             DIRECTION direction;
     };
 }

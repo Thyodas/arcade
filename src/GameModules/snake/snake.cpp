@@ -19,19 +19,18 @@ namespace game {
 
     void Snake::init()
     {
-        direction = game::DIRECTION::RIGHT;
         createHead();
         initApple();
-        createWall(display::Vector2i{100, 30});
+        createWall(display::Vector2i{56, 26});
         for (int i = 0; i < 4; ++i)
             addElem();
     }
 
     void Snake::createWall(display::Vector2i size)
     {
-        for (int i = 10; i <= size.x + 10; ++i)
-            for (int j = 5; j <= size.y + 5; ++j) {
-                if (i == 10 || j == 5 || i == size.x + 10 || j == size.y + 5) {
+        for (int i = 5; i <= size.x + 5; ++i)
+            for (int j = 2; j <= size.y + 2; ++j) {
+                if (i == 5 || j == 2 || i == size.x + 5 || j == size.y + 2) {
                     std::shared_ptr<object::Rectangle> wall = std::make_shared<object::Rectangle>();
                     wall->setPos(display::Vector2i{i, j});
                     wall->setSize(display::Vector2i{1, 1});
@@ -47,7 +46,7 @@ namespace game {
     void Snake::createHead(void)
     {
         std::shared_ptr<object::Rectangle> elem = std::make_shared<object::Rectangle>();
-        elem->setPos(display::Vector2i{55, 18});
+        elem->setPos(display::Vector2i{33, 15});
         elem->setSize(display::Vector2i{SIZE, SIZE});
         elem->setColor(display::GREEN);
         elem->setCharacter('<');
@@ -59,7 +58,7 @@ namespace game {
     display::Vector2i getRadomPos(void)
     {
         srand (time(NULL));
-        return (display::Vector2i{(rand() % 99) + 11, (rand() % 29) + 6});
+        return (display::Vector2i{(rand() % 54) + 6, (rand() % 24) + 3});
     }
 
     void Snake::initApple(void)
@@ -105,6 +104,7 @@ namespace game {
         if (snake.at(0)->getPos().x == apple->getPos().x &&
         snake.at(0)->getPos().y == apple->getPos().y) {
             apple->setPos(getRadomPos());
+            score++;
             addElem();
         }
     };
@@ -119,6 +119,16 @@ namespace game {
         }
     };
 
+    void Snake::checkBody(void)
+    {
+        for (long unsigned int i = 1; i < snake.size(); ++i) {
+            if (snake.at(0)->getPos().x == snake.at(i)->getPos().x &&
+            snake.at(0)->getPos().y == snake.at(i)->getPos().y) {
+                resetGame();
+            }
+        }
+    };
+
     void Snake::resetGame(void)
     {
         while (!snake.empty()) {
@@ -127,6 +137,7 @@ namespace game {
         }
         direction = game::DIRECTION::RIGHT;
         createHead();
+        score = 0;
         for (int i = 0; i < 4; ++i)
             addElem();
     }
@@ -187,6 +198,7 @@ namespace game {
         move(display);
         checkApple();
         checkWall();
+        checkBody();
 
         display->drawObj(apple);
         for (long unsigned int i = 0; i < snake.size(); ++i)

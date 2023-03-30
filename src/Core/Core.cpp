@@ -130,10 +130,11 @@ namespace arcade {
     void Core::mainLoop(const std::string displayLib)
     {
         setGameModule(std::string("lib/arcade_snake.so"));
+        // setGameModule(std::string("lib/arcade_menu.so"));
         setListLibs();
         setDisplayModule(displayLib);
         _game->init();
-        _display->init(display::Vector2i{1920, 1080});
+        _display->init(display::Vector2i{800, 800});
         std::signal(SIGINT, sigHandler);
         while (_loop) {
             if (_display->isButtonPressed(display::F1)) {
@@ -141,14 +142,14 @@ namespace arcade {
                 _indexGraphicLibs = (_indexGraphicLibs < 0) ? 0 : _graphicLibs.size();
                 _display->close();
                 setDisplayModule(_graphicLibs[_indexGraphicLibs % _graphicLibs.size()]);
-                _display->init(display::Vector2i{1920, 1080});
+                _display->init(display::Vector2i{800, 800});
                 continue;
             }
             if (_display->isButtonPressed(display::F2)) {
                 _indexGraphicLibs++;
                 _display->close();
                 setDisplayModule(_graphicLibs[_indexGraphicLibs % _graphicLibs.size()]);
-                _display->init(display::Vector2i{1920, 1080});
+                _display->init(display::Vector2i{800, 800});
                 continue;
             }
             if (_display->isButtonPressed(display::F7))

@@ -17,7 +17,7 @@ namespace display {
             throw std::runtime_error("SDL2Renderer: " + std::string(SDL_GetError()));
 
         if ((_window = SDL_CreateWindow("Window SDL2", SDL_WINDOWPOS_CENTERED,
-            SDL_WINDOWPOS_CENTERED, 1920, 1080, SDL_WINDOW_ALLOW_HIGHDPI)) == nullptr)
+            SDL_WINDOWPOS_CENTERED, windowSize.x, windowSize.y, SDL_WINDOW_ALLOW_HIGHDPI)) == nullptr)
             throw std::runtime_error("SDL2Renderer: " + std::string(SDL_GetError()));
 
         if ((_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED)) == nullptr)
