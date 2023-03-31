@@ -53,6 +53,13 @@ namespace display {
         _colorsMap[CYAN] = COLOR_CYAN;
         _colorsMap[WHITE] = COLOR_WHITE;
 
+        for (int color1 = BLACK, pair = 1; color1 <= WHITE; color1++) {
+            for (int color2 = BLACK; color2 <= WHITE; color2++, pair++) {
+                init_pair(pair, _colorsMap[static_cast<Color>(color1)], _colorsMap[static_cast<Color>(color2)]);
+                _pairsMap[std::make_pair(static_cast<Color>(color1), static_cast<Color>(color2))] = pair;
+            }
+        }
+
         _mapDecorator[object::RECTANGLE] = [this](std::shared_ptr<object::IObject> obj) { drawRect(obj); };
     }
 
@@ -72,12 +79,12 @@ namespace display {
         int x = rect->getPos().x % _sizeTerminal.x;
         int y = rect->getPos().y % _sizeTerminal.y;
         char c = rect->getCharacter();
-        init_pair(1, _colorsMap[rect->getCharacterColor()], _colorsMap[rect->getColor()]);
-        attron(COLOR_PAIR(1));
+        int pair = _pairsMap[std::make_pair(rect->getCharacterColor(), rect->getColor())];
+        attron(COLOR_PAIR(pair));
         for (int i = x; i < x + (rect->getSize().x * 2) && i < _sizeTerminal.x; ++i)
             for (int j = y; j < y + rect->getSize().y && j < _sizeTerminal.y; ++j)
                 mvaddch(j, i, c);
-        attroff(COLOR_PAIR(1));
+        attroff(COLOR_PAIR(pair));
     }
 
     void NcursesRenderer::close()

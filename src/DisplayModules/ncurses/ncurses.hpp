@@ -19,7 +19,7 @@
 namespace display {
     class NcursesRenderer : public IDisplayModule {
         public:
-            NcursesRenderer() {};
+            NcursesRenderer() : _pairsMap({{}}) {};
             ~NcursesRenderer() {};
             void init(Vector2i windowSize) override;
             bool isButtonPressed(Button button) override;
@@ -50,6 +50,7 @@ namespace display {
 
             std::unordered_map<Button, int> _buttonsMap;
             std::unordered_map<Color, short> _colorsMap;
+            std::map<std::pair<Color, Color>, int> _pairsMap;
             std::map<object::Type, std::function<void(std::shared_ptr<object::IObject> obj)>> _mapDecorator;
 
             std::vector<Button> _buttonsPressed;

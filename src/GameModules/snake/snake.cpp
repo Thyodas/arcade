@@ -36,7 +36,6 @@ namespace game {
                     wall->setSize(display::Vector2i{1, 1});
                     wall->setColor(display::WHITE);
                     wall->setCharacter('*');
-                    wall->setText('*');
                     wall->setCharacterColor(display::WHITE);
                     walls.push_back(wall);
                 }
