@@ -6,7 +6,7 @@
 */
 
 #include "IGameModule.hpp"
-#include "../../Objects/Rectangle/Rectangle.hpp"
+#include "IObject.hpp"
 
 namespace game {
     class Menu : public IGameModule {

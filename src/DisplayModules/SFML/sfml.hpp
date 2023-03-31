@@ -8,8 +8,7 @@
 #pragma once
 
 #include "IDisplayModule.hpp"
-
-#include "../../Objects/Rectangle/Rectangle.hpp"
+#include "IObject.hpp"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>

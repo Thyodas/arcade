@@ -8,9 +8,7 @@
 #pragma once
 
 #include "IDisplayModule.hpp"
-
-#include "../../Objects/Rectangle/Rectangle.hpp"
-
+#include "IObject.hpp"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>

@@ -6,8 +6,8 @@
 */
 
 #include "IGameModule.hpp"
+#include "IObject.hpp"
 #include <deque>
-#include "../../Objects/Rectangle/Rectangle.hpp"
 
 namespace game {
 

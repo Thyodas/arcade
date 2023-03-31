@@ -12,7 +12,7 @@
 
 namespace display {
 
-    void NcursesRenderer::init(Vector2i windowSize)
+    void NcursesRenderer::init(__attribute__((unused))Vector2i windowSize)
     {
         _window = initscr();
 
@@ -94,7 +94,7 @@ namespace display {
         delete this;
     }
 
-    void NcursesRenderer::clearWindow(Color color)
+    void NcursesRenderer::clearWindow(__attribute__((unused))Color color)
     {
         refresh();
     }
@@ -102,7 +102,6 @@ namespace display {
     void NcursesRenderer::handleEvents()
     {
         getmaxyx(_window, _sizeTerminal.y, _sizeTerminal.x);
-        MEVENT event;
         int c;
         while ((c = getch()) != ERR) {
             for (auto it = _buttonsMap.begin() ; it != _buttonsMap.end() ; ++it) {

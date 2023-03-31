@@ -53,7 +53,7 @@ namespace display {
 
     sf::Vector2f SFMLRenderer::convertCellPosToPixelPos(Vector2i pixelPos) const
     {
-        return {(int)(pixelPos.x * 12), (int)(pixelPos.y * 26)};
+        return {(float)(pixelPos.x * 12), (float)(pixelPos.y * 26)};
     }
 
     void SFMLRenderer::drawRect(std::shared_ptr<object::IObject> obj)

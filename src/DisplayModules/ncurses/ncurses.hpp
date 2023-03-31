@@ -6,8 +6,7 @@
 */
 
 #include "IDisplayModule.hpp"
-
-#include "../../Objects/Rectangle/Rectangle.hpp"
+#include "IObject.hpp"
 
 #include <ncurses.h>
 
