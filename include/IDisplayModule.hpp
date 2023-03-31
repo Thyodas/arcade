@@ -18,6 +18,14 @@ namespace display {
     struct Vector2i {
         int x;
         int y;
+        // Vector2i& operator=(const Vector2i& other) {
+        //     x = other.x;
+        //     y = other.y;
+        //     return *this;
+        // }
+        bool operator==(const Vector2i &other) const {
+            return (x == other.x && y == other.y);
+        }
     };
     enum Color {
         BLACK,
