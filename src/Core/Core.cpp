@@ -129,7 +129,8 @@ namespace arcade {
 
     void Core::mainLoop(const std::string displayLib)
     {
-        setGameModule(std::string("lib/arcade_snake.so"));
+        setGameModule(std::string("lib/arcade_nibbler.so"));
+        // setGameModule(std::string("lib/arcade_snake.so"));
         // setGameModule(std::string("lib/arcade_menu.so"));
         setListLibs();
         setDisplayModule(displayLib);
