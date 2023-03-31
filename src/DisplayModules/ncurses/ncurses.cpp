@@ -74,7 +74,7 @@ namespace display {
         char c = rect->getCharacter();
         init_pair(1, _colorsMap[rect->getCharacterColor()], _colorsMap[rect->getColor()]);
         attron(COLOR_PAIR(1));
-        for (int i = x; i < x + rect->getSize().x && i < _sizeTerminal.x; ++i)
+        for (int i = x; i < x + (rect->getSize().x * 2) && i < _sizeTerminal.x; ++i)
             for (int j = y; j < y + rect->getSize().y && j < _sizeTerminal.y; ++j)
                 mvaddch(j, i, c);
         attroff(COLOR_PAIR(1));

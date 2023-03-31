@@ -60,6 +60,7 @@ namespace display {
     {
         object::Rectangle *rect = static_cast<object::Rectangle *>(obj.get());
         sf::Vector2f pixelSize = convertCellPosToPixelPos(rect->getSize());
+        pixelSize.x *= 2;
         sf::RectangleShape rectToDraw(pixelSize);
         sf::Vector2f pixelPos = convertCellPosToPixelPos(rect->getPos());
         rectToDraw.setPosition(pixelPos);
