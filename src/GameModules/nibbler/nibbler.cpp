@@ -37,7 +37,7 @@ namespace game {
     {
         std::shared_ptr<object::Rectangle> food = std::make_shared<object::Rectangle>();
         food->setPos(pos);
-        food->setSize(display::Vector2i{SIZE, SIZE});
+        food->setSize(display::Vector2i{2, SIZE});
         food->setColor(display::BLACK);
         food->setCharacter(FOOD);
         food->setText(FOOD);
@@ -49,10 +49,10 @@ namespace game {
     {
         std::shared_ptr<object::Rectangle> empty = std::make_shared<object::Rectangle>();
         empty->setPos(pos);
-        empty->setSize(display::Vector2i{SIZE, SIZE});
+        empty->setSize(display::Vector2i{2, SIZE});
         empty->setColor(display::BLACK);
-        empty->setCharacter(EMPTY);
-        empty->setText(EMPTY);
+        empty->setCharacter('.');
+        empty->setText('.');
         empty->setCharacterColor(display::BLACK);
         return empty;
     }
@@ -70,11 +70,11 @@ namespace game {
         while (std::getline(myfile, line)) {
             for (auto character : line) {
                 if (character == WALL)
-                    map[i][j++] = isWall(display::Vector2i{j+5, i+2});
+                    map[i][j++] = isWall(display::Vector2i{(j*2)+15, i+8});
                 else if (character == FOOD)
-                    map[i][j++] = isFood(display::Vector2i{j+5, i+2});
+                    map[i][j++] = isFood(display::Vector2i{(j*2)+15, i+8});
                 else
-                    map[i][j++] = isEmpty(display::Vector2i{j+5, i+2});
+                    map[i][j++] = isEmpty(display::Vector2i{(j*2)+15, i+8});
             }
             i++;
             j = 0;
@@ -83,6 +83,8 @@ namespace game {
 
     void Nibbler::init()
     {
+        index.y = 17-6;
+        index.x = 11+6;
         createHead();
         createMap();
         for (int i = 0; i < 4; ++i)
@@ -92,7 +94,7 @@ namespace game {
     void Nibbler::createHead(void)
     {
         std::shared_ptr<object::Rectangle> elem = std::make_shared<object::Rectangle>();
-        elem->setPos(display::Vector2i{16, 19});
+        elem->setPos(display::Vector2i{37, 25});
         elem->setSize(display::Vector2i{SIZE, SIZE});
         elem->setColor(display::RED);
         elem->setCharacter('<');
@@ -107,7 +109,7 @@ namespace game {
         elem->setSize(display::Vector2i{SIZE, SIZE});
         if (direction == game::DIRECTION::UP)
             elem->setPos(display::Vector2i{nibbler.at(nibbler.size() - 1)->getPos().x,
-                        nibbler.at(nibbler.size() - 1)->getPos().y +
+                        nibbler.at(nibbler.size() - 1)->getPos().y -
                         nibbler.at(nibbler.size() - 1)->getSize().y});
         if (direction == game::DIRECTION::RIGHT)
             elem->setPos(display::Vector2i{nibbler.at(nibbler.size() - 1)->getPos().x -
@@ -115,7 +117,7 @@ namespace game {
                         nibbler.at(nibbler.size() - 1)->getPos().y});
         if (direction == game::DIRECTION::DOWN)
             elem->setPos(display::Vector2i{nibbler.at(nibbler.size() - 1)->getPos().x,
-                        nibbler.at(nibbler.size() - 1)->getPos().y -
+                        nibbler.at(nibbler.size() - 1)->getPos().y +
                         nibbler.at(nibbler.size() - 1)->getSize().y});
         if (direction == game::DIRECTION::LEFT)
             elem->setPos(display::Vector2i{nibbler.at(nibbler.size() - 1)->getPos().x +
@@ -130,13 +132,13 @@ namespace game {
 
     void Nibbler::checkWall(void)
     {
-        for (int i = 0; i < 19; ++i) {
-            for (int j = 0; j < 19; ++j) {
-                if (nibbler.at(0)->getPos().x == walls.at(i)->getPos().x &&
-                nibbler.at(0)->getPos().y == walls.at(i)->getPos().y) {
-                    resetGame();
-                }
-            }
+    };
+
+    void Nibbler::checkFood(display::Vector2i pos)
+    {
+        if (map[index.x][index.y]->getCharacter() == FOOD) {
+            addElem();
+            map[index.x][index.y] = isEmpty(display::Vector2i{pos.x, pos.y});
         }
     };
 
@@ -145,20 +147,8 @@ namespace game {
         for (long unsigned int i = 1; i < nibbler.size(); ++i) {
             if (nibbler.at(0)->getPos().x == nibbler.at(i)->getPos().x &&
             nibbler.at(0)->getPos().y == nibbler.at(i)->getPos().y) {
+                std::cout << "ok" << std::endl;
                 resetGame();
-            }
-        }
-    };
-
-    void Nibbler::checkFood(void)
-    {
-        for (int i = 0; i < 19; ++i) {
-            for (int j = 0; j < 19; ++j) {
-                if (map[i][j]->getCharacter() == FOOD &&
-                nibbler.at(0)->getPos().x == map[i][j]->getPos().x &&
-                nibbler.at(0)->getPos().y == map[i][j]->getPos().y) {
-                    map[i][j] = isEmpty(display::Vector2i{j+5, i+2});
-                }
             }
         }
     };
@@ -212,59 +202,80 @@ namespace game {
     display::Vector2i Nibbler::moveHead(display::Vector2i pos)
     {
         std::array<int, 4> possibleWay = {1, 1, 1, 1};
-
         possibleWay[inverse(direction)] = 0;
-        if (map[pos.y-2][pos.x-5-SIZE]->getCharacter() == WALL)
+        if (map[index.x][index.y-SIZE]->getCharacter() == WALL)
             possibleWay[game::DIRECTION::UP] = 0;
-        if (map[pos.y-2+SIZE][pos.x-5]->getCharacter() == WALL)
+        if (map[index.x+SIZE][index.y]->getCharacter() == WALL)
             possibleWay[game::DIRECTION::RIGHT] = 0;
-        if (map[pos.y-2-SIZE][pos.x-5]->getCharacter() == WALL)
+        if (map[index.x-SIZE][index.y]->getCharacter() == WALL)
             possibleWay[game::DIRECTION::LEFT] = 0;
-        if (map[pos.y-2][pos.x-5+SIZE]->getCharacter() == WALL)
+        if (map[index.x][index.y+SIZE]->getCharacter() == WALL)
             possibleWay[game::DIRECTION::DOWN] = 0;
         return randomPos(pos, possibleWay);
     }
 
     void Nibbler::move(display::IDisplayModule *display)
     {
-        // display::Vector2i pos = nibbler.at(0)->getPos();
-        // if (display->isButtonPressed(display::UP) && direction != game::DIRECTION::DOWN) {
-        //     // for (long unsigned int i = nibbler.size()-1; i > 0; --i)
-        //     //     nibbler.at(i)->setPos(display::Vector2i{nibbler.at(i-1)->getPos().x,
-        //     //         nibbler.at(i-1)->getPos().y});
-        //     // std::cout << "UP" << std::endl;
-        //     pos.y -= SIZE;
-        //     std::cout << std::to_string(pos.x) << std::to_string(pos.y) << std::endl;
-        //     std::cout << "->" << map[pos.y-2][pos.x-5]->getCharacter() << "<-" << std::endl;
-        // } else if (display->isButtonPressed(display::RIGHT) && direction != game::DIRECTION::LEFT) {
-        //     // for (long unsigned int i = nibbler.size()-1; i > 0; --i)
-        //     //     nibbler.at(i)->setPos(display::Vector2i{nibbler.at(i-1)->getPos().x,
-        //     //         nibbler.at(i-1)->getPos().y});
-        //     // std::cout << "RIGHT" << std::endl;
-        //     pos.x += SIZE;
-        //     std::cout << std::to_string(pos.x) << std::to_string(pos.y) << std::endl;
-        //     std::cout << "->" << map[pos.y-2][pos.x-5]->getCharacter() << "<-" << std::endl;
-        // } else if (display->isButtonPressed(display::LEFT) && direction != game::DIRECTION::RIGHT) {
-        //     // for (long unsigned int i = nibbler.size()-1; i > 0; --i)
-        //     //     nibbler.at(i)->setPos(display::Vector2i{nibbler.at(i-1)->getPos().x,
-        //     //         nibbler.at(i-1)->getPos().y});
-        //     // std::cout << "LEFT" << std::endl;
-        //     pos.x -= SIZE;
-        //     std::cout << std::to_string(pos.x) << std::to_string(pos.y) << std::endl;
-        //     std::cout << "->" << map[pos.y-2][pos.x-5]->getCharacter() << "<-" << std::endl;
-        // } else if (display->isButtonPressed(display::DOWN) && direction != game::DIRECTION::UP) {
-        //     // for (long unsigned int i = nibbler.size()-1; i > 0; --i)
-        //     //     nibbler.at(i)->setPos(display::Vector2i{nibbler.at(i-1)->getPos().x,
-        //     //         nibbler.at(i-1)->getPos().y});
-        //     // std::cout << "DOWN" << std::endl;
-        //     pos.y += SIZE;
-        //     std::cout << std::to_string(pos.x) << std::to_string(pos.y) << std::endl;
-        //     std::cout << "->" << map[pos.y-2][pos.x-5]->getCharacter() << "<-" << std::endl;
+        display::Vector2i pos = nibbler.at(0)->getPos();
+        if (display->isButtonPressed(display::UP) && direction != game::DIRECTION::DOWN) {
+            if (map[index.x-SIZE][index.y]->getCharacter() != WALL) {
+                for (long unsigned int i = nibbler.size()-1; i > 0; --i)
+                    nibbler.at(i)->setPos(display::Vector2i{nibbler.at(i-1)->getPos().x,
+                        nibbler.at(i-1)->getPos().y});
+                pos.y -= SIZE;
+                index.x -= SIZE;
+                nibbler.at(0)->setPos(pos);
+                direction = game::DIRECTION::UP;
+            } else {
+                std::cout << "It's a WALLLLLLL!!!!!!" << std::endl;
+            }
+
+        } else if (display->isButtonPressed(display::RIGHT) && direction != game::DIRECTION::LEFT) {
+            if (map[index.x][index.y+SIZE]->getCharacter() != WALL) {
+                for (long unsigned int i = nibbler.size()-1; i > 0; --i)
+                    nibbler.at(i)->setPos(display::Vector2i{nibbler.at(i-1)->getPos().x,
+                        nibbler.at(i-1)->getPos().y});
+                pos.x += 2;
+                index.y += SIZE;
+                nibbler.at(0)->setPos(pos);
+                direction = game::DIRECTION::RIGHT;
+            } else {
+                std::cout << "It's a WALLLLLLL!!!!!!" << std::endl;
+            }
+
+        } else if (display->isButtonPressed(display::LEFT) && direction != game::DIRECTION::RIGHT) {
+            if (map[index.x][index.y-SIZE]->getCharacter() != WALL) {
+                for (long unsigned int i = nibbler.size()-1; i > 0; --i)
+                    nibbler.at(i)->setPos(display::Vector2i{nibbler.at(i-1)->getPos().x,
+                        nibbler.at(i-1)->getPos().y});
+                pos.x -= 2;
+                index.y -= SIZE;
+                nibbler.at(0)->setPos(pos);
+                direction = game::DIRECTION::LEFT;
+            } else {
+                std::cout << "It's a WALLLLLLL!!!!!!" << std::endl;
+            }
+
+        } else if (display->isButtonPressed(display::DOWN) && direction != game::DIRECTION::UP) {
+            if (map[index.x+SIZE][index.y]->getCharacter() != WALL) {
+                for (long unsigned int i = nibbler.size()-1; i > 0; --i)
+                    nibbler.at(i)->setPos(display::Vector2i{nibbler.at(i-1)->getPos().x,
+                        nibbler.at(i-1)->getPos().y});
+                pos.y += SIZE;
+                index.x += SIZE;
+                nibbler.at(0)->setPos(pos);
+                direction = game::DIRECTION::DOWN;
+            } else {
+                std::cout << "It's a WALLLLLLL!!!!!!" << std::endl;
+            }
+        }
+        // if (map[tmp.x][tmp.y]->getCharacter() == WALL) {
+        //     // nibbler.at(0)->setPos(nibbler.at(0)->getPos());
+        //     // pos = moveHead(nibbler.at(0)->getPos());
+        // } else {
+        //     index = tmp;
+        //     nibbler.at(0)->setPos(pos);
         // }
-        // // if (map[pos.x-5][pos.y-2]->getCharacter() == WALL) {
-        // //     pos = moveHead(nibbler.at(0)->getPos());
-        // // }
-        // nibbler.at(0)->setPos(pos);
     }
 
 
@@ -272,6 +283,7 @@ namespace game {
     {
         move(display);
         // checkBody();
+        // checkFood(nibbler.at(0)->getPos());
 
         for (int i = 0; i < 19; ++i)
             for (int j = 0; j < 19; ++j)
