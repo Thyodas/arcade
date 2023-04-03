@@ -23,7 +23,7 @@ namespace game {
             Nibbler() {
                 direction = game::DIRECTION::RIGHT;
                 score = 0;
-                lvl = 3;
+                lvl = 4;
             };
             ~Nibbler() {};
             void init(void) override;
@@ -38,7 +38,8 @@ namespace game {
             void checkBody(void);
             void checkFood(display::Vector2i pos);
             void move(display::IDisplayModule *display);
-            display::Vector2i moveHead(display::Vector2i pos);
+            void moveHead(game::DIRECTION way);
+            game::DIRECTION  choseWay(void);
         private:
             std::deque<std::shared_ptr<object::Rectangle>> nibbler;
             std::array<std::array<std::shared_ptr<object::Rectangle>, 19>, 19> map;

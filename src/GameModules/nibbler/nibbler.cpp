@@ -7,6 +7,7 @@
 
 #include "nibbler.hpp"
 #include <vector>
+#include <algorithm>
 #include <fstream>
 #include <time.h>
 #define SIZE 1
@@ -147,7 +148,6 @@ namespace game {
         for (long unsigned int i = 1; i < nibbler.size(); ++i) {
             if (nibbler.at(0)->getPos().x == nibbler.at(i)->getPos().x &&
             nibbler.at(0)->getPos().y == nibbler.at(i)->getPos().y) {
-                std::cout << "ok" << std::endl;
                 resetGame();
             }
         }
@@ -177,41 +177,76 @@ namespace game {
             return game::DIRECTION::LEFT;
         if (dir == game::DIRECTION::LEFT)
             return game::DIRECTION::RIGHT;
-        return game::DIRECTION::UP;
+        if (dir == game::DIRECTION::DOWN)
+            return game::DIRECTION::UP;
+        return dir;
     }
 
-    display::Vector2i randomPos(display::Vector2i pos, std::array<int, 4> possibleWay)
+    game::DIRECTION randomPos(game::DIRECTION direction, std::array<int, 4> possibleWay)
     {
         srand(time(NULL));
         int random = rand() % 4;
-        if (possibleWay[0] == 0 && possibleWay[1] == 0 && possibleWay[2] == 0 && possibleWay[3] == 0)
-            return pos;
+        bool exists = std::find(std::begin(possibleWay), std::end(possibleWay), 1) != std::end(possibleWay);
+
+        // std::cout << "[" << possibleWay[0] << ", " << possibleWay[1] << ", " << possibleWay[2] << ", " << possibleWay[3] << "]" << std::endl;
+        if (!exists)
+            return direction;
         while (possibleWay[random] != 1)
             random = rand() % 4;
         if (random == 0)
-            return display::Vector2i{pos.x, pos.y-SIZE};
+            return game::DIRECTION::UP;
         if (random == 1)
-            return display::Vector2i{pos.x+SIZE, pos.y};
+            return game::DIRECTION::RIGHT;
         if (random == 2)
-            return display::Vector2i{pos.x-SIZE, pos.y};
+            return game::DIRECTION::DOWN;
         if (random == 3)
-            return display::Vector2i{pos.x, pos.y+SIZE};
-        return display::Vector2i{pos.x, pos.y};
+            return game::DIRECTION::LEFT;
+        return direction;
     }
 
-    display::Vector2i Nibbler::moveHead(display::Vector2i pos)
+    game::DIRECTION Nibbler::choseWay(void)
     {
-        std::array<int, 4> possibleWay = {1, 1, 1, 1};
+        std::array<int, 4> possibleWay = {1, 1, 1, 1}; // [UP, RIGHT, DOWN, LEFT] -> 1 = possible / 0 = impossible
         possibleWay[inverse(direction)] = 0;
-        if (map[index.x][index.y-SIZE]->getCharacter() == WALL)
-            possibleWay[game::DIRECTION::UP] = 0;
-        if (map[index.x+SIZE][index.y]->getCharacter() == WALL)
-            possibleWay[game::DIRECTION::RIGHT] = 0;
+
         if (map[index.x-SIZE][index.y]->getCharacter() == WALL)
-            possibleWay[game::DIRECTION::LEFT] = 0;
+            possibleWay[game::DIRECTION::UP] = 0;
         if (map[index.x][index.y+SIZE]->getCharacter() == WALL)
+            possibleWay[game::DIRECTION::RIGHT] = 0;
+        if (map[index.x+SIZE][index.y]->getCharacter() == WALL)
             possibleWay[game::DIRECTION::DOWN] = 0;
-        return randomPos(pos, possibleWay);
+        if (map[index.x][index.y-SIZE]->getCharacter() == WALL)
+            possibleWay[game::DIRECTION::LEFT] = 0;
+
+        return randomPos(direction, possibleWay);
+    }
+
+    void Nibbler::moveHead(game::DIRECTION way)
+    {
+        display::Vector2i pos = nibbler.at(0)->getPos();
+        for (long unsigned int i = nibbler.size()-1; i > 0; --i)
+            nibbler.at(i)->setPos(display::Vector2i{nibbler.at(i-1)->getPos().x,
+                nibbler.at(i-1)->getPos().y});
+        if (way == game::DIRECTION::UP) {
+            index.x -= SIZE;
+            nibbler.at(0)->setPos(display::Vector2i{pos.x, pos.y-SIZE});
+            direction = game::DIRECTION::UP;
+        }
+        if (way == game::DIRECTION::RIGHT) {
+            index.y += SIZE;
+            nibbler.at(0)->setPos(display::Vector2i{pos.x+2, pos.y});
+            direction = game::DIRECTION::RIGHT;
+        }
+        if (way == game::DIRECTION::DOWN) {
+            index.x += SIZE;
+            nibbler.at(0)->setPos(display::Vector2i{pos.x, pos.y+SIZE});
+            direction = game::DIRECTION::DOWN;
+        }
+        if (way == game::DIRECTION::LEFT) {
+            index.y -= SIZE;
+            nibbler.at(0)->setPos(display::Vector2i{pos.x-2, pos.y});
+            direction = game::DIRECTION::LEFT;
+        }
     }
 
     void Nibbler::move(display::IDisplayModule *display)
@@ -227,9 +262,11 @@ namespace game {
                 nibbler.at(0)->setPos(pos);
                 direction = game::DIRECTION::UP;
             } else {
-                std::cout << "It's a WALLLLLLL!!!!!!" << std::endl;
+                game::DIRECTION way = choseWay();
+                moveHead(way);
             }
-
+            nibbler.at(0)->setCharacter('^');
+            nibbler.at(0)->setText('^');
         } else if (display->isButtonPressed(display::RIGHT) && direction != game::DIRECTION::LEFT) {
             if (map[index.x][index.y+SIZE]->getCharacter() != WALL) {
                 for (long unsigned int i = nibbler.size()-1; i > 0; --i)
@@ -240,9 +277,11 @@ namespace game {
                 nibbler.at(0)->setPos(pos);
                 direction = game::DIRECTION::RIGHT;
             } else {
-                std::cout << "It's a WALLLLLLL!!!!!!" << std::endl;
+                game::DIRECTION way = choseWay();
+                moveHead(way);
             }
-
+            nibbler.at(0)->setCharacter('<');
+            nibbler.at(0)->setText('<');
         } else if (display->isButtonPressed(display::LEFT) && direction != game::DIRECTION::RIGHT) {
             if (map[index.x][index.y-SIZE]->getCharacter() != WALL) {
                 for (long unsigned int i = nibbler.size()-1; i > 0; --i)
@@ -253,9 +292,11 @@ namespace game {
                 nibbler.at(0)->setPos(pos);
                 direction = game::DIRECTION::LEFT;
             } else {
-                std::cout << "It's a WALLLLLLL!!!!!!" << std::endl;
+                game::DIRECTION way = choseWay();
+                moveHead(way);
             }
-
+            nibbler.at(0)->setCharacter('>');
+            nibbler.at(0)->setText('>');
         } else if (display->isButtonPressed(display::DOWN) && direction != game::DIRECTION::UP) {
             if (map[index.x+SIZE][index.y]->getCharacter() != WALL) {
                 for (long unsigned int i = nibbler.size()-1; i > 0; --i)
@@ -265,25 +306,21 @@ namespace game {
                 index.x += SIZE;
                 nibbler.at(0)->setPos(pos);
                 direction = game::DIRECTION::DOWN;
+            nibbler.at(0)->setCharacter('v');
+            nibbler.at(0)->setText('v');
             } else {
-                std::cout << "It's a WALLLLLLL!!!!!!" << std::endl;
+                game::DIRECTION way = choseWay();
+                moveHead(way);
             }
         }
-        // if (map[tmp.x][tmp.y]->getCharacter() == WALL) {
-        //     // nibbler.at(0)->setPos(nibbler.at(0)->getPos());
-        //     // pos = moveHead(nibbler.at(0)->getPos());
-        // } else {
-        //     index = tmp;
-        //     nibbler.at(0)->setPos(pos);
-        // }
     }
 
 
     void Nibbler::update(display::IDisplayModule *display)
     {
         move(display);
-        // checkBody();
-        // checkFood(nibbler.at(0)->getPos());
+        checkBody();
+        checkFood(nibbler.at(0)->getPos());
 
         for (int i = 0; i < 19; ++i)
             for (int j = 0; j < 19; ++j)
