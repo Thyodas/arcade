@@ -57,7 +57,10 @@ namespace game {
     display::Vector2i getRadomPos(void)
     {
         srand (time(NULL));
-        return (display::Vector2i{(rand() % 54) + 6, (rand() % 24) + 3});
+        int x = rand() % 54 + 6;
+        while (x%2 == 0)
+            x = rand() % 54 + 6;
+        return (display::Vector2i{x, (rand() % 24) + 3});
     }
 
     void Snake::initApple(void)
@@ -163,7 +166,7 @@ namespace game {
                 snake.at(i)->setPos(display::Vector2i{snake.at(i - 1)->getPos().x,
                                                     snake.at(i - 1)->getPos().y});
             snake.at(0)->setPos(display::Vector2i{snake.at(0)->getPos().x +
-                                snake.at(snake.size() - 1)->getSize().x,
+                                snake.at(snake.size() - 1)->getSize().x * 2,
                                 snake.at(0)->getPos().y});
             snake.at(0)->setCharacter('<');
             snake.at(0)->setText('<');
@@ -174,7 +177,7 @@ namespace game {
                 snake.at(i)->setPos(display::Vector2i{snake.at(i - 1)->getPos().x,
                                     snake.at(i-1)->getPos().y});
             snake.at(0)->setPos(display::Vector2i{snake.at(0)->getPos().x -
-                                snake.at(snake.size() - 1)->getSize().x,
+                                snake.at(snake.size() - 1)->getSize().x * 2,
                                 snake.at(0)->getPos().y});
             snake.at(0)->setCharacter('>');
             snake.at(0)->setText('>');
