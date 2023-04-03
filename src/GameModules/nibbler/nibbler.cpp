@@ -22,15 +22,15 @@ namespace game {
         delete this;
     }
 
-    std::shared_ptr<object::Rectangle> isWall(display::Vector2i pos)
+    std::shared_ptr<object::Rectangle> isWall(display::Vector2i pos, display::Color color)
     {
         std::shared_ptr<object::Rectangle> wall = std::make_shared<object::Rectangle>();
         wall->setPos(pos);
         wall->setSize(display::Vector2i{SIZE, SIZE});
-        wall->setColor(display::WHITE);
+        wall->setColor(color);
         wall->setCharacter(WALL);
         wall->setText(WALL);
-        wall->setCharacterColor(display::WHITE);
+        wall->setCharacterColor(color);
         return wall;
     }
 
@@ -68,13 +68,17 @@ namespace game {
         if (!myfile.is_open())
             std::cout << "Can not open file" << std::endl;
 
+        std::getline(myfile, line);
+        int color = stoi(line);
+
         while (std::getline(myfile, line)) {
             for (auto character : line) {
                 if (character == WALL)
-                    map[i][j++] = isWall(display::Vector2i{(j*2)+15, i+8});
-                else if (character == FOOD)
+                    map[i][j++] = isWall(display::Vector2i{(j*2)+15, i+8}, (display::Color)color);
+                else if (character == FOOD) {
                     map[i][j++] = isFood(display::Vector2i{(j*2)+15, i+8});
-                else
+                    nbFood++;
+                } else
                     map[i][j++] = isEmpty(display::Vector2i{(j*2)+15, i+8});
             }
             i++;
@@ -88,6 +92,7 @@ namespace game {
         index.x = 11+6;
         createHead();
         createMap();
+        std::cout << nbFood << std::endl;
         for (int i = 0; i < 4; ++i)
             addElem();
     }
@@ -140,6 +145,7 @@ namespace game {
         if (map[index.x][index.y]->getCharacter() == FOOD) {
             addElem();
             map[index.x][index.y] = isEmpty(display::Vector2i{pos.x, pos.y});
+            nbFood--;
         }
     };
 
@@ -162,6 +168,8 @@ namespace game {
         direction = game::DIRECTION::RIGHT;
         createHead();
         score = 0;
+        index.y = 17-6;
+        index.x = 11+6;
         for (int i = 0; i < 4; ++i)
             addElem();
     }
@@ -335,6 +343,9 @@ namespace game {
                 display->drawObj(map[i][j]);
         for (long unsigned int i = 0; i < nibbler.size(); ++i)
             display->drawObj(nibbler.at(i));
+
+        if (nbFood == 0)
+            std::cout << "go next lvl: " << lvl << std::endl;
     }
 }
 

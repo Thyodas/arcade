@@ -7,6 +7,7 @@
 
 #include "ncurses.hpp"
 #include <memory>
+#include <algorithm>
 #include <sys/ioctl.h>
 #include <unistd.h>
 
@@ -81,7 +82,7 @@ namespace display {
         char c = rect->getCharacter();
         int pair = _pairsMap[std::make_pair(rect->getCharacterColor(), rect->getColor())];
         attron(COLOR_PAIR(pair));
-        for (int i = x; i < x + (rect->getSize().x * 2) && i < _sizeTerminal.x; ++i)
+        for (int i = x; i < x + (rect->getSize().x*2) && i < _sizeTerminal.x; ++i)
             for (int j = y; j < y + rect->getSize().y && j < _sizeTerminal.y; ++j)
                 mvaddch(j, i, c);
         attroff(COLOR_PAIR(pair));

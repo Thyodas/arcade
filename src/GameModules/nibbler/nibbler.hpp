@@ -24,7 +24,8 @@ namespace game {
             Nibbler() {
                 direction = game::DIRECTION::RIGHT;
                 score = 0;
-                lvl = 4;
+                lvl = 1;
+                nbFood = 0;
             };
             ~Nibbler() {};
             void init(void) override;
@@ -49,5 +50,6 @@ namespace game {
             int score;
             DIRECTION direction;
             display::Vector2i index;
+            int nbFood;
     };
 }

@@ -73,6 +73,7 @@ namespace display {
         auto *rect = static_cast<object::Rectangle *>(obj.get());
         Vector2i pixelPos = convertCellPosToPixelPos(rect->getPos());
         Vector2i pixelSize = convertCellPosToPixelPos(rect->getSize());
+        pixelSize.x *= 2;
         SDL_Rect rectToDraw = {
             .x = pixelPos.x,
             .y = pixelPos.y,
