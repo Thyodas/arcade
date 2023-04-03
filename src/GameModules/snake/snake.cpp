@@ -21,16 +21,16 @@ namespace game {
     {
         createHead();
         initApple();
-        createWall(display::Vector2i{56, 26});
+        createWall(display::Vector2i{36, 18});
         for (int i = 0; i < 4; ++i)
             addElem();
     }
 
     void Snake::createWall(display::Vector2i size)
     {
-        for (int i = 5; i <= size.x + 5; ++i)
-            for (int j = 2; j <= size.y + 2; ++j) {
-                if (i == 5 || j == 2 || i == size.x + 5 || j == size.y + 2) {
+        for (int i = 15; i <= size.x + 15; ++i)
+            for (int j = 8; j <= size.y + 8; ++j) {
+                if (i == 15 || j == 8 || i == size.x + 15 || j == size.y + 8) {
                     std::shared_ptr<object::Rectangle> wall = std::make_shared<object::Rectangle>();
                     wall->setPos(display::Vector2i{i, j});
                     wall->setSize(display::Vector2i{1, 1});
@@ -57,10 +57,10 @@ namespace game {
     display::Vector2i getRadomPos(void)
     {
         srand (time(NULL));
-        int x = rand() % 54 + 6;
+        int x = rand() % 32 + 17;
         while (x%2 == 0)
-            x = rand() % 54 + 6;
-        return (display::Vector2i{x, (rand() % 24) + 3});
+            x = rand() % 32 + 17;
+        return (display::Vector2i{x, (rand() % 16) + 9});
     }
 
     void Snake::initApple(void)

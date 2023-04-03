@@ -231,21 +231,29 @@ namespace game {
             index.x -= SIZE;
             nibbler.at(0)->setPos(display::Vector2i{pos.x, pos.y-SIZE});
             direction = game::DIRECTION::UP;
+            nibbler.at(0)->setCharacter('v');
+            nibbler.at(0)->setText('v');
         }
         if (way == game::DIRECTION::RIGHT) {
             index.y += SIZE;
             nibbler.at(0)->setPos(display::Vector2i{pos.x+2, pos.y});
             direction = game::DIRECTION::RIGHT;
+            nibbler.at(0)->setCharacter('<');
+            nibbler.at(0)->setText('<');
         }
         if (way == game::DIRECTION::DOWN) {
             index.x += SIZE;
             nibbler.at(0)->setPos(display::Vector2i{pos.x, pos.y+SIZE});
             direction = game::DIRECTION::DOWN;
+            nibbler.at(0)->setCharacter('^');
+            nibbler.at(0)->setText('^');
         }
         if (way == game::DIRECTION::LEFT) {
             index.y -= SIZE;
             nibbler.at(0)->setPos(display::Vector2i{pos.x-2, pos.y});
             direction = game::DIRECTION::LEFT;
+            nibbler.at(0)->setCharacter('>');
+            nibbler.at(0)->setText('>');
         }
     }
 
@@ -261,12 +269,12 @@ namespace game {
                 index.x -= SIZE;
                 nibbler.at(0)->setPos(pos);
                 direction = game::DIRECTION::UP;
+                nibbler.at(0)->setCharacter('v');
+                nibbler.at(0)->setText('v');
             } else {
                 game::DIRECTION way = choseWay();
                 moveHead(way);
             }
-            nibbler.at(0)->setCharacter('^');
-            nibbler.at(0)->setText('^');
         } else if (display->isButtonPressed(display::RIGHT) && direction != game::DIRECTION::LEFT) {
             if (map[index.x][index.y+SIZE]->getCharacter() != WALL) {
                 for (long unsigned int i = nibbler.size()-1; i > 0; --i)
@@ -276,12 +284,12 @@ namespace game {
                 index.y += SIZE;
                 nibbler.at(0)->setPos(pos);
                 direction = game::DIRECTION::RIGHT;
+                nibbler.at(0)->setCharacter('<');
+                nibbler.at(0)->setText('<');
             } else {
                 game::DIRECTION way = choseWay();
                 moveHead(way);
             }
-            nibbler.at(0)->setCharacter('<');
-            nibbler.at(0)->setText('<');
         } else if (display->isButtonPressed(display::LEFT) && direction != game::DIRECTION::RIGHT) {
             if (map[index.x][index.y-SIZE]->getCharacter() != WALL) {
                 for (long unsigned int i = nibbler.size()-1; i > 0; --i)
@@ -291,12 +299,12 @@ namespace game {
                 index.y -= SIZE;
                 nibbler.at(0)->setPos(pos);
                 direction = game::DIRECTION::LEFT;
+                nibbler.at(0)->setCharacter('>');
+                nibbler.at(0)->setText('>');
             } else {
                 game::DIRECTION way = choseWay();
                 moveHead(way);
             }
-            nibbler.at(0)->setCharacter('>');
-            nibbler.at(0)->setText('>');
         } else if (display->isButtonPressed(display::DOWN) && direction != game::DIRECTION::UP) {
             if (map[index.x+SIZE][index.y]->getCharacter() != WALL) {
                 for (long unsigned int i = nibbler.size()-1; i > 0; --i)
@@ -306,8 +314,8 @@ namespace game {
                 index.x += SIZE;
                 nibbler.at(0)->setPos(pos);
                 direction = game::DIRECTION::DOWN;
-            nibbler.at(0)->setCharacter('v');
-            nibbler.at(0)->setText('v');
+                nibbler.at(0)->setCharacter('^');
+                nibbler.at(0)->setText('^');
             } else {
                 game::DIRECTION way = choseWay();
                 moveHead(way);
