@@ -92,7 +92,6 @@ namespace game {
         index.x = 11+6;
         createHead();
         createMap();
-        std::cout << nbFood << std::endl;
         for (int i = 0; i < 4; ++i)
             addElem();
     }
@@ -196,7 +195,6 @@ namespace game {
         int random = rand() % 4;
         bool exists = std::find(std::begin(possibleWay), std::end(possibleWay), 1) != std::end(possibleWay);
 
-        // std::cout << "[" << possibleWay[0] << ", " << possibleWay[1] << ", " << possibleWay[2] << ", " << possibleWay[3] << "]" << std::endl;
         if (!exists)
             return direction;
         while (possibleWay[random] != 1)
@@ -346,7 +344,6 @@ namespace game {
 
         if (nbFood == 0) {
             lvl++;
-            std::cout << "go next lvl: " << lvl << std::endl;
             resetGame();
             createMap();
         }
