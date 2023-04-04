@@ -344,8 +344,12 @@ namespace game {
         for (long unsigned int i = 0; i < nibbler.size(); ++i)
             display->drawObj(nibbler.at(i));
 
-        if (nbFood == 0)
+        if (nbFood == 0) {
+            lvl++;
             std::cout << "go next lvl: " << lvl << std::endl;
+            resetGame();
+            createMap();
+        }
     }
 }
 
