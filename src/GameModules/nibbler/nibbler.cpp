@@ -9,6 +9,7 @@
 #include <vector>
 #include <algorithm>
 #include <fstream>
+#include <stdexcept>
 #include <time.h>
 #define SIZE 1
 #define WALL '#'
@@ -66,7 +67,7 @@ namespace game {
         int i, j = 0;
 
         if (!myfile.is_open())
-            std::cout << "Can not open file" << std::endl;
+            throw std::runtime_error("Nibbler: Cannot open file (.lvl file)");
 
         std::getline(myfile, line);
         int color = stoi(line);
@@ -173,9 +174,6 @@ namespace game {
             addElem();
     }
 
-    //1920 --> 158 = 12.15
-    //1080 --> 42 = 25.7
-
     game::DIRECTION inverse(game::DIRECTION dir)
     {
         if (dir == game::DIRECTION::UP)
@@ -197,16 +195,11 @@ namespace game {
 
         if (!exists)
             return direction;
-        while (possibleWay[random] != 1)
-            random = rand() % 4;
-        if (random == 0)
-            return game::DIRECTION::UP;
-        if (random == 1)
-            return game::DIRECTION::RIGHT;
-        if (random == 2)
-            return game::DIRECTION::DOWN;
-        if (random == 3)
-            return game::DIRECTION::LEFT;
+        if (possibleWay[0]+possibleWay[1]+possibleWay[2]+possibleWay[3] == 1) {
+            while (possibleWay[random] != 1)
+                random = rand() % 4;
+            return (game::DIRECTION)random;
+        }
         return direction;
     }
 
@@ -224,7 +217,10 @@ namespace game {
         if (map[index.x][index.y-SIZE]->getCharacter() == WALL)
             possibleWay[game::DIRECTION::LEFT] = 0;
 
-        return randomPos(direction, possibleWay);
+        game::DIRECTION way = randomPos(direction, possibleWay);
+        if (way == direction)
+            return direction;
+        return way;
     }
 
     void Nibbler::moveHead(game::DIRECTION way)
@@ -279,7 +275,8 @@ namespace game {
                 nibbler.at(0)->setText('v');
             } else {
                 game::DIRECTION way = choseWay();
-                moveHead(way);
+                if (way != direction)
+                    moveHead(way);
             }
         } else if (display->isButtonPressed(display::RIGHT) && direction != game::DIRECTION::LEFT) {
             if (map[index.x][index.y+SIZE]->getCharacter() != WALL) {
@@ -294,7 +291,8 @@ namespace game {
                 nibbler.at(0)->setText('<');
             } else {
                 game::DIRECTION way = choseWay();
-                moveHead(way);
+                if (way != direction)
+                    moveHead(way);
             }
         } else if (display->isButtonPressed(display::LEFT) && direction != game::DIRECTION::RIGHT) {
             if (map[index.x][index.y-SIZE]->getCharacter() != WALL) {
@@ -309,7 +307,8 @@ namespace game {
                 nibbler.at(0)->setText('>');
             } else {
                 game::DIRECTION way = choseWay();
-                moveHead(way);
+                if (way != direction)
+                    moveHead(way);
             }
         } else if (display->isButtonPressed(display::DOWN) && direction != game::DIRECTION::UP) {
             if (map[index.x+SIZE][index.y]->getCharacter() != WALL) {
@@ -324,7 +323,8 @@ namespace game {
                 nibbler.at(0)->setText('^');
             } else {
                 game::DIRECTION way = choseWay();
-                moveHead(way);
+                if (way != direction)
+                    moveHead(way);
             }
         }
     }
@@ -344,6 +344,8 @@ namespace game {
 
         if (nbFood == 0) {
             lvl++;
+            if (lvl > 32)
+                lvl = 1;
             resetGame();
             createMap();
         }

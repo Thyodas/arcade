@@ -7,6 +7,7 @@
 
 #include "menu.hpp"
 #include <vector>
+#define SIZE 1
 
 namespace game {
 
@@ -15,35 +16,41 @@ namespace game {
         delete this;
     }
 
+    void Menu::initString(std::string str)
+    {
+        display::Vector2i pos = {10, 10};
+        for (int i = 0; str[i]; i++) {
+            std::shared_ptr<object::Rectangle> elem = std::make_shared<object::Rectangle>();
+            elem->setPos(display::Vector2i{pos.x+((SIZE*2)*i), pos.y});
+            elem->setSize(display::Vector2i{SIZE, SIZE});
+            elem->setColor(display::BLACK);
+            elem->setCharacter(str[i]);
+            elem->setText(str[i]);
+            elem->setCharacterColor(display::WHITE);
+            menu.push_back(elem);
+        }
+    }
+
     void Menu::init()
     {
-        rect = std::make_shared<object::Rectangle>();
-        rect->setPos(display::Vector2i{400, 300});
-        rect->setSize(display::Vector2i{100, 100});
-        rect->setColor(display::YELLOW);
-        rect->setCharacter('v');
-        rect->setCharacterColor(display::BLACK);
+        cursor = std::make_shared<object::Rectangle>();
+        cursor->setPos(display::Vector2i{10, 10});
+        cursor->setSize(display::Vector2i{SIZE, SIZE});
+        cursor->setColor(display::WHITE);
+        cursor->setCharacter(' ');
+        cursor->setCharacterColor(display::WHITE);
+        initString("menu test ok oui non wouhou ");
     }
 
     void Menu::update(display::IDisplayModule *display)
     {
-        if (display->isButtonPressed(display::UP)) {
-            rect->setPos(display::Vector2i{rect->getPos().x, rect->getPos().y - 10});
-            rect->setCharacter('^');
-        }
-        if (display->isButtonPressed(display::RIGHT)) {
-            rect->setPos(display::Vector2i{rect->getPos().x + 10, rect->getPos().y});
-            rect->setCharacter('>');
-        }
-        if (display->isButtonPressed(display::LEFT)) {
-            rect->setPos(display::Vector2i{rect->getPos().x - 10, rect->getPos().y});
-            rect->setCharacter('<');
-        }
-        if (display->isButtonPressed(display::DOWN)) {
-            rect->setPos(display::Vector2i{rect->getPos().x, rect->getPos().y + 10});
-            rect->setCharacter('v');
-        }
-        display->drawObj(rect);
+        if (display->isButtonPressed(display::UP))
+            cursor->setPos(display::Vector2i{cursor->getPos().x, cursor->getPos().y - SIZE});
+        if (display->isButtonPressed(display::DOWN))
+            cursor->setPos(display::Vector2i{cursor->getPos().x, cursor->getPos().y + SIZE});
+        display->drawObj(cursor);
+        for (long unsigned int i = 0; i < menu.size(); ++i)
+            display->drawObj(menu.at(i));
     }
 
 }

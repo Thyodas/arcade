@@ -7,6 +7,7 @@
 
 #include "IGameModule.hpp"
 #include "IObject.hpp"
+#include <deque>
 
 namespace game {
     class Menu : public IGameModule {
@@ -16,7 +17,9 @@ namespace game {
             void init() override;
             void update(display::IDisplayModule *display) override;
             void stop() override;
+            void initString(std::string str);
         private:
-            std::shared_ptr<object::Rectangle> rect;
+            std::shared_ptr<object::Rectangle> cursor;
+            std::deque<std::shared_ptr<object::Rectangle>> menu;
     };
 }
