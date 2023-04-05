@@ -5,9 +5,10 @@
 ** menu.hpp
 */
 
+#include <deque>
 #include "IGameModule.hpp"
 #include "IObject.hpp"
-#include <deque>
+#include "Loader.hpp"
 
 namespace game {
     class Menu : public IGameModule {
@@ -17,9 +18,15 @@ namespace game {
             void init() override;
             void update(display::IDisplayModule *display) override;
             void stop() override;
-            void initString(std::string str);
+            std::deque<std::shared_ptr<object::Rectangle>> initString(std::string str);
+            void createCursor();
+            // void initGame(std::string gameLib);
+            void testLib(const std::string pathToLib);
+            void setListLibs();
         private:
+            arcade::Loader loader;
             std::shared_ptr<object::Rectangle> cursor;
-            std::deque<std::shared_ptr<object::Rectangle>> menu;
+            std::vector<std::deque<std::shared_ptr<object::Rectangle>>> gameLibs;
+            std::vector<std::deque<std::shared_ptr<object::Rectangle>>> graphicLibs;
     };
 }
