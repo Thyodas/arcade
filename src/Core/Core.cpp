@@ -96,6 +96,8 @@ namespace arcade {
         game::IGameModule *testGame = nullptr;
         display::IDisplayModule *testDisplay = nullptr;
         void *handle = _loader.loadLib(pathToLib);
+        if (pathToLib.find("menu") != std::string::npos)
+            return;
         if (!handle)
             return;
         if ((testGame = _loader.getEntryPoint<game::IGameModule *>(handle, "entryPointGame")) != nullptr) {
