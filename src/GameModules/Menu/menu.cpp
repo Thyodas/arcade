@@ -134,10 +134,10 @@ namespace game {
 
     void Menu::update(display::IDisplayModule *display)
     {
-        static int cursorPos = 0;
-        for (int j = 0; j < gameLibs.size(); ++j) {
+        static long unsigned int cursorPos = 0;
+        for (long unsigned int j = 0; j < gameLibs.size(); ++j) {
             if (j != cursorPos)
-                for (int i = 0; i < gameLibs.at(j).size(); ++i)
+                for (long unsigned int i = 0; i < gameLibs.at(j).size(); ++i)
                     gameLibs.at(j).at(i)->setCharacterColor(display::WHITE);
         }
         if (display->isButtonPressed(display::UP)) {
@@ -148,7 +148,7 @@ namespace game {
             cursorPos += cursorPos < gameLibs.size()-1 ? 1 : 0;
             cursor->setPos(display::Vector2i{cursor->getPos().x, gameLibs.at(cursorPos).at(0)->getPos().y});
         }
-        for (int i = 0; i < gameLibs.at(cursorPos).size(); ++i)
+        for (long unsigned int i = 0; i < gameLibs.at(cursorPos).size(); ++i)
             gameLibs.at(cursorPos).at(i)->setCharacterColor(display::CYAN);
         for (auto game : gameLibs)
             displayElem(display, game);
