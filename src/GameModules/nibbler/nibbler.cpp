@@ -18,7 +18,7 @@
 
 namespace game {
 
-    void Nibbler::stop()
+    void Nibbler::stop(__attribute__((unused))arcade::ICore *core)
     {
         delete this;
     }

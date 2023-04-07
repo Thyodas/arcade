@@ -12,7 +12,7 @@
 
 namespace game {
 
-    void Snake::stop()
+    void Snake::stop(__attribute__((unused))arcade::ICore *core)
     {
         delete this;
     }

@@ -27,7 +27,7 @@ namespace game {
             ~Snake() {};
             void init(void) override;
             void update(display::IDisplayModule *display) override;
-            void stop(void) override;
+            void stop(arcade::ICore *core) override;
             void addElem(void);
             void initApple(void);
             void createHead(void);
