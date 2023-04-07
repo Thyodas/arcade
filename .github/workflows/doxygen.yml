@@ -12,4 +12,4 @@ jobs:
       - uses: mattnotmitt/doxygen-action@v1.9.5
         with:
           working-directory: '/'
-          doxyfile-path: '/Doxyfile'
+          doxyfile-path: 'Doxyfile'
