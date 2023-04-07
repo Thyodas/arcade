@@ -40,7 +40,7 @@
 [Subject PDF](https://intra.epitech.eu/module/2022/B-OOP-400/STG-4-1/acti-591517/project/file/B-OOP-400_arcade.pdf)
 
 <p align="left">Arcade is a gaming platform: a program that lets the user choose a game to play and keeps a register of player scores.</p>
-<p align="left">To be able to deal with the elements of your gaming plateorm at run-time, your graphics libraries and your games must be implemented as dynamic libraries, loaded at runtime.</p>
+<p align="left">To be able to deal with the elements of your gaming platform at run-time, your graphics libraries and your games must be implemented as dynamic libraries, loaded at runtime.</p>
 
 
 ### Built With
@@ -68,14 +68,46 @@ _How to run the arcade project and play fun video games_
    ```
 2. Compile files
    ```sh
-   cmake
+   mkdir build; cd build/; cmake .; make -j; cd ..
    ```
 3. Run the program
    ```sh
-   ./arcade ./[lib-name].so
+   ./arcade ./[graphicLib-name].so
    ```
 
+<!-- ADDING A LIB -->
+## Adding a graphic library
+If you wish to add a graphic library, your library must implement the IDisplayModule interface, otherwise it wont work.
+Also, your library should implement an entry point named *entryPointDisplay*.
+This function should return a new instance of your graphical library.
+If everything is correctly setup, your new graphical library should be present in the menu when starting the arcade.
+Please refer to the documentation for more in-depth explanation.
 
+## Adding a game library
+If you wish to add a game library, your library must implement the IGameModule interface, otherwise it wont work.
+Also, your library should implement an entry point named *entryPointGame*.
+This function should return a new instance of your game library.
+If everything is correctly setup, your game should appear in the menu when starting the arcade.
+Please refer to the documentation for more in-depth explanation.
+
+<!-- Controls -->
+## About controls
+Controls are very basic, here's an exhaustive list :
+- Z (upward movement)
+- Q (move to the left)
+- S (downward movement)
+- D (move to the right)
+- F (F key)
+- E (E key)
+- Space (Spacebar)
+- Escape (Escape key)
+- F1 (Previous graphic library)
+- F2 (Next grahpic library)
+- F3 (Previous game)
+- F4 (Next game)
+- F5 (Restart the game)
+- F6 (Go back to menu)
+- F7 (Exit the arcade)
 
 <!-- USAGE EXAMPLES -->
 ## Exemple
