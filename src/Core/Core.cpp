@@ -131,9 +131,9 @@ namespace arcade {
 
     void Core::mainLoop(const std::string displayLib)
     {
-        // setGameModule(std::string("lib/arcade_nibbler.so"));
+        setGameModule(std::string("lib/arcade_nibbler.so"));
         // setGameModule(std::string("lib/arcade_snake.so"));
-        setGameModule(std::string("lib/arcade_menu.so"));
+        // setGameModule(std::string("lib/arcade_menu.so"));
         setListLibs();
         setDisplayModule(displayLib);
         _game->init();
@@ -163,7 +163,7 @@ namespace arcade {
             _display->render();
         }
         _display->close();
-        _game->stop();
+        _game->stop(this);
         _loader.closeGameLib();
         _loader.closeGraphicLib();
     }

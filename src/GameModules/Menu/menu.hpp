@@ -17,7 +17,7 @@ namespace game {
             ~Menu() {};
             void init() override;
             void update(display::IDisplayModule *display) override;
-            void stop() override;
+            void stop(arcade::ICore *core) override;
             std::deque<std::shared_ptr<object::Rectangle>> initString(std::string str, display::Vector2i pos);
             void createCursor();
             void testLib(const std::string pathToLib);
