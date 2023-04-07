@@ -62,7 +62,7 @@ if (APPLE)
     find_package(SDL2_ttf REQUIRED)
     target_link_libraries(arcade_sdl2 SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf)
 else()
-    target_link_libraries(arcade_sdl2 ${SDL2_LIBRARIES})
+    target_link_libraries(arcade_sdl2 SDL2 SDL2_image SDL2_ttf)
 endif()
 include_directories(${SDL2_INCLUDE_DIRS})
 
