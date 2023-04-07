@@ -97,9 +97,9 @@ namespace arcade {
     {
         game::IGameModule *testGame = nullptr;
         display::IDisplayModule *testDisplay = nullptr;
-        void *handle = _loader.loadLib(pathToLib);
         if (pathToLib.find("menu") != std::string::npos)
             return;
+        void *handle = _loader.loadLib(pathToLib);
         if (!handle)
             return;
         if ((testGame = _loader.getEntryPoint<game::IGameModule *>(handle, "entryPointGame")) != nullptr) {
@@ -110,7 +110,7 @@ namespace arcade {
         }
         if ((testDisplay = _loader.getEntryPoint<display::IDisplayModule *>(handle, "entryPointDisplay")) != nullptr) {
             delete testDisplay;
-            // dlclose(handle);
+            dlclose(handle);
             _graphicLibs.push_back(pathToLib);
             return;
         }
@@ -131,6 +131,46 @@ namespace arcade {
             Core::_loop = false;
     }
 
+    bool Core::handleEvents(void)
+    {
+        if (_display->isButtonPressed(display::F1)) {
+            _indexGraphicLibs--;
+            _indexGraphicLibs = (_indexGraphicLibs < 0) ? _graphicLibs.size() : _indexGraphicLibs;
+            _display->close();
+            setDisplayModule(_graphicLibs[_indexGraphicLibs % _graphicLibs.size()]);
+            _display->init(display::Vector2i{800, 800});
+            return true;
+        }
+        if (_display->isButtonPressed(display::F2)) {
+            _indexGraphicLibs++;
+            _display->close();
+            setDisplayModule(_graphicLibs[_indexGraphicLibs % _graphicLibs.size()]);
+            _display->init(display::Vector2i{800, 800});
+            return true;
+        }
+
+        if (_display->isButtonPressed(display::F3)) {
+            _indexGameLibs--;
+            _indexGameLibs = (_indexGameLibs < 0) ? _graphicLibs.size() : _indexGameLibs;
+            _game->stop(this);
+            setGameModule(_gameLibs[_indexGameLibs % _gameLibs.size()]);
+            _game->init();
+            return true;
+        }
+        if (_display->isButtonPressed(display::F4)) {
+            _indexGameLibs++;
+            _game->stop(this);
+            setGameModule(_gameLibs[_indexGameLibs % _gameLibs.size()]);
+            _game->init();
+            return true;
+        }
+        if (_display->isButtonPressed(display::F7)) {
+            _loop = false;
+            return true;
+        }
+        return false;
+    }
+
     void Core::mainLoop(const std::string displayLib)
     {
         // setGameModule(std::string("lib/arcade_nibbler.so"));
@@ -149,23 +189,8 @@ namespace arcade {
             if (elapsed_time.count() < (1.00 / 20.00))
                 continue;
             lastTimeStamp = actualTimeStamp;
-            if (_display->isButtonPressed(display::F1)) {
-                _indexGraphicLibs--;
-                _indexGraphicLibs = (_indexGraphicLibs < 0) ? 0 : _graphicLibs.size();
-                _display->close();
-                setDisplayModule(_graphicLibs[_indexGraphicLibs % _graphicLibs.size()]);
-                _display->init(display::Vector2i{800, 800});
+            if (handleEvents())
                 continue;
-            }
-            if (_display->isButtonPressed(display::F2)) {
-                _indexGraphicLibs++;
-                _display->close();
-                setDisplayModule(_graphicLibs[_indexGraphicLibs % _graphicLibs.size()]);
-                _display->init(display::Vector2i{800, 800});
-                continue;
-            }
-            if (_display->isButtonPressed(display::F7))
-                _loop = false;
             _display->clearWindow(display::BLACK);
             _display->handleEvents();
             _game->update(_display);
