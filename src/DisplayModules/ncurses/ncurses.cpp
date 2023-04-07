@@ -39,8 +39,8 @@ namespace display {
         _buttonsMap[ESC] = 27;
         _buttonsMap[F1] = 80;
         _buttonsMap[F2] = 81;
-        _buttonsMap[F3] = KEY_F(3);
-        _buttonsMap[F4] = KEY_F(4);
+        _buttonsMap[F3] = 82;
+        _buttonsMap[F4] = 83;
         _buttonsMap[F5] = KEY_F(5);
         _buttonsMap[F6] = KEY_F(6);
         _buttonsMap[F7] = KEY_F(7);

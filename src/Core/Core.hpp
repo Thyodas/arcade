@@ -37,6 +37,8 @@ namespace arcade {
             void setGameModule(const std::string pathToLib) override;
             void setListLibs(void);
             void testLib(const std::string pathToLib);
+
+            bool handleEvents(void);
         public:
             static bool _loop;
         private:
@@ -44,7 +46,7 @@ namespace arcade {
             game::IGameModule *_game;
             std::vector<std::string> _graphicLibs;
             int _indexGraphicLibs;
-            std::list<std::string> _gameLibs;
+            std::vector<std::string> _gameLibs;
             int _indexGameLibs;
 
             Loader _loader;
