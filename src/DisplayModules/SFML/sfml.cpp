@@ -39,6 +39,7 @@ namespace display {
         _colorsMap[WHITE] = sf::Color::White;
 
         _mapDecorator[object::RECTANGLE] = [this](std::shared_ptr<object::IObject> obj) { drawRect(obj); };
+        _eventMode = BASIC;
     }
 
     bool SFMLRenderer::isButtonPressed(Button button)
@@ -95,6 +96,10 @@ namespace display {
     void SFMLRenderer::handleEvents()
     {
         _buttonsPressed.clear();
+        if (_eventMode == TXT) {
+            // getTextInput();
+            return;
+        }
         while (_window.pollEvent(_event)) {
             if (_event.type == sf::Event::Closed) {
                 _buttonsPressed.push_back(Button::F7);
@@ -106,6 +111,45 @@ namespace display {
                 _buttonsPressed.push_back((*it).first);
         }
     }
+
+    void SFMLRenderer::startTextInput()
+    {
+        _eventMode = TXT;
+    }
+
+    std::string SFMLRenderer::getTextInput()
+    {
+        static std::string userName;
+        while (_window.pollEvent(_event)) {
+            if (_event.type == sf::Event::KeyPressed) {
+                // std::cout << "key: " << _event.key.code << std::endl;
+                if (_event.key.code == 58) { // '\n' -> ENTER
+                    endTextInput();
+                    return "\n";
+                }
+                if (_event.key.code == 59) // DELETE
+                    userName.pop_back();
+                if (userName.size() == 11)
+                    break;
+                if (_event.key.code == 57) // SPACE
+                    userName += '_';
+                if (_event.key.code >= 0 && _event.key.code <= 25) // Alpha
+                    userName += _event.key.code + 97;
+                if (_event.key.code >= 75 && _event.key.code <= 84) // Num
+                    userName += _event.key.code - 27;
+            }
+        }
+        // std::cout << "userName: " << userName << std::endl;
+        return userName;
+    }
+
+    void SFMLRenderer::endTextInput()
+    {
+        _eventMode = BASIC;
+    }
+
+
+
 
     void SFMLRenderer::drawObj(std::shared_ptr<object::IObject> obj)
     {

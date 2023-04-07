@@ -18,7 +18,7 @@ namespace game {
             void init() override;
             void update(display::IDisplayModule *display) override;
             void stop(arcade::ICore *core) override;
-            std::deque<std::shared_ptr<object::Rectangle>> initString(std::string str, display::Vector2i pos);
+            std::deque<std::shared_ptr<object::Rectangle>> initString(std::string str, display::Vector2i pos, display::Color color);
             void createCursor();
             void testLib(const std::string pathToLib);
             void setListLibs();
@@ -29,5 +29,8 @@ namespace game {
             std::vector<std::deque<std::shared_ptr<object::Rectangle>>> gameLibs;
             std::vector<std::deque<std::shared_ptr<object::Rectangle>>> graphicLibs;
             std::deque<std::shared_ptr<object::Rectangle>> background;
+            std::deque<std::shared_ptr<object::Rectangle>> userName;
+            std::deque<std::shared_ptr<object::Rectangle>> titleUserName;
+            std::deque<std::shared_ptr<object::Rectangle>> titleScore;
     };
 }

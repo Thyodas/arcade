@@ -19,6 +19,12 @@
 #include <unordered_map>
 
 namespace display {
+
+    enum EVENT_MODE {
+        BASIC,
+        TXT
+    };
+
     class SFMLRenderer : public IDisplayModule {
         public:
             SFMLRenderer() {};
@@ -26,9 +32,9 @@ namespace display {
             void init(Vector2i windowSize) override;
             bool isButtonPressed(Button button) override;
 
-            void startTextInput() override {};
-            std::string getTextInput() override {};
-            void endTextInput() override {};
+            void startTextInput() override;
+            std::string getTextInput() override;
+            void endTextInput() override;
 
             void close() override;
 
@@ -47,6 +53,7 @@ namespace display {
             sf::RenderWindow _window;
             sf::Event _event;
             std::vector<Button> _buttonsPressed;
+            EVENT_MODE _eventMode;
     };
 
 }

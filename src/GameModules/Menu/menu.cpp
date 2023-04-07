@@ -11,7 +11,7 @@
 #include <vector>
 #include "menu.hpp"
 #define SIZE 1
-#define FIRST_LINE 12
+#define FIRST_LINE 14
 
 namespace game {
 
@@ -20,8 +20,13 @@ namespace game {
         delete this;
     }
 
+    void manageUserInput(display::IDisplayModule *display)
+    {
+        display->startTextInput();
+    }
 
-    std::deque<std::shared_ptr<object::Rectangle>> Menu::initString(std::string str, display::Vector2i pos)
+
+    std::deque<std::shared_ptr<object::Rectangle>> Menu::initString(std::string str, display::Vector2i pos, display::Color color)
     {
         std::string test;
         std::string tmp;
@@ -38,7 +43,7 @@ namespace game {
             elem->setColor(display::BLACK);
             elem->setCharacter(test[i]);
             elem->setText(test[i]);
-            elem->setCharacterColor(display::WHITE);
+            elem->setCharacterColor(color);
             string.push_back(elem);
         }
         return string;
@@ -68,14 +73,26 @@ namespace game {
 
     void Menu::createBackground(void)
     {
+        titleUserName = initString("Pseudo: ", display::Vector2i{6, FIRST_LINE-6}, display::CYAN);
+        for (int i = 4; i <= 32; ++i) {
+            for (int j = FIRST_LINE-7; j < 30; ++j)
+                if (i == 4 || j == FIRST_LINE-7 || i == 32 || j == 29)
+                    background.push_back(createElemBackground(display::Vector2i{i, j}, display::CYAN));
+        }
+        titleScore = initString("Score: ", display::Vector2i{35, FIRST_LINE-6}, display::YELLOW);
+        for (int i = 33; i <= 62; ++i) {
+            for (int j = FIRST_LINE-7; j < 30; ++j)
+                if (i == 33 || j == FIRST_LINE-7 || i == 62 || j == 29)
+                    background.push_back(createElemBackground(display::Vector2i{i, j}, display::YELLOW));
+        }
         for (int i = 4; i <= 32; ++i) {
             for (int j = FIRST_LINE-2; j < 30; ++j)
                 if (i == 4 || j == FIRST_LINE-2 || i == 32 || j == 29)
                     background.push_back(createElemBackground(display::Vector2i{i, j}, display::WHITE));
         }
-        for (int i = 33; i < 62; ++i) {
+        for (int i = 33; i <= 62; ++i) {
             for (int j = FIRST_LINE-2; j < 30; ++j)
-                if (i == 33 || j == FIRST_LINE-2 || i == 61 || j == 29)
+                if (i == 33 || j == FIRST_LINE-2 || i == 62 || j == 29)
                     background.push_back(createElemBackground(display::Vector2i{i, j}, display::WHITE));
         }
     }
@@ -103,7 +120,7 @@ namespace game {
         if ((testGame = loader.getEntryPoint<game::IGameModule *>(handle, "entryPointGame")) != nullptr) {
             delete testGame;
             std::string path = pathToLib.substr(pathToLib.find("_")+1);
-            gameLibs.push_back(initString(path.substr(0, path.size() - 3), gamePos));
+            gameLibs.push_back(initString(path.substr(0, path.size() - 3), gamePos, display::WHITE));
             gamePos.y += 2;
             dlclose(handle);
             return;
@@ -111,7 +128,7 @@ namespace game {
         if ((testDisplay = loader.getEntryPoint<display::IDisplayModule *>(handle, "entryPointDisplay")) != nullptr) {
             delete testDisplay;
             std::string path = pathToLib.substr(pathToLib.find("_")+1);
-            graphicLibs.push_back(initString(path.substr(0, path.size() - 3), graphicPos));
+            graphicLibs.push_back(initString(path.substr(0, path.size() - 3), graphicPos, display::WHITE));
             graphicPos.y += 2;
             dlclose(handle);
             return;
@@ -135,26 +152,44 @@ namespace game {
     void Menu::update(display::IDisplayModule *display)
     {
         static long unsigned int cursorPos = 0;
-        for (long unsigned int j = 0; j < gameLibs.size(); ++j) {
-            if (j != cursorPos)
-                for (long unsigned int i = 0; i < gameLibs.at(j).size(); ++i)
-                    gameLibs.at(j).at(i)->setCharacterColor(display::WHITE);
+        if (cursorPos == -1) {
+            std::string tmp = display->getTextInput();
+            if (tmp == "\n") {
+                cursorPos = 0;
+                cursor->setColor(display::WHITE);
+            } else
+                userName = initString(tmp, display::Vector2i{9, FIRST_LINE-4}, display::CYAN);
+        } else {
+            for (long unsigned int j = 0; j < gameLibs.size(); ++j) {
+                if (j != cursorPos)
+                    for (long unsigned int i = 0; i < gameLibs.at(j).size(); ++i)
+                        gameLibs.at(j).at(i)->setCharacterColor(display::WHITE);
+            }
+            if (display->isButtonPressed(display::UP)) {
+                if (cursorPos == 0) {
+                    cursorPos = -1;
+                    cursor->setColor(display::BLACK);
+                    display->startTextInput();
+                    return;
+                }
+                cursorPos -= cursorPos > 0 ? 1 : 0;
+                cursor->setPos(display::Vector2i{cursor->getPos().x, gameLibs.at(cursorPos).at(0)->getPos().y});
+            }
+            if (display->isButtonPressed(display::DOWN)) {
+                cursorPos += cursorPos < gameLibs.size()-1 ? 1 : 0;
+                cursor->setPos(display::Vector2i{cursor->getPos().x, gameLibs.at(cursorPos).at(0)->getPos().y});
+            }
+            for (long unsigned int i = 0; i < gameLibs.at(cursorPos).size(); ++i)
+                gameLibs.at(cursorPos).at(i)->setCharacterColor(display::CYAN);
         }
-        if (display->isButtonPressed(display::UP)) {
-            cursorPos -= cursorPos > 0 ? 1 : 0;
-            cursor->setPos(display::Vector2i{cursor->getPos().x, gameLibs.at(cursorPos).at(0)->getPos().y});
-        }
-        if (display->isButtonPressed(display::DOWN)) {
-            cursorPos += cursorPos < gameLibs.size()-1 ? 1 : 0;
-            cursor->setPos(display::Vector2i{cursor->getPos().x, gameLibs.at(cursorPos).at(0)->getPos().y});
-        }
-        for (long unsigned int i = 0; i < gameLibs.at(cursorPos).size(); ++i)
-            gameLibs.at(cursorPos).at(i)->setCharacterColor(display::CYAN);
         for (auto game : gameLibs)
             displayElem(display, game);
         for (auto graphic : graphicLibs)
             displayElem(display, graphic);
         displayElem(display, background);
+        displayElem(display, userName);
+        displayElem(display, titleUserName);
+        displayElem(display, titleScore);
         display->drawObj(cursor);
     }
 
