@@ -52,6 +52,7 @@ namespace display {
 
             sf::RenderWindow _window;
             sf::Event _event;
+            sf::Font _arial;
             std::vector<Button> _buttonsPressed;
             EVENT_MODE _eventMode;
     };

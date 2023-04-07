@@ -14,6 +14,8 @@ namespace display {
     {
         _window.create(sf::VideoMode(windowSize.x, windowSize.y), "Window SFML");
 
+        _arial.loadFromFile("fonts/arial.ttf");
+
         _buttonsMap[LEFT] = sf::Keyboard::Q;
         _buttonsMap[UP] = sf::Keyboard::Z;
         _buttonsMap[RIGHT] = sf::Keyboard::D;
@@ -69,11 +71,9 @@ namespace display {
         _window.draw(rectToDraw);
         if (rect->getText() != 0) {
             sf::Text text;
-            sf::Font font;
             std::string string;
             string.push_back(rect->getText());
-            font.loadFromFile("fonts/arial.ttf");
-            text.setFont(font);
+            text.setFont(_arial);
             text.setString(string);
             text.setCharacterSize(pixelSize.y);
             text.setFillColor(_colorsMap[rect->getCharacterColor()]);

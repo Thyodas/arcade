@@ -13,7 +13,7 @@ namespace display {
 
     void SDL2Renderer::init(Vector2i windowSize)
     {
-        if (SDL_Init(SDL_INIT_VIDEO) == -1)
+        if (SDL_Init(SDL_INIT_VIDEO) == -1 || TTF_Init() == -1)
             throw std::runtime_error("SDL2Renderer: " + std::string(SDL_GetError()));
 
         if ((_window = SDL_CreateWindow("Window SDL2", SDL_WINDOWPOS_CENTERED,
@@ -22,6 +22,8 @@ namespace display {
 
         if ((_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED)) == nullptr)
             throw std::runtime_error("SDL2Renderer: " + std::string(SDL_GetError()));
+
+        _arial = TTF_OpenFont("fonts/arial.ttf", 26);
 
         _buttonsMap[LEFT] = SDL_KeyCode::SDLK_q;
         _buttonsMap[UP] = SDL_KeyCode::SDLK_z;
@@ -83,6 +85,24 @@ namespace display {
         SDL_Color color = _colorsMap[rect->getColor()];
         SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
         SDL_RenderFillRect(_renderer, &rectToDraw);
+
+        if (rect->getText() == 0)
+            return;
+        std::string string;
+        string.push_back(rect->getText());
+        SDL_Surface *text_surface = TTF_RenderText_Solid(_arial, string.c_str(),
+            _colorsMap[rect->getCharacterColor()]);
+        SDL_Texture *text_texture = SDL_CreateTextureFromSurface(_renderer,
+            text_surface);
+        //rectToDraw.x -= text_surface->w / 2 - rectToDraw.w / 2;
+        //rectToDraw.w = text_surface->w;
+        //rectToDraw.h = text_surface->h;
+        SDL_QueryTexture(text_texture, nullptr, nullptr, &rectToDraw.w,
+            &rectToDraw.h);
+        rectToDraw.x -= rectToDraw.w / 2;
+        SDL_RenderCopy(_renderer, text_texture, nullptr, &rectToDraw);
+        SDL_FreeSurface(text_surface);
+        SDL_DestroyTexture(text_texture);
     }
 
     void SDL2Renderer::close()
@@ -90,6 +110,7 @@ namespace display {
         SDL_DestroyRenderer(_renderer);
         SDL_DestroyWindow(_window);
         SDL_Quit();
+        TTF_Quit();
         delete this;
     }
 
@@ -103,6 +124,7 @@ namespace display {
 
     void SDL2Renderer::handleEvents()
     {
+        _buttonsPressed.clear();
         while (SDL_PollEvent(&_event)) {
             if (_event.type == SDL_EventType::SDL_QUIT) {
                 _buttonsPressed.push_back(Button::F7);

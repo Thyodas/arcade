@@ -12,6 +12,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 #include <functional>
 #include <vector>
@@ -46,6 +47,7 @@ namespace display {
 
             SDL_Window *_window;
             SDL_Renderer *_renderer;
+            TTF_Font *_arial;
             SDL_Event _event;
             std::vector<Button> _buttonsPressed;
     };

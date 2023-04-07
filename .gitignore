@@ -11,3 +11,4 @@ Makefile
 cmake_install.cmake
 *.pdf
 CMakeCache.txt
+.DS_Store
