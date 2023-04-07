@@ -1,5 +1,15 @@
-- name: Doxygen GitHub Pages Deploy Action
-  uses: mattnotmitt/doxygen-action@v1.9.5
-  with:
-    working-directory: '/'
-    doxyfile-path: '/Doxyfile'
+name: Doxygen GitHub Pages Deploy Action
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: mattnotmitt/doxygen-action@v1.9.5
+        with:
+          working-directory: '/'
+          doxyfile-path: '/Doxyfile'
