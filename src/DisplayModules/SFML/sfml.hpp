@@ -26,6 +26,10 @@ namespace display {
             void init(Vector2i windowSize) override;
             bool isButtonPressed(Button button) override;
 
+            void startTextInput() override {};
+            std::string getTextInput() override {};
+            void endTextInput() override {};
+
             void close() override;
 
             void drawObj(std::shared_ptr<object::IObject> obj) override;

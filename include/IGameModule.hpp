@@ -9,13 +9,15 @@
 
 #include "IDisplayModule.hpp"
 
+namespace arcade { class ICore; }
+
 namespace game {
     class IGameModule {
         public:
             virtual ~IGameModule() = default;
             virtual void init() = 0;
             virtual void update(display::IDisplayModule *display) = 0;
-            virtual void stop() = 0;
+            virtual void stop(arcade::ICore *core) = 0;
     };
 }
 
