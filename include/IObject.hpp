@@ -27,6 +27,8 @@ namespace object {
      */
     class IObject {
         public:
+            virtual ~IObject() = default;
+
             /**
              * @brief Get the Type object
              *
@@ -134,17 +136,17 @@ namespace object {
             //Interface implementation
             Type getType() const override { return _id;};
 
-            void setPos(display::Vector2i pos) {_pos = pos;};
+            void setPos(display::Vector2i pos) override {_pos = pos;};
             display::Vector2i getPos() const override { return _pos;};
-            void setSize(display::Vector2i size) {_size = size;};
+            void setSize(display::Vector2i size) override {_size = size;};
             display::Vector2i getSize() const override { return _size;};
-            void setColor(display::Color color) {_color = color;};
-            display::Color getColor() const {return _color;};
+            void setColor(display::Color color) override {_color = color;};
+            display::Color getColor() const override {return _color;};
             //Graphic lib (SFML, SDL2)
-            void setTexture(std::string path) {_pathToTexture = path;};
+            void setTexture(std::string path) override {_pathToTexture = path;};
             std::string getTexture() const override { return _pathToTexture;};
             //Terminal graphical lib
-            void setCharacter(char c) {_character = c;};
+            void setCharacter(char c) override {_character = c;};
             char getCharacter() const override { return _character;};
             void setCharacterColor(display::Color color) override {_characterColor = color;};
             display::Color getCharacterColor() const override { return _characterColor;};
