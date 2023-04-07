@@ -57,10 +57,15 @@ set_target_properties(arcade_sfml PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CU
 
 add_library(arcade_sdl2 SHARED ${SDL2_SRCS})
 find_package(SDL2 REQUIRED COMPONENTS SDL2)
-find_package(SDL2_image REQUIRED)
-find_package(SDL2_ttf REQUIRED)
+if (APPLE)
+    find_package(SDL2_image REQUIRED)
+    find_package(SDL2_ttf REQUIRED)
+    target_link_libraries(arcade_sdl2 SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf)
+else()
+    target_link_libraries(arcade_sdl2 ${SDL2_LIBRARIES})
+endif()
 include_directories(${SDL2_INCLUDE_DIRS})
-target_link_libraries(arcade_sdl2 SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf)
+
 set_target_properties(arcade_sdl2 PROPERTIES PREFIX "" SUFFIX ".so")
 set_target_properties(arcade_sdl2 PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
