@@ -97,7 +97,7 @@ namespace display {
 
     void NcursesRenderer::clearWindow(__attribute__((unused))Color color)
     {
-        refresh();
+        clear();
     }
 
     void NcursesRenderer::handleEvents()
@@ -123,7 +123,7 @@ namespace display {
 
     void NcursesRenderer::render()
     {
-
+        refresh();
     }
 
 }

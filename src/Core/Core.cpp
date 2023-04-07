@@ -12,6 +12,8 @@
 #include <csignal>
 #include <filesystem>
 #include <iostream>
+#include <chrono>
+#include <ctime>
 
 namespace arcade {
     bool Core::_loop = true;
@@ -131,15 +133,22 @@ namespace arcade {
 
     void Core::mainLoop(const std::string displayLib)
     {
-        setGameModule(std::string("lib/arcade_nibbler.so"));
-        // setGameModule(std::string("lib/arcade_snake.so"));
-        // setGameModule(std::string("lib/arcade_menu.so"));
+        // setGameModule(std::string("lib/arcade_nibbler.so"));
+        //setGameModule(std::string("lib/arcade_snake.so"));
+        setGameModule(std::string("lib/arcade_menu.so"));
         setListLibs();
         setDisplayModule(displayLib);
         _game->init();
         _display->init(display::Vector2i{800, 800});
         std::signal(SIGINT, sigHandler);
+        std::chrono::time_point<std::chrono::system_clock> lastTimeStamp = std::chrono::system_clock::now();
+        std::chrono::time_point<std::chrono::system_clock> actualTimeStamp = std::chrono::system_clock::now();
         while (_loop) {
+            actualTimeStamp = std::chrono::system_clock::now();
+            std::chrono::duration<double> elapsed_time = actualTimeStamp - lastTimeStamp;
+            if (elapsed_time.count() < (1.00 / 20.00))
+                continue;
+            lastTimeStamp = actualTimeStamp;
             if (_display->isButtonPressed(display::F1)) {
                 _indexGraphicLibs--;
                 _indexGraphicLibs = (_indexGraphicLibs < 0) ? 0 : _graphicLibs.size();

@@ -15,7 +15,7 @@
 
 namespace game {
 
-    void Menu::stop(arcade::ICore *core)
+    void Menu::stop(__attribute__((unused))arcade::ICore *core)
     {
         delete this;
     }
