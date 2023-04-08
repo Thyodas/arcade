@@ -93,7 +93,6 @@ namespace game {
         apple->setSize(display::Vector2i{1, 1});
         apple->setColor(display::RED);
         apple->setCharacter('`');
-        apple->setText('`');
         apple->setCharacterColor(display::GREEN);
     }
 
