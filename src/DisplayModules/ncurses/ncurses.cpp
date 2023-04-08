@@ -128,23 +128,21 @@ namespace display {
         static std::string userName;
         char c;
         while ((c = getch()) != ERR) {
-            std::cerr << ">> key: " << c << std::endl; // jamais print
-            if (c == '\n') { // '\n' -> ENTER
+            if (c == '\n') {
                 endTextInput();
                 return "\n";
             }
-            if (c == 127) // DELETE
+            if (c == 127 && userName.size() > 1)
                 userName.pop_back();
             if (userName.size() == 11)
                 break;
-            if (c == ' ') // SPACE
+            if (c == ' ')
                 userName += '_';
-            if (c >= 'a' && c <= 'z') // Alpha
+            if (c >= 'a' && c <= 'z')
                 userName += c;
-            if (c >= '0' && c <= '9') // Num
+            if (c >= '0' && c <= '9')
                 userName += c;
         }
-        std::cerr << "userName: " << userName << std::endl;
         return userName;
     }
 

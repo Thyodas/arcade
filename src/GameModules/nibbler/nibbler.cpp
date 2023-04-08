@@ -52,8 +52,8 @@ namespace game {
         empty->setPos(pos);
         empty->setSize(display::Vector2i{2, SIZE});
         empty->setColor(display::BLACK);
-        empty->setCharacter('.');
-        empty->setText('.');
+        empty->setCharacter(' ');
+        empty->setText(' ');
         empty->setCharacterColor(display::BLACK);
         return empty;
     }

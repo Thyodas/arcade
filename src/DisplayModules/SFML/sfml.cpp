@@ -14,7 +14,7 @@ namespace display {
     {
         _window.create(sf::VideoMode(windowSize.x, windowSize.y), "Window SFML");
 
-        _arial.loadFromFile("fonts/arial.ttf");
+        _arial.loadFromFile("fonts/arial_narrow_7.ttf");
 
         _buttonsMap[LEFT] = sf::Keyboard::Q;
         _buttonsMap[UP] = sf::Keyboard::Z;
@@ -122,25 +122,27 @@ namespace display {
     {
         static std::string userName;
         while (_window.pollEvent(_event)) {
+            if (_event.type == sf::Event::Closed) {
+                _buttonsPressed.push_back(Button::F7);
+                continue;
+            }
             if (_event.type == sf::Event::KeyPressed) {
-                // std::cout << "key: " << _event.key.code << std::endl;
-                if (_event.key.code == 58) { // '\n' -> ENTER
+                if (_event.key.code == 58) {
                     endTextInput();
                     return "\n";
                 }
-                if (_event.key.code == 59) // DELETE
+                if (_event.key.code == 59)
                     userName.pop_back();
                 if (userName.size() == 11)
                     break;
-                if (_event.key.code == 57) // SPACE
+                if (_event.key.code == 57)
                     userName += '_';
-                if (_event.key.code >= 0 && _event.key.code <= 25) // Alpha
+                if (_event.key.code >= 0 && _event.key.code <= 25)
                     userName += _event.key.code + 97;
-                if (_event.key.code >= 75 && _event.key.code <= 84) // Num
+                if (_event.key.code >= 75 && _event.key.code <= 84)
                     userName += _event.key.code - 27;
             }
         }
-        // std::cout << "userName: " << userName << std::endl;
         return userName;
     }
 
