@@ -13,7 +13,9 @@
 namespace game {
     class Menu : public IGameModule {
         public:
-            Menu() {};
+            Menu() {
+                userNameStr = "";
+            };
             ~Menu() {};
             void init() override;
             void update(display::IDisplayModule *display) override;
@@ -24,6 +26,7 @@ namespace game {
             void setListLibs();
             void createBackground(void);
         private:
+            std::string userNameStr;
             arcade::Loader loader;
             std::shared_ptr<object::Rectangle> cursor;
             std::vector<std::deque<std::shared_ptr<object::Rectangle>>> gameLibs;

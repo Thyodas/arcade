@@ -24,6 +24,30 @@ namespace game {
         createWall(display::Vector2i{36, 18});
         for (int i = 0; i < 4; ++i)
             addElem();
+        _title = initString("Snake", display::Vector2i{27, 2}, display::WHITE);
+    }
+
+    std::deque<std::shared_ptr<object::Rectangle>> Snake::initString(std::string str, display::Vector2i pos, display::Color color)
+    {
+        std::string test;
+        std::string tmp;
+        test += " ";
+        for (int i = 0; str[i]; ++i) {
+            tmp = str[i];
+            test += tmp;
+        }
+        std::deque<std::shared_ptr<object::Rectangle>> string = std::deque<std::shared_ptr<object::Rectangle>>();
+        for (int i = test.length() - 1; i != -1; --i) {
+            std::shared_ptr<object::Rectangle> elem = std::make_shared<object::Rectangle>();
+            elem->setPos(display::Vector2i{pos.x+((SIZE)*i), pos.y});
+            elem->setSize(display::Vector2i{SIZE, SIZE});
+            elem->setColor(display::BLACK);
+            elem->setCharacter(test[i]);
+            elem->setText(test[i]);
+            elem->setCharacterColor(color);
+            string.push_back(elem);
+        }
+        return string;
     }
 
     void Snake::createWall(display::Vector2i size)
@@ -207,6 +231,8 @@ namespace game {
             display->drawObj(snake.at(i));
         for (long unsigned int i = 0; i < walls.size(); ++i)
             display->drawObj(walls.at(i));
+        for (auto elem : _title)
+            display->drawObj(elem);
     }
 }
 

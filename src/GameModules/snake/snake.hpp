@@ -38,7 +38,10 @@ namespace game {
             void move(display::IDisplayModule *display);
             void createWall(display::Vector2i size);
         private:
+            std::deque<std::shared_ptr<object::Rectangle>> initString(std::string str, display::Vector2i pos, display::Color color);
+        private:
             std::deque<std::shared_ptr<object::Rectangle>> snake;
+            std::deque<std::shared_ptr<object::Rectangle>> _title;
             std::shared_ptr<object::Rectangle> apple;
             std::deque<std::shared_ptr<object::Rectangle>> walls;
             int score;

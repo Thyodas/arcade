@@ -75,9 +75,9 @@ namespace display {
             string.push_back(rect->getText());
             text.setFont(_arial);
             text.setString(string);
-            text.setCharacterSize(pixelSize.y);
+            text.setCharacterSize(pixelSize.x);
             text.setFillColor(_colorsMap[rect->getCharacterColor()]);
-            text.setPosition(sf::Vector2f{pixelPos.x, pixelPos.y + (pixelSize.y / 2) - (text.getCharacterSize() / 2)});
+            text.setPosition(sf::Vector2f{pixelPos.x + pixelSize.x / 2, pixelPos.y});
             _window.draw(text);
         }
     }

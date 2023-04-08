@@ -17,6 +17,7 @@ namespace game {
 
     void Menu::stop(__attribute__((unused))arcade::ICore *core)
     {
+        core->setPlayerName(userNameStr);
         delete this;
     }
 
@@ -25,18 +26,17 @@ namespace game {
         display->startTextInput();
     }
 
-
     std::deque<std::shared_ptr<object::Rectangle>> Menu::initString(std::string str, display::Vector2i pos, display::Color color)
     {
         std::string test;
         std::string tmp;
+        test += " ";
         for (int i = 0; str[i]; ++i) {
             tmp = str[i];
-            test += tmp + " ";
+            test += tmp;
         }
-        test += " ";
         std::deque<std::shared_ptr<object::Rectangle>> string = std::deque<std::shared_ptr<object::Rectangle>>();
-        for (int i = 0; test[i]; ++i) {
+        for (int i = test.length() - 1; i != -1; --i) {
             std::shared_ptr<object::Rectangle> elem = std::make_shared<object::Rectangle>();
             elem->setPos(display::Vector2i{pos.x+((SIZE)*i), pos.y});
             elem->setSize(display::Vector2i{SIZE, SIZE});
@@ -157,8 +157,11 @@ namespace game {
             if (tmp == "\n") {
                 cursorPos = 0;
                 cursor->setColor(display::WHITE);
-            } else
+            } else {
                 userName = initString(tmp, display::Vector2i{9, FIRST_LINE-4}, display::CYAN);
+                userNameStr.clear();
+                userNameStr += tmp;
+            }
         } else {
             for (long unsigned int j = 0; j < gameLibs.size(); ++j) {
                 if (j != cursorPos)
@@ -194,7 +197,6 @@ namespace game {
     }
 
 }
-
 
 extern "C"
 {
