@@ -31,6 +31,7 @@ namespace game {
             void init(void) override;
             void update(display::IDisplayModule *display) override;
             void stop(arcade::ICore *core) override;
+        private:
             void addElem(void);
             void initApple(void);
             void createHead(void);
@@ -43,11 +44,13 @@ namespace game {
             void checkEvent(display::IDisplayModule *display);
             void moveHead(game::DIRECTION way);
             game::DIRECTION  choseWay(void);
+            std::deque<std::shared_ptr<object::Rectangle>> initString(std::string str, display::Vector2i pos, display::Color color);
         private:
             std::deque<std::shared_ptr<object::Rectangle>> nibbler;
             std::array<std::array<std::shared_ptr<object::Rectangle>, 19>, 19> map;
             std::deque<std::shared_ptr<object::Rectangle>> walls;
             int lvl;
+            std::deque<std::shared_ptr<object::Rectangle>> _title;
             int score;
             DIRECTION direction;
             display::Vector2i index;

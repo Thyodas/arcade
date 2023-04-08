@@ -86,12 +86,37 @@ namespace game {
         }
     }
 
+    std::deque<std::shared_ptr<object::Rectangle>> Nibbler::initString(std::string str, display::Vector2i pos, display::Color color)
+    {
+        std::string test;
+        std::string tmp;
+        for (int i = 0; str[i]; ++i) {
+            tmp = str[i];
+            test += tmp;
+        }
+        test += " ";
+        std::deque<std::shared_ptr<object::Rectangle>> string = std::deque<std::shared_ptr<object::Rectangle>>();
+        for (int i = 0; test[i]; ++i) {
+            std::shared_ptr<object::Rectangle> elem = std::make_shared<object::Rectangle>();
+            elem->setPos(display::Vector2i{pos.x+((SIZE)*i), pos.y});
+            elem->setSize(display::Vector2i{SIZE, SIZE});
+            elem->setColor(display::BLACK);
+            elem->setCharacter(test[i]);
+            elem->setText(test[i]);
+            elem->setCharacterColor(color);
+            string.push_back(elem);
+        }
+        return string;
+    }
+
+
     void Nibbler::init()
     {
         index.y = 17-6;
         index.x = 11+6;
         createHead();
         createMap();
+        _title = initString("Nibbler", display::Vector2i{27, 2}, display::WHITE);
         for (int i = 0; i < 4; ++i)
             addElem();
     }
@@ -141,6 +166,7 @@ namespace game {
     {
         if (map[index.x][index.y]->getCharacter() == FOOD) {
             addElem();
+            score++;
             map[index.x][index.y] = isEmpty(display::Vector2i{pos.x, pos.y});
             nbFood--;
         }
@@ -254,7 +280,6 @@ namespace game {
 
     void Nibbler::checkEvent(display::IDisplayModule *display)
     {
-        display::Vector2i pos = nibbler.at(0)->getPos();
         if (display->isButtonPressed(display::UP) && direction != game::DIRECTION::DOWN) {
             if (map[index.x-SIZE][index.y]->getCharacter() != WALL) {
                 direction = game::DIRECTION::UP;
@@ -343,12 +368,22 @@ namespace game {
         move(display);
         checkBody();
         checkFood(nibbler.at(0)->getPos());
+        std::string lvlInStr = std::to_string(lvl);
+        std::deque<std::shared_ptr<object::Rectangle>> displayLvl = initString("Lvl : " + lvlInStr, display::Vector2i{18, 4}, display::WHITE);
+        std::string scoreInStr = std::to_string(score * 100);
+        std::deque<std::shared_ptr<object::Rectangle>> displayScore = initString("Score : " + scoreInStr, display::Vector2i{34, 4}, display::WHITE);
 
         for (int i = 0; i < 19; ++i)
             for (int j = 0; j < 19; ++j)
                 display->drawObj(map[i][j]);
         for (long unsigned int i = 0; i < nibbler.size(); ++i)
             display->drawObj(nibbler.at(i));
+        for (auto character: _title)
+            display->drawObj(character);
+        for (auto elem : displayScore)
+            display->drawObj(elem);
+        for (auto elem : displayLvl)
+            display->drawObj(elem);
 
         if (nbFood == 0) {
             lvl++;
