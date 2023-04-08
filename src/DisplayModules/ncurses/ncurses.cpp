@@ -132,7 +132,7 @@ namespace display {
                 endTextInput();
                 return "\n";
             }
-            if (c == 127 && userName.size() > 1)
+            if (c == 127 && userName.size() > 0)
                 userName.pop_back();
             if (userName.size() == 11)
                 break;

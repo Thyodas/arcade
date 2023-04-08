@@ -179,7 +179,7 @@ namespace display {
                     std::cout << "mode: " << _eventMode << std::endl;
                     return "\n";
                 }
-                if (key == 8 && userName.size() > 1)
+                if (key == 8 && userName.size() > 0)
                     userName.pop_back();
                 if (userName.size() == 11)
                     break;

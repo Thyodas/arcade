@@ -131,7 +131,7 @@ namespace display {
                     endTextInput();
                     return "\n";
                 }
-                if (_event.key.code == 59)
+                if (_event.key.code == 59 && userName.size() > 0)
                     userName.pop_back();
                 if (userName.size() == 11)
                     break;
