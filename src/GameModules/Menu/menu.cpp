@@ -66,7 +66,6 @@ namespace game {
         elem->setSize(display::Vector2i{SIZE, SIZE});
         elem->setColor(color);
         elem->setCharacter(' ');
-        elem->setText(' ');
         elem->setCharacterColor(color);
         return elem;
     }

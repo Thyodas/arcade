@@ -31,13 +31,13 @@ namespace game {
     {
         std::string test;
         std::string tmp;
-        test += " ";
         for (int i = 0; str[i]; ++i) {
             tmp = str[i];
             test += tmp;
         }
+        test += " ";
         std::deque<std::shared_ptr<object::Rectangle>> string = std::deque<std::shared_ptr<object::Rectangle>>();
-        for (int i = test.length() - 1; i != -1; --i) {
+        for (int i = 0; test[i]; ++i) {
             std::shared_ptr<object::Rectangle> elem = std::make_shared<object::Rectangle>();
             elem->setPos(display::Vector2i{pos.x+((SIZE)*i), pos.y});
             elem->setSize(display::Vector2i{SIZE, SIZE});
@@ -71,9 +71,8 @@ namespace game {
         std::shared_ptr<object::Rectangle> elem = std::make_shared<object::Rectangle>();
         elem->setPos(display::Vector2i{33, 15});
         elem->setSize(display::Vector2i{SIZE, SIZE});
-        elem->setColor(display::GREEN);
+        elem->setColor(display::WHITE);
         elem->setCharacter('<');
-        elem->setText('<');
         elem->setCharacterColor(display::BLACK);
         snake.push_back(elem);
     }
@@ -120,7 +119,6 @@ namespace game {
                         snake.at(snake.size() - 1)->getPos().y});
         elem->setColor(display::GREEN);
         elem->setCharacter('*');
-        elem->setText('*');
         elem->setCharacterColor(display::GREEN);
         snake.push_back(elem);
     }
@@ -168,9 +166,6 @@ namespace game {
             addElem();
     }
 
-    //1920 --> 158 = 12.15
-    //1080 --> 42 = 25.7
-
     void Snake::move(display::IDisplayModule *display)
     {
         if (display->isButtonPressed(display::UP) && direction != game::DIRECTION::DOWN) {
@@ -182,7 +177,6 @@ namespace game {
                                 snake.at(0)->getPos().y -
                                 snake.at(snake.size() - 1)->getSize().y});
             snake.at(0)->setCharacter('v');
-            snake.at(0)->setText('v');
 
         } else if (display->isButtonPressed(display::RIGHT) && direction != game::DIRECTION::LEFT) {
             direction = game::DIRECTION::RIGHT;
@@ -193,7 +187,6 @@ namespace game {
                                 snake.at(snake.size() - 1)->getSize().x * 2,
                                 snake.at(0)->getPos().y});
             snake.at(0)->setCharacter('<');
-            snake.at(0)->setText('<');
 
         } else if (display->isButtonPressed(display::LEFT) && direction != game::DIRECTION::RIGHT) {
             direction = game::DIRECTION::LEFT;
@@ -204,7 +197,6 @@ namespace game {
                                 snake.at(snake.size() - 1)->getSize().x * 2,
                                 snake.at(0)->getPos().y});
             snake.at(0)->setCharacter('>');
-            snake.at(0)->setText('>');
 
         } else if (display->isButtonPressed(display::DOWN) && direction != game::DIRECTION::UP) {
             direction = game::DIRECTION::DOWN;
@@ -214,8 +206,7 @@ namespace game {
             snake.at(0)->setPos(display::Vector2i{snake.at(0)->getPos().x,
                                 snake.at(0)->getPos().y +
                                 snake.at(snake.size() - 1)->getSize().y});
-            snake.at(0)->setCharacter('^');
-            snake.at(0)->setText('^');
+            snake.at(0)->setCharacter('^');;
         }
     }
 
@@ -225,6 +216,8 @@ namespace game {
         checkApple();
         checkWall();
         checkBody();
+        std::string scoreInStr = std::to_string(score * 100);
+        std::deque<std::shared_ptr<object::Rectangle>> displayScore = initString("Score : " + scoreInStr, display::Vector2i{26, 4}, display::WHITE);
 
         display->drawObj(apple);
         for (long unsigned int i = 0; i < snake.size(); ++i)
@@ -232,6 +225,8 @@ namespace game {
         for (long unsigned int i = 0; i < walls.size(); ++i)
             display->drawObj(walls.at(i));
         for (auto elem : _title)
+            display->drawObj(elem);
+        for (auto elem : displayScore)
             display->drawObj(elem);
     }
 }

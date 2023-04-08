@@ -30,7 +30,6 @@ namespace game {
         wall->setSize(display::Vector2i{SIZE, SIZE});
         wall->setColor(color);
         wall->setCharacter(WALL);
-        wall->setText(WALL);
         wall->setCharacterColor(color);
         return wall;
     }
@@ -75,12 +74,12 @@ namespace game {
         while (std::getline(myfile, line)) {
             for (auto character : line) {
                 if (character == WALL)
-                    map[i][j++] = isWall(display::Vector2i{(j*2)+15, i+8}, (display::Color)color);
+                    map[i][j++] = isWall(display::Vector2i{(j * 2)+15, i+8}, (display::Color)color);
                 else if (character == FOOD) {
-                    map[i][j++] = isFood(display::Vector2i{(j*2)+15, i+8});
+                    map[i][j++] = isFood(display::Vector2i{(j * 2)+15, i+8});
                     nbFood++;
                 } else
-                    map[i][j++] = isEmpty(display::Vector2i{(j*2)+15, i+8});
+                    map[i][j++] = isEmpty(display::Vector2i{(j * 2)+15, i+8});
             }
             i++;
             j = 0;
@@ -102,9 +101,8 @@ namespace game {
         std::shared_ptr<object::Rectangle> elem = std::make_shared<object::Rectangle>();
         elem->setPos(display::Vector2i{37, 25});
         elem->setSize(display::Vector2i{SIZE, SIZE});
-        elem->setColor(display::RED);
+        elem->setColor(display::WHITE);
         elem->setCharacter('<');
-        elem->setText('<');
         elem->setCharacterColor(display::BLACK);
         nibbler.push_back(elem);
     }
@@ -131,7 +129,6 @@ namespace game {
                         nibbler.at(nibbler.size() - 1)->getPos().y});
         elem->setColor(display::RED);
         elem->setCharacter('*');
-        elem->setText('*');
         elem->setCharacterColor(display::RED);
         nibbler.push_back(elem);
     }
@@ -234,28 +231,24 @@ namespace game {
             nibbler.at(0)->setPos(display::Vector2i{pos.x, pos.y-SIZE});
             direction = game::DIRECTION::UP;
             nibbler.at(0)->setCharacter('v');
-            nibbler.at(0)->setText('v');
         }
         if (way == game::DIRECTION::RIGHT) {
             index.y += SIZE;
             nibbler.at(0)->setPos(display::Vector2i{pos.x+2, pos.y});
             direction = game::DIRECTION::RIGHT;
             nibbler.at(0)->setCharacter('<');
-            nibbler.at(0)->setText('<');
         }
         if (way == game::DIRECTION::DOWN) {
             index.x += SIZE;
             nibbler.at(0)->setPos(display::Vector2i{pos.x, pos.y+SIZE});
             direction = game::DIRECTION::DOWN;
             nibbler.at(0)->setCharacter('^');
-            nibbler.at(0)->setText('^');
         }
         if (way == game::DIRECTION::LEFT) {
             index.y -= SIZE;
             nibbler.at(0)->setPos(display::Vector2i{pos.x-2, pos.y});
             direction = game::DIRECTION::LEFT;
             nibbler.at(0)->setCharacter('>');
-            nibbler.at(0)->setText('>');
         }
     }
 
@@ -272,7 +265,6 @@ namespace game {
                 nibbler.at(0)->setPos(pos);
                 direction = game::DIRECTION::UP;
                 nibbler.at(0)->setCharacter('v');
-                nibbler.at(0)->setText('v');
             } else {
                 game::DIRECTION way = choseWay();
                 if (way != direction)
@@ -288,7 +280,6 @@ namespace game {
                 nibbler.at(0)->setPos(pos);
                 direction = game::DIRECTION::RIGHT;
                 nibbler.at(0)->setCharacter('<');
-                nibbler.at(0)->setText('<');
             } else {
                 game::DIRECTION way = choseWay();
                 if (way != direction)
@@ -304,7 +295,6 @@ namespace game {
                 nibbler.at(0)->setPos(pos);
                 direction = game::DIRECTION::LEFT;
                 nibbler.at(0)->setCharacter('>');
-                nibbler.at(0)->setText('>');
             } else {
                 game::DIRECTION way = choseWay();
                 if (way != direction)
@@ -320,7 +310,6 @@ namespace game {
                 nibbler.at(0)->setPos(pos);
                 direction = game::DIRECTION::DOWN;
                 nibbler.at(0)->setCharacter('^');
-                nibbler.at(0)->setText('^');
             } else {
                 game::DIRECTION way = choseWay();
                 if (way != direction)

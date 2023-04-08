@@ -68,18 +68,20 @@ namespace display {
         sf::Vector2f pixelPos = convertCellPosToPixelPos(rect->getPos());
         rectToDraw.setPosition(pixelPos);
         rectToDraw.setFillColor(_colorsMap[rect->getColor()]);
-        _window.draw(rectToDraw);
         if (rect->getText() != 0) {
+            rectToDraw.setFillColor(sf::Color::Transparent);
+            _window.draw(rectToDraw);
             sf::Text text;
             std::string string;
             string.push_back(rect->getText());
             text.setFont(_arial);
             text.setString(string);
-            text.setCharacterSize(pixelSize.x);
+            text.setCharacterSize(20);
             text.setFillColor(_colorsMap[rect->getCharacterColor()]);
-            text.setPosition(sf::Vector2f{pixelPos.x + pixelSize.x / 2, pixelPos.y});
+            text.setPosition(sf::Vector2f{pixelPos.x, pixelPos.y + (pixelSize.y / 2) - (text.getCharacterSize() / 2)});
             _window.draw(text);
-        }
+        } else
+            _window.draw(rectToDraw);
     }
 
     void SFMLRenderer::close()
