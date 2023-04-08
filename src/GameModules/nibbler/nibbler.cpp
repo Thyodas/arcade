@@ -29,8 +29,8 @@ namespace game {
         wall->setPos(pos);
         wall->setSize(display::Vector2i{SIZE, SIZE});
         wall->setColor(color);
-        wall->setCharacter(WALL);
-        wall->setText(WALL);
+        wall->setCharacter(' ');
+        wall->setText(' ');
         wall->setCharacterColor(color);
         return wall;
     }
@@ -53,8 +53,8 @@ namespace game {
         empty->setPos(pos);
         empty->setSize(display::Vector2i{2, SIZE});
         empty->setColor(display::BLACK);
-        empty->setCharacter('.');
-        empty->setText('.');
+        empty->setCharacter(' ');
+        empty->setText(' ');
         empty->setCharacterColor(display::BLACK);
         return empty;
     }
@@ -130,8 +130,8 @@ namespace game {
                         nibbler.at(nibbler.size() - 1)->getSize().x,
                         nibbler.at(nibbler.size() - 1)->getPos().y});
         elem->setColor(display::RED);
-        elem->setCharacter('*');
-        elem->setText('*');
+        elem->setCharacter(' ');
+        elem->setText(' ');
         elem->setCharacterColor(display::RED);
         nibbler.push_back(elem);
     }

@@ -8,6 +8,7 @@
 #include "sdl2.hpp"
 #include <stdexcept>
 #include <memory>
+#include <algorithm>
 
 namespace display {
 
@@ -23,7 +24,7 @@ namespace display {
         if ((_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED)) == nullptr)
             throw std::runtime_error("SDL2Renderer: " + std::string(SDL_GetError()));
 
-        _arial = TTF_OpenFont("fonts/arial.ttf", 26);
+        _arial = TTF_OpenFont("fonts/arial_narrow_7.ttf", 26);
 
         _buttonsMap[LEFT] = SDL_KeyCode::SDLK_q;
         _buttonsMap[UP] = SDL_KeyCode::SDLK_z;
@@ -49,9 +50,10 @@ namespace display {
         _colorsMap[YELLOW] = SDL_Color{255, 255, 0, 100};
         _colorsMap[BLUE] = SDL_Color{0, 0, 255, 100};
         _colorsMap[MAGENTA] = SDL_Color{255, 0, 255, 100};
-        _colorsMap[CYAN] = SDL_Color{0, 255, 255, 100};
+        _colorsMap[CYAN] = SDL_Color{0, 255, 255, 255};
         _colorsMap[WHITE] = SDL_Color{255, 255, 255, 100};
 
+        _eventMode = BASIC;
         _mapDecorator[object::RECTANGLE] = [this](std::shared_ptr<object::IObject> obj) { drawRect(obj); };
     }
 
@@ -125,6 +127,8 @@ namespace display {
     void SDL2Renderer::handleEvents()
     {
         _buttonsPressed.clear();
+        if (_eventMode == TXT)
+            return;
         while (SDL_PollEvent(&_event)) {
             if (_event.type == SDL_EventType::SDL_QUIT) {
                 _buttonsPressed.push_back(Button::F7);
@@ -151,6 +155,50 @@ namespace display {
             if (item.second)
                 _buttonsPressed.push_back(item.first);
     }
+
+    void SDL2Renderer::startTextInput()
+    {
+        _eventMode = TXT;
+    }
+
+    std::string SDL2Renderer::getTextInput()
+    {
+        static std::string userName;
+        int key;
+        while (SDL_PollEvent(&_event)) {
+            if (_event.type == SDL_EventType::SDL_QUIT) {
+                _buttonsPressed.push_back(Button::F7);
+                continue;
+            }
+            if (_event.type == SDL_EventType::SDL_KEYDOWN) {
+                key = _event.key.keysym.sym;
+                if (key == SDLK_RETURN || key == SDLK_RETURN2) {
+                    std::cout << "QUIT" << std::endl;
+                    std::cout << "key: " << key << std::endl;
+                    endTextInput();
+                    std::cout << "mode: " << _eventMode << std::endl;
+                    return "\n";
+                }
+                if (key == 8 && userName.size() > 1)
+                    userName.pop_back();
+                if (userName.size() == 11)
+                    break;
+                if (key == ' ')
+                    userName += '_';
+                if (key >= 'a' && key <= 'z')
+                    userName += key;
+                if (key >= '0' && key <= '9')
+                    userName += key;
+            }
+        }
+        return userName;
+    }
+
+    void SDL2Renderer::endTextInput()
+    {
+        _eventMode = BASIC;
+    }
+
 
     void SDL2Renderer::drawObj(std::shared_ptr<object::IObject> obj)
     {

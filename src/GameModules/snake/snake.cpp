@@ -59,7 +59,7 @@ namespace game {
                     wall->setPos(display::Vector2i{i, j});
                     wall->setSize(display::Vector2i{1, 1});
                     wall->setColor(display::WHITE);
-                    wall->setCharacter('*');
+                    wall->setCharacter(' ');
                     wall->setCharacterColor(display::WHITE);
                     walls.push_back(wall);
                 }
@@ -119,8 +119,8 @@ namespace game {
                         snake.at(snake.size() - 1)->getSize().x,
                         snake.at(snake.size() - 1)->getPos().y});
         elem->setColor(display::GREEN);
-        elem->setCharacter('*');
-        elem->setText('*');
+        elem->setCharacter(' ');
+        elem->setText(' ');
         elem->setCharacterColor(display::GREEN);
         snake.push_back(elem);
     }
