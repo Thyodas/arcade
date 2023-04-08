@@ -16,6 +16,12 @@
 #include <unordered_map>
 
 namespace display {
+
+    enum EVENT_MODE {
+        BASIC,
+        TXT
+    };
+
     class NcursesRenderer : public IDisplayModule {
         public:
             NcursesRenderer() : _pairsMap({{}}) {};
@@ -23,9 +29,9 @@ namespace display {
             void init(Vector2i windowSize) override;
             bool isButtonPressed(Button button) override;
 
-            void startTextInput() override {};
-            std::string getTextInput() override {};
-            void endTextInput() override {};
+            void startTextInput() override;
+            std::string getTextInput() override;
+            void endTextInput() override;
 
             void close() override;
 
@@ -57,6 +63,7 @@ namespace display {
             std::map<object::Type, std::function<void(std::shared_ptr<object::IObject> obj)>> _mapDecorator;
 
             std::vector<Button> _buttonsPressed;
+            EVENT_MODE _eventMode;
     };
 
 }

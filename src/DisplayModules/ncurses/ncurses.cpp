@@ -61,6 +61,7 @@ namespace display {
             }
         }
 
+        _eventMode = BASIC;
         _mapDecorator[object::RECTANGLE] = [this](std::shared_ptr<object::IObject> obj) { drawRect(obj); };
     }
 
@@ -104,6 +105,8 @@ namespace display {
     {
         getmaxyx(_window, _sizeTerminal.y, _sizeTerminal.x);
         int c;
+        if (_eventMode == TXT)
+            return;
         while ((c = getch()) != ERR) {
             for (auto it = _buttonsMap.begin() ; it != _buttonsMap.end() ; ++it) {
                 if ((*it).second == c) {
@@ -114,6 +117,42 @@ namespace display {
             }
         }
     }
+
+    void NcursesRenderer::startTextInput()
+    {
+        _eventMode = TXT;
+    }
+
+    std::string NcursesRenderer::getTextInput()
+    {
+        static std::string userName;
+        char c;
+        while ((c = getch()) != ERR) {
+            std::cerr << ">> key: " << c << std::endl; // jamais print
+            if (c == '\n') { // '\n' -> ENTER
+                endTextInput();
+                return "\n";
+            }
+            if (c == 127) // DELETE
+                userName.pop_back();
+            if (userName.size() == 11)
+                break;
+            if (c == ' ') // SPACE
+                userName += '_';
+            if (c >= 'a' && c <= 'z') // Alpha
+                userName += c;
+            if (c >= '0' && c <= '9') // Num
+                userName += c;
+        }
+        std::cerr << "userName: " << userName << std::endl;
+        return userName;
+    }
+
+    void NcursesRenderer::endTextInput()
+    {
+        _eventMode = BASIC;
+    }
+
 
     void NcursesRenderer::drawObj(std::shared_ptr<object::IObject> obj)
     {

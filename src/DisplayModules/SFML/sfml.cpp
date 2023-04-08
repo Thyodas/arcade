@@ -97,7 +97,6 @@ namespace display {
     {
         _buttonsPressed.clear();
         if (_eventMode == TXT) {
-            // getTextInput();
             return;
         }
         while (_window.pollEvent(_event)) {
