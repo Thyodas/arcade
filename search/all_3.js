@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['deprecated_20list_0',['Deprecated List',['../deprecated.html',1,'']]],
-  ['display_1',['display',['../namespacedisplay.html',1,'']]],
-  ['drawobj_2',['drawObj',['../classdisplay_1_1_i_display_module.html#a42f935978d69a8985a5cc86184232f6a',1,'display::IDisplayModule::drawObj()'],['../classdisplay_1_1_ncurses_renderer.html#a461ab44d6332b2113ca9dc5ad2a4ee35',1,'display::NcursesRenderer::drawObj()'],['../classdisplay_1_1_s_d_l2_renderer.html#abca8cc54eae282ad068b284a95747234',1,'display::SDL2Renderer::drawObj()'],['../classdisplay_1_1_s_f_m_l_renderer.html#a28552497a8860260614bef6545da3f5b',1,'display::SFMLRenderer::drawObj()']]]
+  ['endtextinput_0',['endTextInput',['../classdisplay_1_1_i_display_module.html#a3561c72775069294dd89fc46d1ebabc7',1,'display::IDisplayModule::endTextInput()'],['../classdisplay_1_1_ncurses_renderer.html#abbd8fceb0f771ec4e0f485a968a89aa0',1,'display::NcursesRenderer::endTextInput()'],['../classdisplay_1_1_s_d_l2_renderer.html#af7180a2c84382f8e1f604340146ef67b',1,'display::SDL2Renderer::endTextInput()'],['../classdisplay_1_1_s_f_m_l_renderer.html#a66386e4bea7f77f6c03b05e850ea3a21',1,'display::SFMLRenderer::endTextInput()']]],
+  ['error_1',['Error',['../classarcade_1_1_error.html',1,'arcade']]]
 ];

@@ -19,10 +19,6 @@ var annotated_dup =
       [ "Nibbler", "classgame_1_1_nibbler.html", "classgame_1_1_nibbler" ],
       [ "Snake", "classgame_1_1_snake.html", "classgame_1_1_snake" ]
     ] ],
-    [ "MyLibrary", null, [
-      [ "Example", "class_my_library_1_1_example.html", "class_my_library_1_1_example" ],
-      [ "SubclassExample", "class_my_library_1_1_subclass_example.html", "class_my_library_1_1_subclass_example" ]
-    ] ],
     [ "object", "namespaceobject.html", [
       [ "IObject", "classobject_1_1_i_object.html", "classobject_1_1_i_object" ],
       [ "Rectangle", "classobject_1_1_rectangle.html", "classobject_1_1_rectangle" ]

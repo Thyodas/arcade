@@ -25,9 +25,6 @@
 var NAVTREE =
 [
   [ "Arcade", "index.html", [
-    [ "Bug List", "bug.html", null ],
-    [ "Deprecated List", "deprecated.html", null ],
-    [ "Todo List", "todo.html", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -53,7 +50,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_core_8hpp_source.html",
-"classobject_1_1_rectangle.html#aae0f852aadeca5d272e55d12e42d3f34"
+"dir_021f2850897a4f9cb18319aff2fc3fcf.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
