@@ -36,6 +36,7 @@ namespace game {
             void checkWall(void);
             void checkBody(void);
             void move(display::IDisplayModule *display);
+            void checkEvent(display::IDisplayModule *display);
             void createWall(display::Vector2i size);
         private:
             std::deque<std::shared_ptr<object::Rectangle>> initString(std::string str, display::Vector2i pos, display::Color color);

@@ -165,52 +165,49 @@ namespace game {
             addElem();
     }
 
-    void Snake::move(display::IDisplayModule *display)
+    void Snake::checkEvent(display::IDisplayModule *display)
     {
         if (display->isButtonPressed(display::UP) && direction != game::DIRECTION::DOWN) {
             direction = game::DIRECTION::UP;
-            for (long unsigned int i = snake.size() - 1; i > 0; --i)
-                snake.at(i)->setPos(display::Vector2i{snake.at(i - 1)->getPos().x,
-                                                        snake.at(i - 1)->getPos().y});
-            snake.at(0)->setPos(display::Vector2i{snake.at(0)->getPos().x,
-                                snake.at(0)->getPos().y -
-                                snake.at(snake.size() - 1)->getSize().y});
             snake.at(0)->setCharacter('v');
-
         } else if (display->isButtonPressed(display::RIGHT) && direction != game::DIRECTION::LEFT) {
             direction = game::DIRECTION::RIGHT;
-            for (long unsigned int i = snake.size() - 1; i > 0; --i)
-                snake.at(i)->setPos(display::Vector2i{snake.at(i - 1)->getPos().x,
-                                                    snake.at(i - 1)->getPos().y});
-            snake.at(0)->setPos(display::Vector2i{snake.at(0)->getPos().x +
-                                snake.at(snake.size() - 1)->getSize().x * 2,
-                                snake.at(0)->getPos().y});
             snake.at(0)->setCharacter('<');
-
         } else if (display->isButtonPressed(display::LEFT) && direction != game::DIRECTION::RIGHT) {
             direction = game::DIRECTION::LEFT;
-            for (long unsigned int i = snake.size()-1; i > 0; --i)
-                snake.at(i)->setPos(display::Vector2i{snake.at(i - 1)->getPos().x,
-                                    snake.at(i-1)->getPos().y});
-            snake.at(0)->setPos(display::Vector2i{snake.at(0)->getPos().x -
-                                snake.at(snake.size() - 1)->getSize().x * 2,
-                                snake.at(0)->getPos().y});
             snake.at(0)->setCharacter('>');
-
         } else if (display->isButtonPressed(display::DOWN) && direction != game::DIRECTION::UP) {
             direction = game::DIRECTION::DOWN;
-            for (long unsigned int i = snake.size() - 1; i > 0; --i)
-                snake.at(i)->setPos(display::Vector2i{snake.at(i - 1)->getPos().x,
-                                    snake.at(i - 1)->getPos().y});
-            snake.at(0)->setPos(display::Vector2i{snake.at(0)->getPos().x,
-                                snake.at(0)->getPos().y +
-                                snake.at(snake.size() - 1)->getSize().y});
             snake.at(0)->setCharacter('^');;
+        }
+    }
+
+    void Snake::move(display::IDisplayModule *display) {
+        display::Vector2i pos = snake.at(0)->getPos();
+        for (long unsigned int i = snake.size() - 1; i > 0; --i)
+            snake.at(i)->setPos(display::Vector2i{snake.at(i - 1)->getPos().x,
+                snake.at(i - 1)->getPos().y});
+        if (direction == game::DIRECTION::UP) {
+            snake.at(0)->setPos(display::Vector2i{pos.x,
+            pos.y - snake.at(snake.size() - 1)->getSize().y});
+        }
+        if (direction == game::DIRECTION::RIGHT) {
+            snake.at(0)->setPos(display::Vector2i{pos.x +
+            snake.at(snake.size() - 1)->getSize().x * 2, pos.y});
+        }
+        if (direction == game::DIRECTION::LEFT) {
+            snake.at(0)->setPos(display::Vector2i{pos.x -
+            snake.at(snake.size() - 1)->getSize().x * 2, pos.y});
+        }
+        if (direction == game::DIRECTION::DOWN) {
+            snake.at(0)->setPos(display::Vector2i{pos.x,
+            pos.y + snake.at(snake.size() - 1)->getSize().y});
         }
     }
 
     void Snake::update(display::IDisplayModule *display)
     {
+        checkEvent(display);
         move(display);
         checkApple();
         checkWall();

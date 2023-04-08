@@ -110,7 +110,7 @@ namespace arcade {
         }
         if ((testDisplay = _loader.getEntryPoint<display::IDisplayModule *>(handle, "entryPointDisplay")) != nullptr) {
             delete testDisplay;
-            // dlclose(handle);
+            dlclose(handle);
             _graphicLibs.push_back(pathToLib);
             return;
         }
@@ -173,8 +173,8 @@ namespace arcade {
 
     void Core::mainLoop(const std::string displayLib)
     {
-         //setGameModule(std::string("lib/arcade_nibbler.so"));
-        //setGameModule(std::string("lib/arcade_snake.so"));
+        //setGameModule(std::string("lib/arcade_nibbler.so"));
+        // setGameModule(std::string("lib/arcade_snake.so"));
         setGameModule(std::string("lib/arcade_menu.so"));
         setListLibs();
         setDisplayModule(displayLib);
@@ -186,7 +186,7 @@ namespace arcade {
         while (_loop) {
             actualTimeStamp = std::chrono::system_clock::now();
             std::chrono::duration<double> elapsed_time = actualTimeStamp - lastTimeStamp;
-            if (elapsed_time.count() < (1.00 / 20.00))
+            if (elapsed_time.count() < (1.00 / 6.00))
                 continue;
             lastTimeStamp = actualTimeStamp;
             if (handleEvents())
