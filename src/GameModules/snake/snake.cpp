@@ -167,6 +167,8 @@ namespace game {
 
     void Snake::checkEvent(display::IDisplayModule *display)
     {
+        if (display->isButtonPressed(display::F5))
+            return resetGame();
         if (display->isButtonPressed(display::UP) && direction != game::DIRECTION::DOWN) {
             direction = game::DIRECTION::UP;
             snake.at(0)->setCharacter('v');
@@ -182,7 +184,7 @@ namespace game {
         }
     }
 
-    void Snake::move(display::IDisplayModule *display) {
+    void Snake::move() {
         display::Vector2i pos = snake.at(0)->getPos();
         for (long unsigned int i = snake.size() - 1; i > 0; --i)
             snake.at(i)->setPos(display::Vector2i{snake.at(i - 1)->getPos().x,
@@ -208,7 +210,7 @@ namespace game {
     void Snake::update(display::IDisplayModule *display)
     {
         checkEvent(display);
-        move(display);
+        move();
         checkApple();
         checkWall();
         checkBody();

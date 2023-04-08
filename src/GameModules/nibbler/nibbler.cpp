@@ -280,6 +280,8 @@ namespace game {
 
     void Nibbler::checkEvent(display::IDisplayModule *display)
     {
+        if (display->isButtonPressed(display::F5))
+            return resetGame();
         if (display->isButtonPressed(display::UP) && direction != game::DIRECTION::DOWN) {
             if (map[index.x-SIZE][index.y]->getCharacter() != WALL) {
                 direction = game::DIRECTION::UP;
@@ -303,7 +305,7 @@ namespace game {
         }
     }
 
-    void Nibbler::move(display::IDisplayModule *display)
+    void Nibbler::move()
     {
         display::Vector2i pos = nibbler.at(0)->getPos();
         if (direction == game::DIRECTION::UP) {
@@ -365,7 +367,7 @@ namespace game {
     void Nibbler::update(display::IDisplayModule *display)
     {
         checkEvent(display);
-        move(display);
+        move();
         checkBody();
         checkFood(nibbler.at(0)->getPos());
         std::string lvlInStr = std::to_string(lvl);

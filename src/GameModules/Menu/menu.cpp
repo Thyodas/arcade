@@ -96,6 +96,60 @@ namespace game {
         }
     }
 
+    void Menu::initControl(bool show)
+    {
+        int y = 3;
+        while (_control.size() > 0)
+            _control.pop_back();
+        if (!show) {
+            _control = initString("To show controls press E", display::Vector2i{5, y+2}, display::WHITE);
+            show = false;
+            return;
+        }
+        for (int i = 0; i < 66; ++i)
+            for (int j = 0; j < 66; ++j) {
+                if ((i == 16 || j == 6 || i == 54 || j == 28) &&
+                    (i >= 16 && j >= 6 && i <= 54 && j <= 28))
+                    _control.push_back(createElemBackground(display::Vector2i{i,j}, display::CYAN));
+                else
+                    _control.push_back(createElemBackground(display::Vector2i{i,j}, display::BLACK));
+            }
+        std::deque<std::shared_ptr<object::Rectangle>> title = initString("Controls:", display::Vector2i{28, y}, display::WHITE);
+        std::deque<std::shared_ptr<object::Rectangle>> z = initString("Z       ->  up", display::Vector2i{20, (y+=5)}, display::WHITE);
+        std::deque<std::shared_ptr<object::Rectangle>> q = initString("Q       ->  left", display::Vector2i{20, (y+=2)}, display::WHITE);
+        std::deque<std::shared_ptr<object::Rectangle>> s = initString("S       ->  down", display::Vector2i{20, (y+=2)}, display::WHITE);
+        std::deque<std::shared_ptr<object::Rectangle>> d = initString("D       ->  right", display::Vector2i{20, (y+=2)}, display::WHITE);
+        std::deque<std::shared_ptr<object::Rectangle>> f1 = initString("f1      ->  prev graphic lib", display::Vector2i{20, (y+=2)}, display::WHITE);
+        std::deque<std::shared_ptr<object::Rectangle>> f2 = initString("f2      ->  next graphic lib", display::Vector2i{20, (y+=2)}, display::WHITE);
+        std::deque<std::shared_ptr<object::Rectangle>> f3 = initString("f3      ->  prev game", display::Vector2i{20, (y+=2)}, display::WHITE);
+        std::deque<std::shared_ptr<object::Rectangle>> f4 = initString("f4      ->  next game", display::Vector2i{20, (y+=2)}, display::WHITE);
+        std::deque<std::shared_ptr<object::Rectangle>> f5 = initString("f5      ->  restart game", display::Vector2i{20, (y+=2)}, display::WHITE);
+        std::deque<std::shared_ptr<object::Rectangle>> f7 = initString("f7      ->  exit", display::Vector2i{20, (y+=2)}, display::WHITE);
+        for (auto elem : title)
+            _control.push_back(elem);
+        for (auto elem : z)
+            _control.push_back(elem);
+        for (auto elem : q)
+            _control.push_back(elem);
+        for (auto elem : s)
+            _control.push_back(elem);
+        for (auto elem : d)
+            _control.push_back(elem);
+        for (auto elem : f1)
+            _control.push_back(elem);
+        for (auto elem : f2)
+            _control.push_back(elem);
+        for (auto elem : f3)
+            _control.push_back(elem);
+        for (auto elem : f4)
+            _control.push_back(elem);
+        for (auto elem : f5)
+            _control.push_back(elem);
+        for (auto elem : f7)
+            _control.push_back(elem);
+        show = true;
+    }
+
     void Menu::setListLibs()
     {
         for (const auto &entry : std::filesystem::directory_iterator("./lib")) {
@@ -139,6 +193,8 @@ namespace game {
         createBackground();
         createCursor();
         setListLibs();
+        initControl(false);
+        _title = initString("M E N U", display::Vector2i{28, 2}, display::WHITE);
     }
 
     void displayElem(display::IDisplayModule *display,
@@ -150,12 +206,16 @@ namespace game {
 
     void Menu::update(display::IDisplayModule *display)
     {
+        static bool show = false;
+        static bool showCursor = false;
         static long unsigned int cursorPos = 0;
-        if (cursorPos == -1) {
+        showCursor = !showCursor;
+        if (cursorPos == (long unsigned int)-1 && !show) {
             std::string tmp = display->getTextInput();
             if (tmp == "\n") {
                 cursorPos = 0;
                 cursor->setColor(display::WHITE);
+                cursor->setPos(display::Vector2i{8, 14});
             } else {
                 userName = initString(tmp, display::Vector2i{9, FIRST_LINE-4}, display::CYAN);
                 userNameStr.clear();
@@ -167,17 +227,22 @@ namespace game {
                     for (long unsigned int i = 0; i < gameLibs.at(j).size(); ++i)
                         gameLibs.at(j).at(i)->setCharacterColor(display::WHITE);
             }
-            if (display->isButtonPressed(display::UP)) {
+            if (display->isButtonPressed(display::KEY_E)) {
+                show = !show;
+                initControl(show);
+            }
+            if (display->isButtonPressed(display::UP) && !show) {
                 if (cursorPos == 0) {
                     cursorPos = -1;
-                    cursor->setColor(display::BLACK);
+                    // cursor->setColor(display::BLACK);
+                    cursor->setPos(display::Vector2i{8, 10});
                     display->startTextInput();
                     return;
                 }
                 cursorPos -= cursorPos > 0 ? 1 : 0;
                 cursor->setPos(display::Vector2i{cursor->getPos().x, gameLibs.at(cursorPos).at(0)->getPos().y});
             }
-            if (display->isButtonPressed(display::DOWN)) {
+            if (display->isButtonPressed(display::DOWN) && !show) {
                 cursorPos += cursorPos < gameLibs.size()-1 ? 1 : 0;
                 cursor->setPos(display::Vector2i{cursor->getPos().x, gameLibs.at(cursorPos).at(0)->getPos().y});
             }
@@ -192,7 +257,10 @@ namespace game {
         displayElem(display, userName);
         displayElem(display, titleUserName);
         displayElem(display, titleScore);
-        display->drawObj(cursor);
+        displayElem(display, _title);
+        if (showCursor)
+            display->drawObj(cursor);
+        displayElem(display, _control);
     }
 
 }

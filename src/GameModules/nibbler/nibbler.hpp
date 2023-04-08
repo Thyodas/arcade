@@ -40,7 +40,7 @@ namespace game {
             void checkWall(void);
             void checkBody(void);
             void checkFood(display::Vector2i pos);
-            void move(display::IDisplayModule *display);
+            void move(void);
             void checkEvent(display::IDisplayModule *display);
             void moveHead(game::DIRECTION way);
             game::DIRECTION  choseWay(void);
