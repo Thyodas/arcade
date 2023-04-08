@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['loader_0',['Loader',['../classarcade_1_1_loader.html',1,'arcade']]],
-  ['loadlib_1',['loadLib',['../classarcade_1_1_loader.html#a38d7b31c2e3e96dc96d82ec596262f2a',1,'arcade::Loader']]]
+  ['handleevents_0',['handleEvents',['../classdisplay_1_1_i_display_module.html#a9f4eb16b80f97e346e242badad93299e',1,'display::IDisplayModule::handleEvents()'],['../classdisplay_1_1_ncurses_renderer.html#a0c6c643e2f6210746c90f9b08c7c2790',1,'display::NcursesRenderer::handleEvents()'],['../classdisplay_1_1_s_d_l2_renderer.html#ae5b5b42d03837fcc6b94f70aabbb6fd7',1,'display::SDL2Renderer::handleEvents()'],['../classdisplay_1_1_s_f_m_l_renderer.html#a2ca1d252b8baa270c4ba2f487ebea271',1,'display::SFMLRenderer::handleEvents()']]]
 ];
