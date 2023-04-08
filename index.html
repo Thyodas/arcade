@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Arcade: Main Page</title>
+<title>Arcade: Arcade</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -84,10 +84,95 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </iframe>
 </div>
 
-<div class="header">
-  <div class="headertitle"><div class="title">Arcade Documentation</div></div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">Arcade </div></div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><p >Table of Contents</p>
+<p ><a class="anchor" id="md_README"></a></p>
+<p ><br  />
+ </p><div align="center"></div><div align="center"> <h1 align="center">Arcade</h1>
+</div><div align="center"> <h3 align="center">A Retro Platform</h3>
+</div><div align="center"></div><div align="center"> <img src="https://static.vecteezy.com/system/resources/thumbnails/002/185/779/small/arcade-neon-signs-style-text-free-vector.jpg" alt="Logo" width="250" height="250" class="inline"/> </div><p >&lt;details&gt;</p>
+<ol>
+<li>
+<a href="#about-the-project">About The Project</a> <ul>
+<li>
+<a href="#built-with">Built With</a> </li>
+</ul>
+</li>
+<li>
+<a href="#getting-started">Getting Started</a> <ul>
+<li>
+<a href="#installation">Installation</a> </li>
+</ul>
+</li>
+<li>
+<a href="#usage">Exemple</a> </li>
+<li>
+<a href="#license">License</a> </li>
+<li>
+<a href="#contact">Contact</a> </li>
+</ol>
+<p>&lt;/details&gt;</p>
+<h2>About The Project</h2>
+<p ><a href="https://intra.epitech.eu/module/2022/B-OOP-400/STG-4-1/acti-591517/project/file/B-OOP-400_arcade.pdf">Subject PDF</a></p>
+<p  align="left"></p>
+<p >Arcade is a gaming platform: a program that lets the user choose a game to play and keeps a register of player scores.</p>
+<p  align="left"></p>
+<p >To be able to deal with the elements of your gaming platform at run-time, your graphics libraries and your games must be implemented as dynamic libraries, loaded at runtime.</p>
+<h3>Built With</h3>
+<p >This project use:</p>
+<ul>
+<li>CPP &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="https://fr.wikipedia.org/wiki/C%2B%2B"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/ISO_C%2B%2B_Logo.svg/1822px-ISO_C%2B%2B_Logo.svg.png" alt="" width="35" height="35" class="inline"/></a></li>
+<li>SFML&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="https://www.sfml-dev.org/index-fr.php"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/SFML_Logo.svg/1200px-SFML_Logo.svg.png" alt="" width="35" height="35" class="inline"/></a></li>
+<li>Ncurse&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="https://fr.wikipedia.org/wiki/Ncurses"><img src="https://avatars.githubusercontent.com/u/15212165?v=4&amp;s=160" alt="" width="35" height="35" class="inline"/></a></li>
+<li>SDL2&#160;&#160;&#160;&#160;&#160;&#160; <a href="https://discourse.libsdl.org/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Simple_DirectMedia_Layer%2C_Logo.svg/800px-Simple_DirectMedia_Layer%2C_Logo.svg.png" alt="" width="65" height="30" class="inline"/></a></li>
+</ul>
+<h2>Getting Started</h2>
+<h3>Installation</h3>
+<p ><em>How to run the arcade project and play fun video games</em></p>
+<ol type="1">
+<li>Clone the repo <div class="fragment"><div class="line">git clone git@github.com:EpitechPromo2026/B-OOP-400-STG-4-1-arcade-marie.giacomel.git</div>
+</div><!-- fragment --></li>
+<li>Compile files <div class="fragment"><div class="line">mkdir build; cd build/; cmake .; make -j; cd ..</div>
+</div><!-- fragment --></li>
+<li>Run the program <div class="fragment"><div class="line">./arcade ./[graphicLib-name].so</div>
+</div><!-- fragment --></li>
+</ol>
+<h2>Adding a graphic library</h2>
+<p >If you wish to add a graphic library, your library must implement the IDisplayModule interface, otherwise it wont work. Also, your library should implement an entry point named <em>entryPointDisplay</em>. This function should return a new instance of your graphical library. If everything is correctly setup, your new graphical library should be present in the menu when starting the arcade. Please refer to the documentation for more in-depth explanation.</p>
+<h2>Adding a game library</h2>
+<p >If you wish to add a game library, your library must implement the IGameModule interface, otherwise it wont work. Also, your library should implement an entry point named <em>entryPointGame</em>. This function should return a new instance of your game library. If everything is correctly setup, your game should appear in the menu when starting the arcade. Please refer to the documentation for more in-depth explanation.</p>
+<h2>About controls</h2>
+<p >Controls are very basic, here's an exhaustive list :</p><ul>
+<li>Z (upward movement)</li>
+<li>Q (move to the left)</li>
+<li>S (downward movement)</li>
+<li>D (move to the right)</li>
+<li>F (F key)</li>
+<li>E (E key)</li>
+<li>Space (Spacebar)</li>
+<li>Escape (Escape key)</li>
+<li>F1 (Previous graphic library)</li>
+<li>F2 (Next grahpic library)</li>
+<li>F3 (Previous game)</li>
+<li>F4 (Next game)</li>
+<li>F5 (Restart the game)</li>
+<li>F6 (Go back to menu)</li>
+<li>F7 (Exit the arcade)</li>
+</ul>
+<h2>Exemple</h2>
+<p >This project is still under development</p>
+<p ><em>For more information, please refer to the <a href="https://example.com">Documentation</a></em></p>
+<h2>License</h2>
+<p >This project belongs to its authors, copying it will be sanctioned by Marvin</p>
+<h2>Contact</h2>
+<p >Guillaume Hein - <a href="https://github.com/Thyodas">[GitHub]</a> - <a href="#" onclick="location.href='mai'+'lto:'+'gui'+'ll'+'aum'+'e.'+'hei'+'n@'+'epi'+'te'+'ch.'+'eu'; return false;">guill<span style="display: none;">.nosp@m.</span>aume<span style="display: none;">.nosp@m.</span>.hein<span style="display: none;">.nosp@m.</span>@epi<span style="display: none;">.nosp@m.</span>tech.<span style="display: none;">.nosp@m.</span>eu</a></p>
+<p >Marie Giacomel - <a href="https://github.com/Sauterelle57">[GitHub]</a> - <a href="#" onclick="location.href='mai'+'lto:'+'mar'+'ie'+'.gi'+'ac'+'ome'+'l@'+'epi'+'te'+'ch.'+'eu'; return false;">marie<span style="display: none;">.nosp@m.</span>.gia<span style="display: none;">.nosp@m.</span>comel<span style="display: none;">.nosp@m.</span>@epi<span style="display: none;">.nosp@m.</span>tech.<span style="display: none;">.nosp@m.</span>eu</a></p>
+<p >Mehdy morvan - <a href="https://github.com/iMeaNz">[GitHub]</a> - <a href="#" onclick="location.href='mai'+'lto:'+'meh'+'dy'+'.mo'+'rv'+'an@'+'ep'+'ite'+'ch'+'.eu'; return false;">mehdy<span style="display: none;">.nosp@m.</span>.mor<span style="display: none;">.nosp@m.</span>van@e<span style="display: none;">.nosp@m.</span>pite<span style="display: none;">.nosp@m.</span>ch.eu</a></p>
+<p >Project Link: <a href="https://github.com/EpitechPromo2026/B-OOP-400-STG-4-1-arcade-marie.giacomel">https://github.com/EpitechPromo2026/B-OOP-400-STG-4-1-arcade</a> </p>
+</div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
