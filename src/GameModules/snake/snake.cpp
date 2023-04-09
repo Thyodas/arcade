@@ -5,15 +5,21 @@
 ** Snake.cpp
 */
 
-#include "snake.hpp"
 #include <vector>
 #include <time.h>
+#include <iostream>
+#include <fstream>
+#include "snake.hpp"
 #define SIZE 1
 
 namespace game {
 
     void Snake::stop(__attribute__((unused))arcade::ICore *core)
     {
+        std::ofstream scoreFile;
+        scoreFile.open("score.arcade", std::fstream::app);
+        scoreFile << "snake " << core->getPlayerName() << " " << std::to_string(score) << "00" << std::endl;
+        scoreFile.close();
         delete this;
     }
 

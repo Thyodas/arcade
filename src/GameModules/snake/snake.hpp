@@ -5,9 +5,10 @@
 ** snake.hpp
 */
 
+#include <deque>
 #include "IGameModule.hpp"
 #include "IObject.hpp"
-#include <deque>
+#include "Loader.hpp"
 
 namespace game {
 

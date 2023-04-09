@@ -5,10 +5,11 @@
 ** nibbler.hpp
 */
 
-#include "IGameModule.hpp"
-#include "IObject.hpp"
 #include <deque>
 #include <array>
+#include "IGameModule.hpp"
+#include "IObject.hpp"
+#include "Loader.hpp"
 
 namespace game {
 

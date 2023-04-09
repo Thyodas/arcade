@@ -5,12 +5,12 @@
 ** Nibbler.cpp
 */
 
-#include "nibbler.hpp"
 #include <vector>
 #include <algorithm>
 #include <fstream>
 #include <stdexcept>
 #include <time.h>
+#include "nibbler.hpp"
 #define SIZE 1
 #define WALL '#'
 #define FOOD 'o'
@@ -20,6 +20,10 @@ namespace game {
 
     void Nibbler::stop(__attribute__((unused))arcade::ICore *core)
     {
+        std::ofstream scoreFile;
+        scoreFile.open("score.arcade", std::fstream::app);
+        scoreFile << "nibbler " << core->getPlayerName() << " " << std::to_string(lvl) << "-" << std::to_string(score) << "00" << std::endl;
+        scoreFile.close();
         delete this;
     }
 
