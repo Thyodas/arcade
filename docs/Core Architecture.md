@@ -30,7 +30,7 @@ The implementation of this function is entirely up to you, there are ways to kno
 
 ## Object example
 If we take the Rectangle example, here is a very simple implementation
-```C++
+```cpp
 class Rectangle : public ARectangle {
     public:
         Rectangle() { _id = RECTANGLE;};
