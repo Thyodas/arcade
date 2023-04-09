@@ -128,6 +128,7 @@ namespace display {
     void SDL2Renderer::handleEvents()
     {
         _buttonsPressed.clear();
+        _buttonsPressedMap.clear();
         if (_eventMode == TXT)
             return;
         while (SDL_PollEvent(&_event)) {
