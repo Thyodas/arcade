@@ -245,6 +245,7 @@ namespace game {
     void Menu::update(display::IDisplayModule *display)
     {
         static bool show = false;
+        static std::string userNameTmp = "";
         static bool showCursor = false;
         static long unsigned int cursorPos = 0;
         showCursor = !showCursor;
@@ -256,9 +257,8 @@ namespace game {
                 cursor->setPos(display::Vector2i{8, 14});
                 _score = initString(getPlayerScore(gameLibsStr[cursorPos]), display::Vector2i{38, 10}, display::WHITE);
             } else {
-                _userName = initString(tmp, display::Vector2i{9, FIRST_LINE-4}, display::CYAN);
-                userNameStr.clear();
-                userNameStr += tmp;
+                userNameTmp.clear();
+                userNameTmp += tmp;
             }
         } else {
             for (long unsigned int j = 0; j < gameLibs.size(); ++j) {
@@ -289,6 +289,8 @@ namespace game {
             for (long unsigned int i = 0; i < gameLibs.at(cursorPos).size(); ++i)
                 gameLibs.at(cursorPos).at(i)->setCharacterColor(display::CYAN);
         }
+        userNameStr = userNameTmp;
+        _userName = initString(userNameTmp, display::Vector2i{9, FIRST_LINE-4}, display::CYAN);
         for (auto game : gameLibs)
             displayElem(display, game);
         for (auto graphic : graphicLibs)
