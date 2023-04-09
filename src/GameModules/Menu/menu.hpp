@@ -6,6 +6,7 @@
 */
 
 #include <deque>
+#include <vector>
 #include "IGameModule.hpp"
 #include "IObject.hpp"
 #include "Loader.hpp"
@@ -26,15 +27,20 @@ namespace game {
             void testLib(const std::string pathToLib);
             void setListLibs(void);
             void createBackground(void);
+            std::string getPlayerScore(std::string game);
             void initControl(bool show);
         private:
+            std::string _scoreStr;
             std::string userNameStr;
+            std::vector<std::string> graphicLibsStr;
+            std::vector<std::string> gameLibsStr;
             arcade::Loader loader;
             std::shared_ptr<object::Rectangle> cursor;
             std::vector<std::deque<std::shared_ptr<object::Rectangle>>> gameLibs;
             std::vector<std::deque<std::shared_ptr<object::Rectangle>>> graphicLibs;
             std::deque<std::shared_ptr<object::Rectangle>> background;
-            std::deque<std::shared_ptr<object::Rectangle>> userName;
+            std::deque<std::shared_ptr<object::Rectangle>> _userName;
+            std::deque<std::shared_ptr<object::Rectangle>> _score;
             std::deque<std::shared_ptr<object::Rectangle>> titleUserName;
             std::deque<std::shared_ptr<object::Rectangle>> titleScore;
             std::deque<std::shared_ptr<object::Rectangle>> _title;

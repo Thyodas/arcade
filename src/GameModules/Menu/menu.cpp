@@ -7,8 +7,11 @@
 
 #include <vector>
 #include <list>
+#include <string>
+#include <algorithm>
 #include <filesystem>
 #include <vector>
+#include <fstream>
 #include "menu.hpp"
 #define SIZE 1
 #define FIRST_LINE 14
@@ -174,6 +177,7 @@ namespace game {
             delete testGame;
             std::string path = pathToLib.substr(pathToLib.find("_")+1);
             gameLibs.push_back(initString(path.substr(0, path.size() - 3), gamePos, display::WHITE));
+            gameLibsStr.push_back(path.substr(0, path.size() - 3));
             gamePos.y += 2;
             dlclose(handle);
             return;
@@ -182,6 +186,7 @@ namespace game {
             delete testDisplay;
             std::string path = pathToLib.substr(pathToLib.find("_")+1);
             graphicLibs.push_back(initString(path.substr(0, path.size() - 3), graphicPos, display::WHITE));
+            graphicLibsStr.push_back(path.substr(0, path.size() - 3));
             graphicPos.y += 2;
             dlclose(handle);
             return;
@@ -204,6 +209,39 @@ namespace game {
             display->drawObj(elem);
     }
 
+    std::vector<std::string> splitScore(std::string line)
+    {
+        std::vector<std::string> array;
+        size_t pos = line.find(' ');
+        size_t initialPos = 0;
+
+        while(pos != std::string::npos) {
+            array.push_back(line.substr( initialPos, pos - initialPos));
+            initialPos = pos + 1;
+            pos = line.find(' ', initialPos);
+        }
+        array.push_back(line.substr(initialPos, std::min(pos, line.size()) - initialPos+1));
+        return array;
+    }
+
+
+    std::string Menu::getPlayerScore(std::string game)
+    {
+        std::vector<int> allPlayerScores;
+        std::ifstream scoreFile("score.arcade");
+        std::string line;
+        while (std::getline(scoreFile, line)) {
+            std::vector<std::string> lineSplit = splitScore(line);
+            if (game == lineSplit[0] && userNameStr == lineSplit[1])
+                allPlayerScores.push_back(stoi(lineSplit[2]));
+        }
+        if (allPlayerScores.size() != 0) {
+            auto max = std::max_element(allPlayerScores.begin(), allPlayerScores.end());
+            return std::to_string(*max);
+        }
+        return game == "nibbler" ? ("?") : ("???");
+    }
+
     void Menu::update(display::IDisplayModule *display)
     {
         static bool show = false;
@@ -216,8 +254,9 @@ namespace game {
                 cursorPos = 0;
                 cursor->setColor(display::WHITE);
                 cursor->setPos(display::Vector2i{8, 14});
+                _score = initString(getPlayerScore(gameLibsStr[cursorPos]), display::Vector2i{38, 10}, display::WHITE);
             } else {
-                userName = initString(tmp, display::Vector2i{9, FIRST_LINE-4}, display::CYAN);
+                _userName = initString(tmp, display::Vector2i{9, FIRST_LINE-4}, display::CYAN);
                 userNameStr.clear();
                 userNameStr += tmp;
             }
@@ -234,17 +273,18 @@ namespace game {
             if (display->isButtonPressed(display::UP) && !show) {
                 if (cursorPos == 0) {
                     cursorPos = -1;
-                    // cursor->setColor(display::BLACK);
                     cursor->setPos(display::Vector2i{8, 10});
                     display->startTextInput();
                     return;
                 }
                 cursorPos -= cursorPos > 0 ? 1 : 0;
                 cursor->setPos(display::Vector2i{cursor->getPos().x, gameLibs.at(cursorPos).at(0)->getPos().y});
+                _score = initString(getPlayerScore(gameLibsStr[cursorPos]), display::Vector2i{38, 10}, display::WHITE);
             }
             if (display->isButtonPressed(display::DOWN) && !show) {
                 cursorPos += cursorPos < gameLibs.size()-1 ? 1 : 0;
                 cursor->setPos(display::Vector2i{cursor->getPos().x, gameLibs.at(cursorPos).at(0)->getPos().y});
+                _score = initString(getPlayerScore(gameLibsStr[cursorPos]), display::Vector2i{38, 10}, display::WHITE);
             }
             for (long unsigned int i = 0; i < gameLibs.at(cursorPos).size(); ++i)
                 gameLibs.at(cursorPos).at(i)->setCharacterColor(display::CYAN);
@@ -254,9 +294,10 @@ namespace game {
         for (auto graphic : graphicLibs)
             displayElem(display, graphic);
         displayElem(display, background);
-        displayElem(display, userName);
         displayElem(display, titleUserName);
+        displayElem(display, _userName);
         displayElem(display, titleScore);
+        displayElem(display, _score);
         displayElem(display, _title);
         if (showCursor)
             display->drawObj(cursor);

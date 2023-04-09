@@ -175,10 +175,7 @@ namespace display {
             if (_event.type == SDL_EventType::SDL_KEYDOWN) {
                 key = _event.key.keysym.sym;
                 if (key == SDLK_RETURN || key == SDLK_RETURN2) {
-                    std::cout << "QUIT" << std::endl;
-                    std::cout << "key: " << key << std::endl;
                     endTextInput();
-                    std::cout << "mode: " << _eventMode << std::endl;
                     return "\n";
                 }
                 if (key == 8 && userName.size() > 0)

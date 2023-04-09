@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <fstream>
 #include <stdexcept>
-#include <time.h>
+#include <ctime>
 #include "nibbler.hpp"
 #define SIZE 1
 #define WALL '#'
@@ -22,7 +22,7 @@ namespace game {
     {
         std::ofstream scoreFile;
         scoreFile.open("score.arcade", std::fstream::app);
-        scoreFile << "nibbler " << core->getPlayerName() << " " << std::to_string(lvl) << "-" << std::to_string(score) << "00" << std::endl;
+        scoreFile << "nibbler " << core->getPlayerName() << " " << std::to_string(lvl) << std::endl;
         scoreFile.close();
         delete this;
     }
