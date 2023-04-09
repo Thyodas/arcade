@@ -99,9 +99,10 @@ namespace display {
         //rectToDraw.x -= text_surface->w / 2 - rectToDraw.w / 2;
         //rectToDraw.w = text_surface->w;
         //rectToDraw.h = text_surface->h;
-        SDL_QueryTexture(text_texture, nullptr, nullptr, &rectToDraw.w,
-            &rectToDraw.h);
-        rectToDraw.x -= rectToDraw.w / 2;
+        //SDL_QueryTexture(text_texture, nullptr, nullptr, &rectToDraw.w,
+        //    &rectToDraw.h);
+        rectToDraw.w /= 2;
+        rectToDraw.x += rectToDraw.w / 2 + text_surface->w / 2;
         SDL_RenderCopy(_renderer, text_texture, nullptr, &rectToDraw);
         SDL_FreeSurface(text_surface);
         SDL_DestroyTexture(text_texture);

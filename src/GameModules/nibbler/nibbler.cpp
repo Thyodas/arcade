@@ -67,7 +67,7 @@ namespace game {
         std::string path = "src/GameModules/nibbler/lvl/" + std::to_string(lvl) + ".lvl";
         std::string line;
         std::ifstream myfile(path, std::ios::in);
-        int i, j = 0;
+        int i = 0, j = 0;
 
         if (!myfile.is_open())
             throw std::runtime_error("Nibbler: Cannot open file (.lvl file)");
