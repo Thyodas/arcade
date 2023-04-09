@@ -164,6 +164,12 @@ namespace arcade {
             _game->init();
             return true;
         }
+        if (_display->isButtonPressed(display::F6)) {
+            _game->stop(this);
+            setGameModule("arcade_menu.so");
+            _game->init();
+            return true;
+        }
         if (_display->isButtonPressed(display::F7)) {
             _loop = false;
             return true;
