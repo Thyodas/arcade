@@ -24,7 +24,7 @@ namespace game {
         private:
             std::deque<std::shared_ptr<object::Rectangle>> initString(std::string str, display::Vector2i pos, display::Color color);
             void createCursor(void);
-            void testLib(const std::string pathToLib);
+            void testLib(const std::string pathToLib, display::Vector2i *gamePos, display::Vector2i *graphicPos);
             void setListLibs(void);
             void createBackground(void);
             std::string getPlayerScore(std::string game);

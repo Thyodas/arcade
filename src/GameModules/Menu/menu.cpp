@@ -155,17 +155,17 @@ namespace game {
 
     void Menu::setListLibs()
     {
+        display::Vector2i gamePos = {11, FIRST_LINE};
+        display::Vector2i graphicPos = {38, FIRST_LINE};
         for (const auto &entry : std::filesystem::directory_iterator("./lib")) {
             std::string path_str = std::string(entry.path().c_str());
             if (path_str.compare(0, 7, "arcade_"))
-                testLib(path_str);
+                testLib(path_str, &gamePos, &graphicPos);
         }
     }
 
-    void Menu::testLib(const std::string pathToLib)
+    void Menu::testLib(const std::string pathToLib, display::Vector2i *gamePos, display::Vector2i *graphicPos)
     {
-        static display::Vector2i gamePos = {11, FIRST_LINE};
-        static display::Vector2i graphicPos = {38, FIRST_LINE};
         game::IGameModule *testGame = nullptr;
         display::IDisplayModule *testDisplay = nullptr;
         void *handle = loader.loadLib(pathToLib);
@@ -176,18 +176,18 @@ namespace game {
         if ((testGame = loader.getEntryPoint<game::IGameModule *>(handle, "entryPointGame")) != nullptr) {
             delete testGame;
             std::string path = pathToLib.substr(pathToLib.find("_")+1);
-            gameLibs.push_back(initString(path.substr(0, path.size() - 3), gamePos, display::WHITE));
+            gameLibs.push_back(initString(path.substr(0, path.size() - 3), *gamePos, display::WHITE));
             gameLibsStr.push_back(path.substr(0, path.size() - 3));
-            gamePos.y += 2;
+            gamePos->y += 2;
             dlclose(handle);
             return;
         }
         if ((testDisplay = loader.getEntryPoint<display::IDisplayModule *>(handle, "entryPointDisplay")) != nullptr) {
             delete testDisplay;
             std::string path = pathToLib.substr(pathToLib.find("_")+1);
-            graphicLibs.push_back(initString(path.substr(0, path.size() - 3), graphicPos, display::WHITE));
+            graphicLibs.push_back(initString(path.substr(0, path.size() - 3), *graphicPos, display::WHITE));
             graphicLibsStr.push_back(path.substr(0, path.size() - 3));
-            graphicPos.y += 2;
+            graphicPos->y += 2;
             dlclose(handle);
             return;
         }
