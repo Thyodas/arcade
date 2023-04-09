@@ -109,32 +109,32 @@ $(document).ready(function(){initNavTree('md_docs__core__architecture.html','');
  Then, your text display module will convert those pixel positions in cell positions.</p>
 <p >The implementation of this function is entirely up to you, there are ways to know approximatevely how many pixels takes a certain character on the screen, but you could just take an arbitrary constant that fits your design.</p>
 <h1>Object example</h1>
-<p >If we take the Rectangle example, here is a very simple implementation </p><div class="fragment"><div class="line"> {C++}</div>
-<div class="line">class Rectangle : public ARectangle {</div>
-<div class="line">    public:</div>
+<p >If we take the Rectangle example, here is a very simple implementation </p><div class="fragment"><div class="line"><span class="keyword">class </span>Rectangle : <span class="keyword">public</span> ARectangle {</div>
+<div class="line">    <span class="keyword">public</span>:</div>
 <div class="line">        Rectangle() { _id = RECTANGLE;};</div>
-<div class="line">        virtual ~Rectangle() {};</div>
+<div class="line">        <span class="keyword">virtual</span> ~Rectangle() {};</div>
 <div class="line"> </div>
-<div class="line">        //Interface implementation</div>
-<div class="line">        Type getType() const override { return _id;};</div>
+<div class="line">        <span class="comment">//Interface implementation</span></div>
+<div class="line">        <a class="code hl_enumeration" href="namespaceobject.html#a8944039564575b78e4d0fa4fba50fd06">Type</a> getType()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> _id;};</div>
 <div class="line"> </div>
-<div class="line">        void setPos(IDisplayModule::Vector2i pos) {_pos = pos;};</div>
-<div class="line">        IDisplayModule::Vector2i getPos() const override { return _pos;};</div>
-<div class="line">        void setSize(IDisplayModule::Vector2i size) {_size = size;};</div>
-<div class="line">        IDisplayModule::Vector2i getSize() const override { return _size;};</div>
-<div class="line">        void setColor(IDisplayModule::Color color) {_color = color;};</div>
-<div class="line">        IDisplayModule::Color getColor() const {return _color;};</div>
-<div class="line">        //Graphic lib (SFML, SDL2)</div>
-<div class="line">        void setTexture(std::string path) {_pathToTexture = path;};</div>
-<div class="line">        std::string getTexture() const override { return _pathToTexture;};</div>
-<div class="line">        //Terminal graphical lib</div>
-<div class="line">        void setCharacter(char c) {_character = c;};</div>
-<div class="line">        char getCharacter() const override { return _character;};</div>
+<div class="line">        <span class="keywordtype">void</span> setPos(IDisplayModule::Vector2i pos) {_pos = pos;};</div>
+<div class="line">        IDisplayModule::Vector2i getPos()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> _pos;};</div>
+<div class="line">        <span class="keywordtype">void</span> setSize(IDisplayModule::Vector2i size) {_size = size;};</div>
+<div class="line">        IDisplayModule::Vector2i getSize()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> _size;};</div>
+<div class="line">        <span class="keywordtype">void</span> setColor(IDisplayModule::Color color) {_color = color;};</div>
+<div class="line">        IDisplayModule::Color getColor()<span class="keyword"> const </span>{<span class="keywordflow">return</span> _color;};</div>
+<div class="line">        <span class="comment">//Graphic lib (SFML, SDL2)</span></div>
+<div class="line">        <span class="keywordtype">void</span> setTexture(std::string path) {_pathToTexture = path;};</div>
+<div class="line">        std::string getTexture()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> _pathToTexture;};</div>
+<div class="line">        <span class="comment">//Terminal graphical lib</span></div>
+<div class="line">        <span class="keywordtype">void</span> setCharacter(<span class="keywordtype">char</span> c) {_character = c;};</div>
+<div class="line">        <span class="keywordtype">char</span> getCharacter()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> _character;};</div>
 <div class="line"> </div>
-<div class="line">        //Other internal logic</div>
-<div class="line">        int getBorderThickness() const {return _borderThickness;};</div>
-<div class="line">        void setBorderThickness(int thickness) {_borderThickness = thickness;};</div>
+<div class="line">        <span class="comment">//Other internal logic</span></div>
+<div class="line">        <span class="keywordtype">int</span> getBorderThickness()<span class="keyword"> const </span>{<span class="keywordflow">return</span> _borderThickness;};</div>
+<div class="line">        <span class="keywordtype">void</span> setBorderThickness(<span class="keywordtype">int</span> thickness) {_borderThickness = thickness;};</div>
 <div class="line">};</div>
+<div class="ttc" id="anamespaceobject_html_a8944039564575b78e4d0fa4fba50fd06"><div class="ttname"><a href="namespaceobject.html#a8944039564575b78e4d0fa4fba50fd06">object::Type</a></div><div class="ttdeci">Type</div><div class="ttdoc">Enum storing all of our objects types (even if in my honest opinion, you can do basically everything ...</div><div class="ttdef"><b>Definition:</b> IObject.hpp:20</div></div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
