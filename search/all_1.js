@@ -5,5 +5,6 @@ var searchData=
   ['closegamelib_2',['closeGameLib',['../classarcade_1_1_loader.html#a46c4430584d37864ab1d40c372d1b3f1',1,'arcade::Loader']]],
   ['closegraphiclib_3',['closeGraphicLib',['../classarcade_1_1_loader.html#a4578baadf291e2356b717c5e764bb22c',1,'arcade::Loader']]],
   ['contains_4',['contains',['../classobject_1_1_rectangle.html#a36da93939d0e0c1477664fcb7b5028d2',1,'object::Rectangle']]],
-  ['core_5',['Core',['../classarcade_1_1_core.html',1,'arcade']]]
+  ['core_5',['Core',['../classarcade_1_1_core.html',1,'arcade']]],
+  ['core_20architecture_20for_20the_20arcade_20project_6',['Core architecture for the arcade project',['../md_docs__core__architecture.html',1,'']]]
 ];

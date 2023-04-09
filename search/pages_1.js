@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['test_0',['test',['../md_docs_test.html',1,'']]]
+  ['core_20architecture_20for_20the_20arcade_20project_0',['Core architecture for the arcade project',['../md_docs__core__architecture.html',1,'']]]
 ];

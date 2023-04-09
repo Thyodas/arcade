@@ -16,7 +16,7 @@ var NAVTREEINDEX1 =
 "functions_func.html":[2,3,1],
 "hierarchy.html":[2,2],
 "index.html":[],
-"md_docs_test.html":[0],
+"md_docs__core__architecture.html":[0],
 "menu_8hpp_source.html":[3,0,1,2,0,0],
 "namespacearcade.html":[1,0,0],
 "namespacedisplay.html":[1,0,1],

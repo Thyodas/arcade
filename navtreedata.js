@@ -25,7 +25,7 @@
 var NAVTREE =
 [
   [ "Arcade", "index.html", [
-    [ "test", "md_docs_test.html", null ],
+    [ "Core architecture for the arcade project", "md_docs__core__architecture.html", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
