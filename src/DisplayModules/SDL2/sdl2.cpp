@@ -96,6 +96,7 @@ namespace display {
             _colorsMap[rect->getCharacterColor()]);
         SDL_Texture *text_texture = SDL_CreateTextureFromSurface(_renderer,
             text_surface);
+        SDL_SetTextureAlphaMod(text_texture, 255);
         //rectToDraw.x -= text_surface->w / 2 - rectToDraw.w / 2;
         //rectToDraw.w = text_surface->w;
         //rectToDraw.h = text_surface->h;
